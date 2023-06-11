@@ -1,0 +1,20 @@
+export function getLocalStorage(param: string): Promise<any> {
+   return new Promise((resolve, reject) => {
+      try {
+         chrome.storage.local.get(param, (result) => {
+            if (chrome.runtime.lastError) {
+               reject(chrome.runtime.lastError);
+            } else {
+               resolve(result[param]);
+            }
+         });
+      } catch (error) {
+         reject(error);
+      }
+   });
+}
+
+
+export async function setLocalStorage(param: string, value: any) {
+   await chrome.storage.local.set({ [param]: value });
+}

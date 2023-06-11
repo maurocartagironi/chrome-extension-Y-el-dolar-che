@@ -1,0 +1,22 @@
+export enum Style {
+    COLOR_ICON_NEUTRAL = "gray",
+    COLOR_ICON_NEGATIVE = "red",
+    COLOR_ICON_POSITIVE = "green",
+    BG_COLOR = "white",
+    BG_COLOR_COMPONENT_TABLE = "bg-white dark:bg-slate-700",
+    TXT_COLOR_HEADER_COMPONENT_TABLE = "text-black font-extrabold dark:text-white",
+    BG_COLOR_HEAD_TABLE = "bg-gray-50 dark:bg-slate-700",
+    TXT_TD_TABLE = "text-white dark:text-slate-700",
+    TXT_COLOR_HEADER_TABLE = " text-gray-600 dark:text-slate-50",
+    LINE_COLOR_DIVIDE_TABLE = "divide-gray-100 dark:divide-slate-600",
+    LINE_COLOR_HEADER_LINE = "border-gray-100 dark:border-slate-600",
+    TXT_THEAD_TABLE = "text-gray-900 dark:text-slate-50",
+    TXT_FOOTER = "text-white",
+    BORDER_FOOTER = "border-indigo-600",
+    BG_FOOTER = "bg-indigo-600",  
+    BG_BUTTON = "bg-indigo-600",
+    BG_HOVER_BUTTON = "hover:bg-indigo-500",  
+    TXT_BUTTON = "text-white",
+    TXT_BUTTON_WO_BG = "text-indigo-600",
+    TXT_HOVER_WO_BG = "hover:text-indigo-600"
+}

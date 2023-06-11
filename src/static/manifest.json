@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "¿Y el dólar che?",
+    "description": "Muestra los valores actualizados del dólar en Argentina y además es posible hacer conversiones rápidas.",
+    "version": "1.0",
+    "icons": {
+      "16": "icon.png",
+      "32": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    },
+    "action": {
+      "default_icon": {
+        "16": "icon.png",
+        "24": "icon.png",
+        "32": "icon.png"
+      },
+      "default_title": "Y el dólar che?",
+      "default_popup": "popup.html"
+    },
+    "options_page": "options.html",
+    "permissions": ["alarms", "storage", "tabs"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "host_permissions": ["https://dolar-api-argentina.vercel.app/*"]
+  }
+  
