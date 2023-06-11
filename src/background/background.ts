@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(initializeExtension());
 
 // Cada {periodInMinutes} minutos se ejecuta este método para que actualice los datos
 chrome.alarms.onAlarm.addListener(refreshData);
-
+ 
 // Recibe un mensaje del popup
 chrome.runtime.onMessage.addListener(receiveMessageFromPopup);
 

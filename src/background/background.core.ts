@@ -100,7 +100,7 @@ const generateTooltip = async (exchangeRate: ExchangeRate): Promise<string> => {
 
 const setConfig = async (): Promise<Config> => {
    const localConfig: Config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-   return new Config(
+   return localConfig ? new Config(
       localConfig.exchangeRateToShowInBadge ?? DEFAULT_BADGE_EXCHANGE_RATE,
       localConfig.exchangeRateTypeToShowInBadge ??
          DEFAULT_BADGE_EXCHANGE_RATE_TYPE,
@@ -112,5 +112,5 @@ const setConfig = async (): Promise<Config> => {
       localConfig.badgeColor ?? DEFAULT_BADGE_COLOR,
       localConfig.hideConversionSection ?? DEFAULT_HIDE_CONVERSION_SECTION,
       localConfig.darkMode ?? DEFAULT_DARK_MODE
-   );
+   ) : new Config(DEFAULT_BADGE_EXCHANGE_RATE, DEFAULT_BADGE_EXCHANGE_RATE_TYPE, DEFAULT_TOOLTIP_EXCHANGE_RATE, DEFAULT_CONVERSOR, DEFAULT_CONVERSOR_TYPE, null, DEFAULT_ALARM_PERIOD_IN_MINUTES, DEFAULT_BADGE_COLOR, DEFAULT_HIDE_CONVERSION_SECTION, DEFAULT_DARK_MODE);
 };
