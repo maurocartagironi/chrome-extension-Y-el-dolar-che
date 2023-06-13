@@ -16,7 +16,7 @@ export default function ItemOption({ label, description, children }) {
                      <Typography
                         variant="small"
                         color="white"
-                        className="font-normal opacity-80">
+                        className="font-normal">
                         {description}
                      </Typography>
                   </div>

@@ -1,12 +1,8 @@
 import React from "react";
 import Button from "../Button/Button";
 import logo from "../../assets/logo.png";
-import { useDarkMode } from "../../hooks/useDarkMode";
-import { useConfig } from "../../hooks/useConfig";
 
 export default function Header() {
-   const { darkMode, setDarkMode } = useDarkMode();
-   const config = useConfig();
    const openSetting = () => {
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
          var configTab = tabs.find(function (tab) {
@@ -21,24 +17,24 @@ export default function Header() {
       });
    };
 
-   const switchDarkMode = () => {
-      setDarkMode(!darkMode);
+   const clearSessionStorage = () => {
+      chrome.storage.local.clear();
    };
 
    return (
       <div className="flex items-center justify-between">
          <div>
-            <img src={logo} className="w-48" />
+            <img src={logo} className="w-20" />
          </div>
-         <div className="flex items-center justify-between">
-            {/*<Button
-               icon="moon"
+         <div className="flex items-center justify-between gap-2">
+            <Button
+               icon="trash"
                size="sm"
                contentSize="lg"
                variant="text"
                color="indigo"
-               onClick={switchDarkMode}
-   />*/}
+               onClick={clearSessionStorage}
+            />
             <Button
                icon="gear"
                size="sm"

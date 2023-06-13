@@ -6,7 +6,7 @@ import Options from "./options";
 function init() {
    const appContainer = document.createElement("div");
    document.body.appendChild(appContainer);
-   document.title = "Opciones: Y el dolar che";
+   document.title = `${chrome.i18n.getMessage("title_option")} ${chrome.i18n.getMessage("appName")}`;
    if (!appContainer) {
       throw new Error("Can not find AppContainer");
    }

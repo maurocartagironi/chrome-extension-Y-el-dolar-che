@@ -1,0 +1,148 @@
+{
+   "appName": {
+      "message": "¿Y el dólar che?"
+   },
+   "appDesc": {
+      "message": "Muestra los valores actualizados del dólar en Argentina y además es posible hacer conversiones rápidas."
+   },
+   "error_general_title": {
+      "message": "Ha ocurrido un error inesperado. Vuelve a intentarlo más tarde."
+   },
+   "error_general_description": {
+      "message": "Si el problema persiste, no dudes en contactarme."
+   },
+   "table_thead_col_exchange": {
+      "message": "Cambio"
+   },
+   "table_thead_col_buy": {
+      "message": "Compra"
+   },
+   "table_thead_col_sell": {
+      "message": "Venta"
+   },
+   "item_usd_to_pesos": {
+      "message": "$var$ a pesos",
+      "placeholders": {
+         "var": {
+            "content": "$1"
+         }
+      }
+   },
+   "item_pesos_to_usd": {
+      "message": "Pesos a $var$",
+      "placeholders": {
+         "var": {
+            "content": "$1"
+         }
+      }
+   },
+   "title_table": {
+      "message": "Tipos de cambio"
+   },
+   "title_quick_pricing": {
+      "message": "Conversión rápida"
+   },
+   "placeholder_amount": {
+      "message": "Monto"
+   },
+   "placeholder_select_exchange_rate": {
+      "message": "A convertir"
+   },
+   "result_buy": {
+      "message": "Compra"
+   },
+   "result_sell": {
+      "message": "Venta"
+   },
+   "tooltip": {
+      "message": "$var1$\rCompra: $var2$\rVenta: $var3$\rActualizado hace $var4$",
+      "placeholders": {
+         "var1": {
+            "content": "$1"
+         },
+         "var2": {
+            "content": "$1"
+         },
+         "var3": {
+            "content": "$1"
+         },
+         "var4": {
+            "content": "$1"
+         }
+      }
+   },
+   "footer": {
+      "message": "Actualizado hace $var$",
+      "placeholders": {
+         "var": {
+            "content": "$1"
+         }
+      }
+   },
+   "n_days": {
+      "message": " día(s)"
+   },
+   "n_hours": {
+      "message": " hora(s)"
+   },
+   "n_mins": {
+      "message": " minuto(s)"
+   },
+   "n_secs": {
+      "message": " segundo(s)"
+   },
+   "title_option": {
+      "message": "Opciones"
+   },
+   "changes_saved": {
+      "message": "Los cambios se han guardado correctamente..."
+   },
+   "button_cancel": {
+      "message": "Cancelar"
+   },
+   "button_save": {
+      "message": "Guardar"
+   },
+   "label_badge_exchange_rate_opt":  {
+      "message": "Tipo de cambio"
+   },
+   "label_badge_exchange_rate_desc": {
+      "message": "Permite ver en el icono de la extensión el precio actualizado del tipo de cambio que elijas."
+   },
+   "label_badge_buy_sell_opt":  {
+      "message": "Compra / Venta"
+   },
+   "label_badge_buy_sell_desc": {
+      "message": "Se puede cambiar entre mostrar en el icono de la extensión el tipo de cambio de compra o de venta segun elección."
+   },
+   "label_badge_color_opt": {
+      "message": "Color del badge"
+   },
+   "label_badge_color_desc": {
+      "message": "Permite seleccionar el color de fondo del badge."
+   },   
+   "label_badge_color_title": {
+      "message": "Elija el color que desea para el badge."
+   },
+   "label_tooltip_exchange_rate_opt": {
+      "message": "Tipo de cambio"
+   },
+   "label_tooltip_exchange_rate_desc": {
+      "message": "Al mantener el mouse en el icono de la extensión, se abre un elemento que permite ver el precio del tipo de cambio seleccionado, tanto el de compra como el de venta y su ultima actualización."
+   },
+   "label_hide_conversor_opt": {
+      "message": "Ocultar sector de conversión"
+   },
+   "label_hide_conversor_desc": {
+      "message": "Es posible ocultar o mostrar el conversor."
+   },
+   "label_group_badge": {
+      "message": "Badge"
+   },
+   "label_group_tooltip": {
+      "message": "Tooltip"
+   },
+   "label_group_conversor": {
+      "message": "Conversor"
+   }
+}

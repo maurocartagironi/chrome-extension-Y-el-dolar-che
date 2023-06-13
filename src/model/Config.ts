@@ -9,6 +9,7 @@ export class Config {
    badgeColor: string;
    hideConversionSection: boolean;
    darkMode: boolean;
+   hasError: boolean;
 
    constructor(
       exchangeRateToShowInBadge: string,

@@ -47,19 +47,19 @@ export default function ExchangeRateTable() {
             setColumns([
                new Column(
                   "name",
-                  "Cambio",
+                  chrome.i18n.getMessage("table_thead_col_exchange"),
                   Constant.DATATYPE_TEXT,
                   Constant.DATATYPE_COMPONENT_TEXT
                ),
                new Column(
                   "buy",
-                  "Compra",
+                  chrome.i18n.getMessage("table_thead_col_buy"),
                   Constant.DATATYPE_CURRENCY,
                   Constant.DATATYPE_COMPONENT_LABEL
                ),
                new Column(
                   "sell",
-                  "Venta",
+                  chrome.i18n.getMessage("table_thead_col_sell"),
                   Constant.DATATYPE_CURRENCY,
                   Constant.DATATYPE_COMPONENT_LABEL
                ),
@@ -99,7 +99,7 @@ export default function ExchangeRateTable() {
 
    return (
       <div>
-         <Title text="Tipos de cambio" />
+         <Title text={chrome.i18n.getMessage("title_table")} />
          {wrapperExchangeRates ? (
             <Table rows={wrapperExchangeRates} columns={columns} />
          ) : (

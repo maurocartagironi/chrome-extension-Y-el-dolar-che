@@ -22,13 +22,14 @@ import Separator from "../../components/Separator/Separator";
 import Container from "../../components/Container/Container";
 
 // Material tailwind
-import { ThemeProvider } from "@material-tailwind/react";
+import { Alert, ThemeProvider, Typography } from "@material-tailwind/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 const Popup = () => {
    const exchangeRates: ExchangeRate[] = useExchangeRates();
    const lastUpdated: string = useLastUpdated();
    const config: Config = useConfig();
-   
+
    return (
       <ThemeProvider>
          <link
@@ -39,18 +40,38 @@ const Popup = () => {
             referrerPolicy="no-referrer"
          />
          <Container>
-            {exchangeRates && config ? (
-               <>
-                  <div>
-                     <Header />
-                     <Separator height="2" />
-                     <ExchangeRateTable />
-                     <Separator height="5" />
-                     {!config.hideConversionSection ? <QuickPricing /> : <></>}
-                  </div>
-                  <Separator height="4" />                  
-                  <Footer text={lastUpdated} />
-               </>
+            {config ? (
+               config.hasError ? (
+                  <Alert 
+                     color="red"
+                     className="max-w-screen-md"
+                     icon={<ExclamationTriangleIcon className="mt-px h-6 w-6" />}>
+                     <Typography variant="h6" color="white">
+                        {chrome.i18n.getMessage("error_general_title")}
+                     </Typography>
+                     <Typography color="white" className="mt-2 font-extralight text-sm">
+                     {chrome.i18n.getMessage("error_general_description")}
+                     </Typography>
+                  </Alert> 
+               ) : exchangeRates ? (
+                  <>
+                     <div>
+                        <Header />
+                        <Separator height="2" />
+                        <ExchangeRateTable />
+                        <Separator height="5" />
+                        {!config.hideConversionSection ? (
+                           <QuickPricing />
+                        ) : (
+                           <></>
+                        )}
+                     </div>
+                     <Separator height="4" />
+                     <Footer text={lastUpdated} />
+                  </>
+               ) : (
+                  <MainLoader />
+               )
             ) : (
                <MainLoader />
             )}

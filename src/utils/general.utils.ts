@@ -20,10 +20,10 @@ export const calculateTimeDifference = (dateToCompare: any): string => {
    const inSeconds = Math.floor(timeDifferenceInSeconds);
 
    return inDays > 0
-      ? inDays + " día(s)"
+      ? inDays + chrome.i18n.getMessage("n_days")
       : inHours > 0
-      ? inHours + " hora(s)"
+      ? inHours + chrome.i18n.getMessage("n_hours")
       : inMinutes > 0
-      ? inMinutes + " minuto(s)"
-      : inSeconds + " segundo(s)";
+      ? inMinutes + chrome.i18n.getMessage("n_mins")
+      : inSeconds + chrome.i18n.getMessage("n_secs")
 };

@@ -67,8 +67,8 @@ export default function QuickPricing() {
                value: item.id,
                label:
                   conversorType === "ars"
-                     ? `${item.name} a pesos`
-                     : `Pesos a ${item.name}`,
+                     ? chrome.i18n.getMessage("item_usd_to_pesos", item.name)
+                     : chrome.i18n.getMessage("item_pesos_to_usd", item.name),
                isSelected: selectedValue === item.id,
             };
          });
@@ -105,12 +105,12 @@ export default function QuickPricing() {
 
    return (
       <>
-         <Title text="Conversión rápida" />
+         <Title text={chrome.i18n.getMessage("title_quick_pricing")} />
          <form>
             <div className="form-group flex gap-2">
                <Input
                   value={inputValue}
-                  label="Monto"
+                  label={chrome.i18n.getMessage("placeholder_amount")}
                   type="decimal"
                   maxCharacters={9}
                   maxLength={12}
@@ -118,7 +118,7 @@ export default function QuickPricing() {
                   onInputChange={handleInputChange}
                />
                <Select
-                  label="A convertir"
+                  label={chrome.i18n.getMessage("placeholder_select_exchange_rate")}
                   id="conversor-select"
                   list={listToConvert}
                   onSelectChange={handleSelectChange}
@@ -137,10 +137,10 @@ export default function QuickPricing() {
          </form>
          {result[0] !== "" || result[1] !== "" ? (
             <div className="gap-2 flex items-center justify-between">
-               <Result title="Compra" icon="dollar-sign">
+               <Result title={chrome.i18n.getMessage("result_buy")} icon="dollar-sign">
                   {result[0]}
                </Result>
-               <Result title="Venta" icon="dollar-sign">
+               <Result title={chrome.i18n.getMessage("result_sell")} icon="dollar-sign">
                   {result[1]}
                </Result>
             </div>

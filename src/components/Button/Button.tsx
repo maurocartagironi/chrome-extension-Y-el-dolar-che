@@ -10,6 +10,7 @@ interface ButtonProps {
    color?: any;
    disabled?: any;
    contentSize?: string;
+   className?: string;
    onClick: (e) => void;
 }
 
@@ -21,6 +22,7 @@ export default function Button({
    color,
    disabled,
    contentSize,
+   className,
    onClick
 }: ButtonProps) {
    const handleClick = (e) => {
@@ -34,7 +36,7 @@ export default function Button({
          nonce={undefined}
          onResize={undefined}
          onClick={handleClick}
-         className="cursor-pointer"
+         className={`cursor-pointer ${className}`} 
          variant={variant}
          color={color}
          size={size}

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "¿Y el dólar che?",
-    "description": "Muestra los valores actualizados del dólar en Argentina y además es posible hacer conversiones rápidas.",
+    "name": "__MSG_appName__",
+    "description": "__MSG_appDesc__",
     "version": "1.0",
     "icons": {
       "16": "icon.png",
@@ -19,6 +19,7 @@
       "default_popup": "popup.html"
     },
     "options_page": "options.html",
+    "default_locale": "es",
     "permissions": ["alarms", "storage", "tabs"],
     "background": {
       "service_worker": "background.js"
