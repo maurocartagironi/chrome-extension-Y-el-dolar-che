@@ -1,25 +1,16 @@
-@font-face {
-   font-family: "Inter";
-   font-style: normal;
-   font-weight: 100 900;
-   font-display: swap;
-   src: url(../../assets/Inter-Medium.ttf);
-   font-named-instance: Inter-Medium;
-}
-
 body {
-   min-height: 300px;
-   width: 400px;
-   background-color: #ffffff;
-   font-family: "Inter";
+	min-height: 300px;
+	width: 400px;
+	background-color: #ffffff;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body > div {
-   height: inherit;
-   flex-direction: column;
-   display: flex;
-   justify-content: space-between;
+	height: inherit;
+	flex-direction: column;
+	display: flex;
+	justify-content: space-between;
 }
 .input-min > div {
-   min-width: 100px !important;
+	min-width: 100px !important;
 }

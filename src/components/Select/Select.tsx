@@ -32,13 +32,10 @@ export default function Select({label, id, list, onSelectChange}) {
 				onChange={handleSelectChange}
 				id={id}
 				label={label}
-				nonce={undefined}
-				onResize={undefined}
-				onResizeCapture={undefined}
-				className="text-xs font-medium">
+				className="text-sm font-medium">
 				{list.map((item: SelectItem) => (
 					<Option
-						className="text-xs font-medium"
+						className="text-sm font-medium"
 						value={item.value}
 						key={item.value}>
 						{item.label}

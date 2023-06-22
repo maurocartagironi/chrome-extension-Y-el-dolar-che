@@ -32,9 +32,9 @@ const Options = () => {
 
 	const [badgeExchangeRate, setBadgeExchangeRate] = useState();
 	const [badgeExchangeRateType, setBadgeExchangeRateType] = useState();
-	const [badgeColor, setBadgeColor] = useState(undefined);
+	const [badgeColor, setBadgeColor] = useState("#FFFFFF");
 	const [tooltipExchangeRate, setTooltipExchangeRate] = useState();
-	const [hideConversionSection, setHideConversionSection] = useState(false);
+	const [hideConversionSection, setHideConversionSection] = useState(true);
 	const [localConfig, setLocalConfig] = useState(null);
 	const [isSaved, setIsSaved] = useState(false);
 
@@ -97,6 +97,7 @@ const Options = () => {
 		setBadgeColor(e.target.value);
 	};
 	const onSwitchChange = (e) => {
+		e.preventDefault();
 		setHideConversionSection(e.target.checked);
 	};
 	const validateConfig = (configParam) => {
@@ -149,7 +150,7 @@ const Options = () => {
 					isSelected: config.exchangeRateTypeToShowInBadge === "sell",
 				},
 			]);
-			setBadgeColor(config.badgeColor);
+			setBadgeColor(config.badgeColor ? config.badgeColor : "#FFFFFF");
 			setHideConversionSection(config.hideConversionSection);
 		}
 	}, [config, exchangeRates]);
@@ -295,7 +296,7 @@ const Options = () => {
 									)}>
 									<div>
 										<input
-											className="cursor-pointer outline-0 outline border border-blue-gray-200 bg-transparent rounded-md p-1 min-w-[200px] h-10"
+											className="bg-white cursor-pointer outline-0 border-none rounded-md p min-w-[200px] h-10"
 											type="color"
 											value={badgeColor}
 											id="badge-color"
@@ -349,14 +350,7 @@ const Options = () => {
 										<Switch
 											id="switch"
 											color="indigo"
-											checked={
-												hideConversionSection
-													? true
-													: undefined
-											}
-											nonce={undefined}
-											onResize={undefined}
-											onResizeCapture={undefined}
+											checked={hideConversionSection}
 											onChange={onSwitchChange}
 										/>
 									</div>

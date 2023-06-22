@@ -5,7 +5,7 @@ import Separator from "../Separator/Separator";
 export default function ItemOption({label, children}) {
 	return (
 		<div className="bg-white dark:bg-blue-gray-900 rounded-xl p-4 border-[#D8E2EB] border text-gray-800">
-			<Typography variant="h7" className="border-b border-[#D8E2EB]">
+			<Typography variant="h6" className="border-b border-[#D8E2EB]">
 				{label}
 			</Typography>
 			<Separator height="6" />
