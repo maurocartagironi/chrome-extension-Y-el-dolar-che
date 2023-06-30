@@ -19,26 +19,32 @@ import {ExchangeRate} from "../model/ExchangeRate";
 import {Config} from "../model/Config";
 
 export const init = async (): Promise<void> => {
+	let config = await setConfig();
+
 	try {
 		chrome.alarms.create({
 			periodInMinutes: DEFAULT_ALARM_PERIOD_IN_MINUTES,
 		});
 		await setData();
+		config.hasError = false;
 	} catch (e) {
-		const config = await setConfig();
 		console.log(e);
 		config.hasError = true;
+	} finally {
 		setLocalStorage(LOCALSTORAGE_CONFIG, config);
 	}
 };
 
 export const refresh = async (): Promise<void> => {
+	const config = await setConfig();
+
 	try {
 		await setData();
+		config.hasError = false;
 	} catch (e) {
-		const config = await setConfig();
 		config.hasError = true;
 		console.log(e);
+	} finally {
 		setLocalStorage(LOCALSTORAGE_CONFIG, config);
 	}
 };
