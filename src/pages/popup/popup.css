@@ -1,6 +1,6 @@
 body {
-	max-height: 400px;
 	width: 400px;
+	min-height: 400px;
 	background-color: #ffffff;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -13,4 +13,21 @@ body > div {
 }
 .input-min > div {
 	min-width: 100px !important;
+}
+
+.legal {
+	font-size: 10px;
+}
+
+.hr-legal {
+	margin: 0 -20px;
+}
+
+.legal-bg {
+	background: rgb(240 240 240);
+	margin: 0 -20px -20px -20px;
+}
+
+.legal-bg p {
+	padding: 20px;
 }

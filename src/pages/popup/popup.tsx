@@ -40,28 +40,25 @@ const Popup = () => {
 				referrerPolicy="no-referrer"
 			/>
 			<Container>
-				{config ? (
-					config.hasError ? (
-						<Error />
-					) : exchangeRates ? (
-						<>
-							<div>
-								<Header />
-								<Separator height="2" />
-								<ExchangeRateTable />
-								<Separator height="5" />
-								{!config.hideConversionSection ? (
+				{exchangeRates ? (
+					<>
+						<div>
+							<Header />
+							<Separator height="2" />
+							<ExchangeRateTable />
+
+							{!config.hideConversionSection ? (
+								<>
+									<Separator height="5" />
 									<QuickPricing />
-								) : (
-									<></>
-								)}
-							</div>
-							<Separator height="4" />
-							<Footer text={lastUpdated} />
-						</>
-					) : (
-						<MainLoader />
-					)
+								</>
+							) : (
+								<></>
+							)}
+						</div>
+						<Separator height="4" />
+						<Footer text={lastUpdated} />
+					</>
 				) : (
 					<MainLoader />
 				)}

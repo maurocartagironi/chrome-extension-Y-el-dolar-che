@@ -1,5 +1,6 @@
 import * as React from "react";
 import {IconButton} from "@material-tailwind/react";
+import {Tooltip} from "@material-tailwind/react";
 import {Button as MTWButton} from "@material-tailwind/react";
 
 interface ButtonProps {
@@ -11,7 +12,8 @@ interface ButtonProps {
 	disabled?: any;
 	contentSize?: string;
 	className?: string;
-	onClick: (e) => void;
+	tooltip?: boolean;
+	onClick?: (e) => void;
 }
 
 export default function Button({
@@ -23,11 +25,12 @@ export default function Button({
 	disabled,
 	contentSize,
 	className,
+	tooltip,
 	onClick,
 }: ButtonProps) {
 	const handleClick = (e) => {
 		e.preventDefault();
-		onClick(e);
+		if (onClick) onClick(e);
 	};
 
 	return text ? (
@@ -40,6 +43,27 @@ export default function Button({
 			size={size}>
 			{text}
 		</MTWButton>
+	) : tooltip ? (
+		<Tooltip
+			content={chrome.i18n.getMessage("label_" + icon)}
+			placement="bottom">
+			<IconButton
+				className="cursor-pointer"
+				onClick={handleClick}
+				variant={variant}
+				color={color}
+				size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}>
+				<i
+					className={`fas fa-${icon} ${
+						contentSize === "lg"
+							? "fa-lg"
+							: contentSize === "md"
+							? "fa-md"
+							: ""
+					}`}
+				/>
+			</IconButton>
+		</Tooltip>
 	) : (
 		<IconButton
 			className="cursor-pointer"

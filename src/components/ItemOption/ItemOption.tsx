@@ -5,7 +5,7 @@ import {InformationCircleIcon} from "@heroicons/react/24/outline";
 export default function ItemOption({label, description, children}) {
 	return (
 		<div className="flex items-center justify-between">
-			<div className="text-center flex-row gap-1 flex items-center">
+			<div className="text-sm text-center flex-row gap-1 flex items-center">
 				{label}
 				<Tooltip
 					content={

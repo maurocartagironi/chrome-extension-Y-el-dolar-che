@@ -20,6 +20,9 @@
 	"table_thead_col_sell": {
 		"message": "Venta"
 	},
+	"blue": {
+		"message": "Dólar informal"
+	},
 	"item_usd_to_pesos": {
 		"message": "$var$ a pesos",
 		"placeholders": {
@@ -107,42 +110,51 @@
 		"message": "Tipo de cambio"
 	},
 	"label_badge_exchange_rate_desc": {
-		"message": "Permite ver en el icono de la extensión el precio actualizado del tipo de cambio que elijas."
+		"message": "Ofrece la posibilidad de recibir notificaciones en la extensión con el precio actualizado del tipo de cambio que elijas."
 	},
 	"label_badge_buy_sell_opt": {
 		"message": "Compra / Venta"
 	},
 	"label_badge_buy_sell_desc": {
-		"message": "Se puede cambiar entre mostrar en el icono de la extensión el tipo de cambio de compra o de venta segun elección."
+		"message": "La extensión permite alternar la visualización del tipo de cambio de compra o venta en las notificaciones de la extensión, según la preferencia seleccionada."
 	},
 	"label_badge_color_opt": {
-		"message": "Color del badge"
+		"message": "Color de las notificaciones"
 	},
 	"label_badge_color_desc": {
-		"message": "Permite seleccionar el color de fondo del badge."
+		"message": "Te permite elegir el color de fondo de las notificaciones."
 	},
 	"label_badge_color_title": {
-		"message": "Elija el color que desea para el badge."
+		"message": "Elija el color que desea para el fondo de las notificaciones."
 	},
 	"label_tooltip_exchange_rate_opt": {
 		"message": "Tipo de cambio"
 	},
 	"label_tooltip_exchange_rate_desc": {
-		"message": "Al mantener el mouse en el icono de la extensión, se abre un elemento que permite ver el precio del tipo de cambio seleccionado, tanto el de compra como el de venta y su ultima actualización."
+		"message": "Al posar el cursor sobre el icono de la extensión, se despliega un elemento que muestra el precio del tipo de cambio seleccionado, tanto para la compra como para la venta, junto con su última actualización."
 	},
 	"label_hide_conversor_opt": {
-		"message": "Ocultar sector de conversión"
+		"message": "Ocultar sección de conversión"
 	},
 	"label_hide_conversor_desc": {
-		"message": "Es posible ocultar o mostrar el conversor."
+		"message": "Puedes alternar la visibilidad del conversor."
 	},
 	"label_group_badge": {
-		"message": "Badge"
+		"message": "Notificaciones"
 	},
 	"label_group_tooltip": {
-		"message": "Tooltip"
+		"message": "Información emergente"
 	},
 	"label_group_conversor": {
 		"message": "Conversor"
+	},
+	"label_gear": {
+		"message": "Configuración"
+	},
+	"label_gavel": {
+		"message": "Aviso legal"
+	},
+	"label_gavel_description": {
+		"message": "Esta extensión muestra la cotización del dólar obtenida de la página dolarhoy.com. La información es orientativa y puede cambiar sin previo aviso. No garantizamos la veracidad ni exactitud de los datos. Los usuarios deben verificar la información en fuentes oficiales antes de tomar decisiones financieras. No somos responsables por daños o decisiones basadas en esta información. No brindamos asesoramiento financiero ni recomendaciones de inversión. El uso de esta extensión implica la aceptación de este aviso legal."
 	}
 }

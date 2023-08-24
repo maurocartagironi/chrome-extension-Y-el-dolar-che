@@ -77,11 +77,15 @@ const Options = () => {
 			});
 		}
 		setIsSaved(true);
-		chrome.runtime.sendMessage({message: message});
+		if (message) {
+			chrome.action.setBadgeText({text: message.badge});
+			chrome.action.setTitle({title: message.tooltip});
+			chrome.action.setBadgeBackgroundColor({color: message.color});
+		}
 
 		setTimeout(() => {
 			window.location.reload();
-		}, 2400);
+		}, 1500);
 	};
 
 	const onSelectExchangeRateChange = (value) => {

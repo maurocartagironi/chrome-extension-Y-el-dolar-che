@@ -17,10 +17,6 @@ export default function Header() {
 		});
 	};
 
-	const clearSessionStorage = () => {
-		chrome.storage.local.clear();
-	};
-
 	return (
 		<div className="flex items-center justify-between">
 			<div>
@@ -33,6 +29,7 @@ export default function Header() {
 					contentSize="lg"
 					variant="text"
 					color="indigo"
+					tooltip={true}
 					onClick={openSetting}
 				/>
 			</div>
