@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import { useConfig } from "./useConfig";
-import { setLocalStorage } from "../utils/storage";
-import { LOCALSTORAGE_CONFIG } from "../static/default.config";
 
 export function useDarkMode() {
-   const [darkMode, setDarkMode] = useState(null);
-   const config = useConfig();
+  const [darkMode, setDarkMode] = useState(null);
+  const [config, setConfig] = useState(useConfig());
 
-   useEffect(() => {
-      if (config) {
-         const element = document.getElementsByTagName("html")[0];
-         if (darkMode) {
-            element.classList.add("dark");
-         } else {
-            element.classList.remove("dark");
-         }
-
-         config.darkMode = darkMode;
-         setLocalStorage(LOCALSTORAGE_CONFIG, config);
+  useEffect(() => {
+    if (config) {
+      const body = document.body;
+      if (darkMode) {
+        body.classList.add("dark");
+      } else {
+        body.classList.remove("dark");
       }
-   }, [darkMode]);
 
-   return { darkMode, setDarkMode };
+      // Crea una copia del objeto config y actualiza el valor de darkMode en la copia.
+      const updatedConfig = { ...config, darkMode: darkMode };
+      setConfig(updatedConfig);
+    }
+  }, [darkMode]);
+
+  return { darkMode, setDarkMode, config };
 }

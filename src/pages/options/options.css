@@ -3,3 +3,11 @@ body {
 	height: 100%;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
+body.dark cancel {
+	color: black !important;
+}
+
+body.dark button span {
+	color: white;
+}

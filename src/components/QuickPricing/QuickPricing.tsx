@@ -11,9 +11,10 @@ import {useConfig} from "../../hooks/useConfig";
 import {useExchangeRates} from "../../hooks/useExchangeRates";
 import {formatCurrency} from "../../utils/general.utils";
 import {Validator} from "../../utils/validator.utils";
+import { useDarkMode } from "../../hooks/useDarkMode";
 
 export default function QuickPricing() {
-	const config = useConfig();
+	const {config} = useConfig();
 	const exchangeRates = useExchangeRates();
 	const [inputValue, setInputValue] = useState("");
 	const [selectedValue, setSelectedValue] = useState("");
@@ -21,6 +22,7 @@ export default function QuickPricing() {
 	const [listToConvert, setListToConvert] = useState([]);
 	const [conversorType, setConversorType] = useState("ars");
 	const [hasError, setHasError] = useState(false);
+	const {darkMode} = useDarkMode();
 
 	const handleSelectChange = (selectedValue: string) => {
 		setSelectedValue(selectedValue);
@@ -108,7 +110,7 @@ export default function QuickPricing() {
 			}
 		}
 	}, [inputValue, selectedValue, conversorType, config]);
-
+	
 	return (
 		<>
 			<Title text={chrome.i18n.getMessage("title_quick_pricing")} />
@@ -132,14 +134,23 @@ export default function QuickPricing() {
 						onSelectChange={handleSelectChange}
 					/>
 					<div className="flex pt-1">
-						<Button
+						{darkMode ? <Button
+							icon="arrow-right-arrow-left"
+							size="sm"
+							variant="text"
+							color="white"
+							contentSize="lg"
+							tooltip={true}
+							onClick={handleButtonClick}
+						/> : <Button
 							icon="arrow-right-arrow-left"
 							size="sm"
 							variant="text"
 							color="indigo"
 							contentSize="lg"
+							tooltip={true}
 							onClick={handleButtonClick}
-						/>
+						/>}
 					</div>
 				</div>
 			</form>

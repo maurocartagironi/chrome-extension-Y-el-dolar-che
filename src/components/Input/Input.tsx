@@ -48,7 +48,7 @@ export default function Input({
 					type={type === "decimal" ? "text" : type}
 					id="small-input"
 					label={label}
-					className="cursor-pointer"
+					className="dark:text-white"
 					value={value}
 					error={error ? true : undefined}
 					onChange={onChange}

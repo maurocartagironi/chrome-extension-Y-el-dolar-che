@@ -2,6 +2,8 @@ import * as React from "react";
 import {IconButton} from "@material-tailwind/react";
 import {Tooltip} from "@material-tailwind/react";
 import {Button as MTWButton} from "@material-tailwind/react";
+import {useConfig} from "../../hooks/useConfig";
+import {useState} from "react";
 
 interface ButtonProps {
 	icon?: string;
@@ -28,6 +30,8 @@ export default function Button({
 	tooltip,
 	onClick,
 }: ButtonProps) {
+	const {config} = useConfig();
+	const [darkMode, setDarkMode] = useState(config && config.darkMode);
 	const handleClick = (e) => {
 		e.preventDefault();
 		if (onClick) onClick(e);
@@ -45,8 +49,11 @@ export default function Button({
 		</MTWButton>
 	) : tooltip ? (
 		<Tooltip
-			content={chrome.i18n.getMessage("label_" + icon)}
-			placement="bottom">
+			content={chrome.i18n.getMessage("label_" + icon.replace(/-/g, "_"))}
+			placement="bottom"
+			className={
+				darkMode ? "bg-white text-black" : "bg-black text-white"
+			}>
 			<IconButton
 				className="cursor-pointer"
 				onClick={handleClick}

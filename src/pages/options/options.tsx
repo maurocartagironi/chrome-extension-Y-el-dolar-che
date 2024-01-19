@@ -13,16 +13,19 @@ import {setLocalStorage} from "../../utils/storage";
 import {LOCALSTORAGE_CONFIG} from "../../static/default.config";
 import bmac from "../../assets/buymeacoffee.png";
 import logo from "../../assets/logo-inverter.png";
+import logoDark from "../../assets/logo.png";
 
 import {
 	calculateTimeDifference,
 	formatCurrency,
 } from "../../utils/general.utils";
 import {CheckCircleIcon} from "@heroicons/react/24/solid";
+import {useDarkMode} from "../../hooks/useDarkMode";
 
 const Options = () => {
 	const exchangeRates = useExchangeRates();
-	const config = useConfig();
+	const {config} = useConfig();
+	const {darkMode, setDarkMode} = useDarkMode();
 
 	const [badgeExchangeRateslist, setBadgeExchangeRatesList] = useState([]);
 	const [tooltipExchangeRateslist, setTooltipExchangeRatesList] = useState(
@@ -156,6 +159,7 @@ const Options = () => {
 			]);
 			setBadgeColor(config.badgeColor ? config.badgeColor : "#FFFFFF");
 			setHideConversionSection(config.hideConversionSection);
+			setDarkMode(config.darkMode ? config.darkMode : false);
 		}
 	}, [config, exchangeRates]);
 
@@ -192,10 +196,18 @@ const Options = () => {
 		hideConversionSection,
 	]);
 
+	chrome.storage.local.onChanged.addListener((changes: any) => {
+		if (changes.config.newValue.darkMode) {
+			document.body.classList.add("dark");
+		} else {
+			document.body.classList.remove("dark");
+		}
+	});
+
 	return (
-		<div className="dark:bg-blue-gray-900 bg-[#EEF3F7]">
+		<div className="bg-[#EEF3F7] dark:bg-[#22152A] ">
 			<div className="top-0 fixed h-15 z-20 p-4">
-				<img src={logo} className="w-20" />
+				<img src={darkMode ? logoDark : logo} className="w-20" />
 			</div>
 			{isSaved ? (
 				<Alert
@@ -207,9 +219,9 @@ const Options = () => {
 			) : (
 				<></>
 			)}
-			<div className="bg-blue-gray-900 dark:bg-gray-400 fixed w-full h-15 z-10 top-0">
+			<div className="bg-blue-gray-900 dark:bg-blue-gray-50 fixed w-full h-15 z-10 top-0">
 				<div className="w-2/5 mx-auto flex flex-row justify-between items-center">
-					<div className="text-white dark:text-gray-400 text-2xl pl-4">
+					<div className="text-white dark:text-black text-2xl pl-4">
 						{chrome.i18n.getMessage("title_option")}
 					</div>
 
@@ -218,8 +230,8 @@ const Options = () => {
 							<Button
 								text={chrome.i18n.getMessage("button_cancel")}
 								size="md"
-								color="white"
-								className="capitalize text-sm leading-3"
+								color={darkMode ? "black" : "white"}
+								className=" cancel capitalize text-sm leading-3"
 								variant="text"
 								onClick={closeOptions}
 							/>
@@ -300,7 +312,7 @@ const Options = () => {
 									)}>
 									<div>
 										<input
-											className="bg-white cursor-pointer outline-0 border-none rounded-md p min-w-[200px] h-10"
+											className="bg-white dark:bg-gray-900 cursor-pointer outline-0 border-none rounded-md p min-w-[200px] h-10"
 											type="color"
 											value={badgeColor}
 											id="badge-color"

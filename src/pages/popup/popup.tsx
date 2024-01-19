@@ -20,7 +20,6 @@ import Header from "../../components/Header/Header";
 import QuickPricing from "../../components/QuickPricing/QuickPricing";
 import Separator from "../../components/Separator/Separator";
 import Container from "../../components/Container/Container";
-import Error from "../../components/Error/Error";
 
 // Material tailwind
 import {ThemeProvider} from "@material-tailwind/react";
@@ -28,7 +27,7 @@ import {ThemeProvider} from "@material-tailwind/react";
 const Popup = () => {
 	const exchangeRates: ExchangeRate[] = useExchangeRates();
 	const lastUpdated: string = useLastUpdated();
-	const config: Config = useConfig();
+	const {config} = useConfig();
 
 	return (
 		<ThemeProvider>
@@ -47,7 +46,7 @@ const Popup = () => {
 							<Separator height="2" />
 							<ExchangeRateTable />
 
-							{!config.hideConversionSection ? (
+							{!config?.hideConversionSection ? (
 								<>
 									<Separator height="5" />
 									<QuickPricing />

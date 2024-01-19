@@ -1,10 +1,11 @@
 import {Typography} from "@material-tailwind/react";
 import * as React from "react";
+import manifest from "../../static/manifest.json";
 
 export default function Footer({text}) {
 	return (
 		<>
-			<div className="pl-2 rounded-md border-2 text-center flex text-white bg-indigo-600">
+			<div className="pl-2 rounded-md border-2 text-center flex text-white dark:border-gray-800 bg-indigo-600">
 				<div className="flex-wrap flex content-center">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -29,11 +30,16 @@ export default function Footer({text}) {
 			<div className="pt-4">
 				<hr className="hr-legal" />
 				<div className="legal-bg">
-					<Typography className="legal text-justify text-gray-500">
-						<span className="legal font-bold text-gray-500">
+					<Typography className="legal text-justify text-gray-500 dark:text-gray-700">
+						<span className="legal font-bold text-gray-500 dark:text-gray-700">
 							{chrome.i18n.getMessage("label_gavel")}:&nbsp;
 						</span>
 						{chrome.i18n.getMessage("label_gavel_description")}
+						<br />
+						<span className="version">
+							{chrome.i18n.getMessage("appName")} - v
+							{manifest.version}
+						</span>
 					</Typography>
 				</div>
 			</div>

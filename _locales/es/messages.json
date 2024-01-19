@@ -110,22 +110,22 @@
 		"message": "Tipo de cambio"
 	},
 	"label_badge_exchange_rate_desc": {
-		"message": "Ofrece la posibilidad de recibir notificaciones en la extensión con el precio actualizado del tipo de cambio que elijas."
+		"message": "Ofrece la posibilidad de mostrar un indicador en la extensión con el precio actualizado del tipo de cambio que elijas."
 	},
 	"label_badge_buy_sell_opt": {
 		"message": "Compra / Venta"
 	},
 	"label_badge_buy_sell_desc": {
-		"message": "La extensión permite alternar la visualización del tipo de cambio de compra o venta en las notificaciones de la extensión, según la preferencia seleccionada."
+		"message": "La extensión permite alternar la visualización del tipo de cambio de compra o venta en el indicador de la extensión, según la preferencia seleccionada."
 	},
 	"label_badge_color_opt": {
-		"message": "Color de las notificaciones"
+		"message": "Color del indicador"
 	},
 	"label_badge_color_desc": {
-		"message": "Te permite elegir el color de fondo de las notificaciones."
+		"message": "Te permite elegir el color de fondo del indicador."
 	},
 	"label_badge_color_title": {
-		"message": "Elija el color que desea para el fondo de las notificaciones."
+		"message": "Elija el color que desea para el fondo del indicador."
 	},
 	"label_tooltip_exchange_rate_opt": {
 		"message": "Tipo de cambio"
@@ -140,7 +140,7 @@
 		"message": "Puedes alternar la visibilidad del conversor."
 	},
 	"label_group_badge": {
-		"message": "Notificaciones"
+		"message": "Indicador"
 	},
 	"label_group_tooltip": {
 		"message": "Información emergente"
@@ -150,6 +150,15 @@
 	},
 	"label_gear": {
 		"message": "Configuración"
+	},
+	"label_moon": {
+		"message": "Activar modo oscuro"
+	},
+	"label_sun": {
+		"message": "Desactivar modo oscuro"
+	},
+	"label_arrow_right_arrow_left": {
+		"message": "Alternar entre pesos y dolares"
 	},
 	"label_gavel": {
 		"message": "Aviso legal"
