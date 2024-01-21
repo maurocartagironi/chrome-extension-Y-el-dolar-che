@@ -14,28 +14,28 @@ La extensión está construida utilizando React, una biblioteca de JavaScript po
 ## Instalación
 Para instalar la extensión "Y El Dolar Che", sigue estos pasos:
 
-	1. Clona el repositorio.
-	2. Navega al directorio de la extensión.
-	3. Instala las dependencias.
-	4. Construye la extensión.
-	5. Abre Chrome y ve a `chrome://extensions/`.
-	6. Habilita "Modo desarrollador" en la esquina superior derecha.
-	7. Haz clic en "Cargar descomprimido" y selecciona el directorio build de la extensión.
-	8. El icono de la extensión ahora aparecerá en la barra de herramientas de tu navegador, y podrás comenzar a usar "Y El Dolar Che".
+1. Clona el repositorio.
+2. Navega al directorio de la extensión.
+3. Instala las dependencias.
+4. Construye la extensión.
+5. Abre Chrome y ve a `chrome://extensions/`.
+6. Habilita "Modo desarrollador" en la esquina superior derecha.
+7. Haz clic en "Cargar descomprimido" y selecciona el directorio build de la extensión.
+8. El icono de la extensión ahora aparecerá en la barra de herramientas de tu navegador, y podrás comenzar a usar "Y El Dolar Che".
 
 ## Uso
-	1. Haz clic en el icono de la extensión en la barra de herramientas para abrir el popup de la extensión.
-	2. La tabla mostrará las últimas tasas de cambio para varias monedas en Argentina.
-	3. Para calcular una conversión de moneda:
-		-   Ingresa el monto en el campo de entrada.
-		-   Selecciona las monedas de origen y destino de los menús desplegables.
-		-   El monto calculado se mostrará en tiempo real.
+1. Haz clic en el icono de la extensión en la barra de herramientas para abrir el popup de la extensión.
+2. La tabla mostrará las últimas tasas de cambio para varias monedas en Argentina.
+3. Para calcular una conversión de moneda:
+	-   Ingresa el monto en el campo de entrada.
+	-   Selecciona las monedas de origen y destino de los menús desplegables.
+	-   El monto calculado se mostrará en tiempo real.
 
 ## Contribución
 ¡Las contribuciones a la extensión "Y El Dolar Che" son bienvenidas! Si encuentras errores, tienes sugerencias o deseas contribuir con nuevas funciones, no dudes en crear solicitudes de extracción o abrir problemas en el repositorio de GitHub.
 
-##Licencia
+## Licencia
 Esta extensión está licenciada bajo la [MIT License](Licencia).
 
-##Reconocimientos
+## Reconocimientos
 La extensión "Y El Dolar Che" fue desarrollada por Mauro Cartagironi. Un agradecimiento especial a la comunidad de [React](https://reactjs.org/) por sus valiosos recursos.
