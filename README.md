@@ -1,50 +1,41 @@
-# Y El Dolar Che Extension
+# Extensión "Y El Dolar Che"
 
-## Overview
+## Visión General
+"Y El Dolar Che" es una extensión de Chrome diseñada para proporcionar a los usuarios tasas de cambio de moneda actualizadas en Argentina. La extensión muestra una tabla con las últimas tasas de cambio para varias monedas, permitiendo a los usuarios realizar un seguimiento fácil de los cambios. Además, les permite realizar cálculos de conversión de moneda basados en las tasas mostradas.
+La extensión está construida utilizando React, una biblioteca de JavaScript popular para construir interfaces de usuario, garantizando una experiencia fluida y receptiva para los usuarios.
 
-"Y El Dolar Che" is a Chrome extension designed to provide users with up-to-date currency exchange rates in Argentina. The extension displays a table containing the latest exchange rates for various currencies, allowing users to easily track changes. Additionally, it enables users to perform currency conversion calculations based on the displayed rates.
 
-The extension is built using React, a popular JavaScript library for building user interfaces, ensuring a smooth and responsive experience for users.
+## Características
+-	Muestra tasas de cambio en tiempo real para varias monedas en Argentina.
+-	Permite calcular fácilmente conversiones de moneda basadas en las tasas proporcionadas.
+-	Interfaz fácil de usar que permite una navegación e interacción rápidas.
+-	Construida con React para una experiencia moderna y eficiente.
 
-## Features
+## Instalación
+Para instalar la extensión "Y El Dolar Che", sigue estos pasos:
 
--   Display real-time exchange rates for various currencies in Argentina.
--   Easily calculate currency conversions based on the provided rates.
--   User-friendly interface that allows quick navigation and interaction.
--   Built using React for a modern and efficient user experience.
+	1. Clona el repositorio.
+	2. Navega al directorio de la extensión.
+	3. Instala las dependencias.
+	4. Construye la extensión.
+	5. Abre Chrome y ve a `chrome://extensions/`.
+	6. Habilita "Modo desarrollador" en la esquina superior derecha.
+	7. Haz clic en "Cargar descomprimido" y selecciona el directorio build de la extensión.
+	8. El icono de la extensión ahora aparecerá en la barra de herramientas de tu navegador, y podrás comenzar a usar "Y El Dolar Che".
 
-## Installation
+## Uso
+	1. Haz clic en el icono de la extensión en la barra de herramientas para abrir el popup de la extensión.
+	2. La tabla mostrará las últimas tasas de cambio para varias monedas en Argentina.
+	3. Para calcular una conversión de moneda:
+		-   Ingresa el monto en el campo de entrada.
+		-   Selecciona las monedas de origen y destino de los menús desplegables.
+		-   El monto calculado se mostrará en tiempo real.
 
-To install the "Y El Dolar Che" extension, follow these steps:
+## Contribución
+¡Las contribuciones a la extensión "Y El Dolar Che" son bienvenidas! Si encuentras errores, tienes sugerencias o deseas contribuir con nuevas funciones, no dudes en crear solicitudes de extracción o abrir problemas en el repositorio de GitHub.
 
-1. Clone the repository:
-2. Navigate to the extension's directory:
-3. Install dependencies:
-4. Build the extension:
-5. Open Chrome and go to `chrome://extensions/`.
-6. Enable "Developer mode" in the top-right corner.
-7. Click on "Load unpacked" and select the `build` directory from the extension's directory.
+##Licencia
+Esta extensión está licenciada bajo la [MIT License](Licencia).
 
-The extension icon will now appear in your browser's toolbar, and you can start using "Y El Dolar Che."
-
-## Usage
-
-1. Click on the extension icon in the toolbar to open the extension popup.
-2. The table will display the latest exchange rates for various currencies in Argentina.
-3. To calculate a currency conversion:
-
--   Enter the amount in the input field.
--   Select the source and target currencies from the dropdown menus.
--   The calculated amount will be displayed in real-time.
-
-## Contribution
-
-Contributions to the "Y El Dolar Che" extension are welcome! If you find bugs, have suggestions, or want to contribute new features, feel free to create pull requests or open issues in the GitHub repository.
-
-## License
-
-This extension is licensed under the [MIT License](LICENSE).
-
-## Acknowledgements
-
-The "Y El Dolar Che" extension was developed by Mauro Cartagironi. Special thanks to the [React](https://reactjs.org/) community for their valuable resources.
+##Reconocimientos
+La extensión "Y El Dolar Che" fue desarrollada por Mauro Cartagironi. Un agradecimiento especial a la comunidad de [React](https://reactjs.org/) por sus valiosos recursos.
