@@ -41,4 +41,4 @@ Esta extensión está licenciada bajo la [MIT License](Licencia).
 La extensión "Y El Dólar Che" fue desarrollada por Mauro Cartagironi. Un agradecimiento especial a la comunidad de [React](https://reactjs.org/) por sus valiosos recursos.
 
 ## Descarga
-Para descargar la extensión y comenzar a utilizarla como usuario, visita el siguiente enlace en la Chrome Web Store: [Y el dólar che](https://chromewebstore.google.com/detail/¿y-el-dólar-che/bhekococoidbofnmckchcajcjmlekcna?hl=es)
+Para descargar la extensión y comenzar a utilizarla como usuario, visita el siguiente enlace en la Chrome Web Store: [¿Y el dólar che?](https://chromewebstore.google.com/detail/¿y-el-dólar-che/bhekococoidbofnmckchcajcjmlekcna?hl=es)
