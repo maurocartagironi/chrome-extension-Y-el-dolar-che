@@ -1,5 +1,6 @@
 # Extensión "¿Y El Dólar Che?"
 
+
 ## Visión General
 "Y El Dólar Che" es una extensión de Chrome diseñada para proporcionar a los usuarios tasas de cambio de moneda actualizadas en Argentina. La extensión muestra una tabla con las últimas tasas de cambio para varias monedas, permitiendo a los usuarios realizar un seguimiento fácil de los cambios. Además, les permite realizar cálculos de conversión de moneda basados en las tasas mostradas.
 La extensión está construida utilizando React, una biblioteca de JavaScript popular para construir interfaces de usuario, garantizando una experiencia fluida y receptiva para los usuarios.
