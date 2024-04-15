@@ -33,7 +33,10 @@
               "src/background_runtime.js",
 			  "src/_locales"
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+				"node_modules/@fortawesome/fontawesome-free/css/all.min.css", 
+				"src/styles.scss"
+			],
             "scripts": [],
             "customWebpackConfig": {
               "path": "./custom-webpack.config.ts"
@@ -107,7 +110,9 @@
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "styles": [
+				"node_modules/@fortawesome/fontawesome-free/css/all.min.css", 
+				"src/styles.scss"],
             "scripts": []
           }
         },

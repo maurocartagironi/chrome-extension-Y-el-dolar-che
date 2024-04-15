@@ -9,15 +9,15 @@ import { ENDPOINT } from 'src/app/shared/constants/api.constant';
 
 export class DolarAPIService {
   	constructor() {}
-  
-	async getAll(): Promise<any> {
+
+	async getAll(): Promise<ExchangeRate[]> {
 	   try {
 			const response = await fetch(ENDPOINT);
 			if (!response.ok) {
 				throw new Error(response.status.toString());
 			}
-		  	const data = await response.json();
-		  	return data;
+		  	const data = await response.json();			
+			return data as ExchangeRate[];
 	   } catch (error: any) {
 			throw new Error(formatError("Error en la solicitud"));
 	   }
@@ -30,7 +30,7 @@ export class DolarAPIService {
 				throw new Error(response.status.toString());
 			}
 		   	const data = await response.json();
-		   	return new ExchangeRate(data.casa, data.nombre, data.compra, data.venta, data.fechaActualizacion);
+		   	return data as ExchangeRate;
 		} catch (error: any) {
 			throw new Error(formatError("Error en la solicitud"));
 		}

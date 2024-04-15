@@ -16,6 +16,7 @@ export class BackgroundHelper {
 	public tooltipExchangeRate: ExchangeRate = new ExchangeRate();
 	public config: Config = new Config();
 	public dolarApiService: DolarAPIService = new DolarAPIService();
+	public exchangeRateList: ExchangeRate[] = [];
 
 	constructor() {}
 
@@ -24,8 +25,9 @@ export class BackgroundHelper {
 			chrome.alarms.create({
 				periodInMinutes: environment.defaultAlarmPeriodInMinutes,
 			});
+			this.exchangeRateList = await this.dolarApiService.getAll();
 			await this.setBadgeAndTooltip();
-			setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+			await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		} catch (e: any) {
 			chrome.action.setTitle({title: e.message});
 			removeLocalStorage(LOCALSTORAGE_CONFIG);
@@ -35,15 +37,15 @@ export class BackgroundHelper {
 
 	public async refreshData(): Promise<void> {
 		console.log('Refreshing data... ' + new Date().toLocaleString());
-		this.dolarApiService = new DolarAPIService();
+		this.exchangeRateList = await this.dolarApiService.getAll();
 		await this.setBadgeAndTooltip();
 	}
 
-	private async setBadgeAndTooltip(): Promise<void> {
-		this.badgeExchangeRate = await this.dolarApiService.getByType(this.config.badgeExchangeRateType);
-		this.tooltipExchangeRate = await this.dolarApiService.getByType(this.config.tooltipExchangeRateType);
+	private async setBadgeAndTooltip(): Promise<void> {		
+		this.badgeExchangeRate = this.exchangeRateList.find(value => value.casa === this.config.badgeExchangeRateType)!;
+		this.tooltipExchangeRate = this.exchangeRateList.find(value => value.casa === this.config.tooltipExchangeRateType)!;
 		chrome.action.setBadgeText({
-			text: this.config.badgeExchangeRateAction === 'sell' ? this.badgeExchangeRate.sell.toString() : this.badgeExchangeRate.buy.toString()
+			text: this.config.badgeExchangeRateAction === 'sell' ? this.badgeExchangeRate.venta.toString() : this.badgeExchangeRate.compra.toString()
 		});
 		chrome.action.setBadgeBackgroundColor({
 			color: this.config.badgeBackgroundColor.toString()
@@ -53,11 +55,11 @@ export class BackgroundHelper {
 	}
 
 	private async generateTooltip(): Promise<string> {
-		const sinceDate = calculateTimeDifference(this.tooltipExchangeRate.lastUpdated);
+		const sinceDate = calculateTimeDifference(this.tooltipExchangeRate.fechaActualizacion);
 		return chrome.i18n.getMessage("tooltip", [
-			this.tooltipExchangeRate.name,
-			formatCurrency(this.tooltipExchangeRate.buy).toString(),
-			formatCurrency(this.tooltipExchangeRate.sell).toString(),
+			this.tooltipExchangeRate.nombre,
+			formatCurrency(this.tooltipExchangeRate.compra.toString()).toString(),
+			formatCurrency(this.tooltipExchangeRate.venta.toString()).toString(),
 			sinceDate,
 		]);
 	}

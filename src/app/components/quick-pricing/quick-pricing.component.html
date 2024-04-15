@@ -1,0 +1,10 @@
+<div class="quick-pricing">
+	<input type="number" [value]="config.valueConversor" (keyup)="onChange($event)">
+	<select [(ngModel)]="config.currencyConversor" (change)="onSelectChange($event)">
+		<option [value]="exchangeRate.casa" *ngFor="let exchangeRate of exchangeRateList">{{exchangeRate.nombre}}</option>
+	</select>
+	<button type="button">Rotar</button>
+
+	<div>{{result.get('compra')}}</div>
+	<div>{{result.get('venta')}}</div>
+</div>

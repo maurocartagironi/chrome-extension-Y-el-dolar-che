@@ -1,4 +1,5 @@
 import { BackgroundHelper } from "@shared/helpers/background.helper";
+import { onChangedCallback } from "@shared/utils/storage.util";
 
 // Inicializador
 chrome.runtime.onInstalled.addListener(initializeExtension);
@@ -11,6 +12,7 @@ chrome.runtime.onMessage.addListener(receiveMessageFromPopup);
 
 // Función de inicialización de la extensión
 function initializeExtension(): void {
+	chrome.storage.onChanged.addListener(onChangedCallback);
 	const backgroundHelper = new BackgroundHelper();
 	backgroundHelper.init();
 }

@@ -1,21 +1,21 @@
 export class ExchangeRate {
-	id: string;
-	name: string;
-	buy: string;
-	sell: string;
-	lastUpdated: Date;
+	casa: string;
+	nombre: string;
+	compra: number;
+	venta: number;
+	fechaActualizacion: Date;
 
 	constructor(
-		id?: string,
-		name?: string,
-		buy?: string,
-		sell?: string,
-		lastUpdated?: Date
+		casa?: string,
+		nombre?: string,
+		compra?: number,
+		venta?: number,
+		fechaActualizacion?: Date
 	) {
-		this.id = id || "";
-		this.name = (id === "blue" ? chrome.i18n.getMessage("blue") : name) || "";
-		this.buy = buy || "";
-		this.sell = sell || "";
-		this.lastUpdated = lastUpdated || new Date();
+		this.casa = casa || "";
+		this.nombre = (casa === "blue" ? chrome.i18n.getMessage("blue") : nombre) || "";
+		this.compra = compra || 0;
+		this.venta = venta || 0;
+		this.fechaActualizacion = fechaActualizacion || new Date();
 	}
 }

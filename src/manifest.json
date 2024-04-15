@@ -10,7 +10,7 @@
 		"256": "assets/img/icon.png"
 		},
 	"host_permissions": ["https://dolarapi.com/*"],
-	"permissions": ["alarms", "storage", "tabs"],
+	"permissions": ["alarms", "storage"],
 	"action": {
 		"default_popup": "index.html?target=popup",
 		"default_icon": {

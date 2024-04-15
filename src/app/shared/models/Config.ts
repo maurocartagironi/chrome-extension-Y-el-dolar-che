@@ -5,6 +5,8 @@ export class Config {
     public badgeExchangeRateAction: string;
 	public tooltipExchangeRateType: string;
     public currencyConversor: string;
+	public exchangeRateConversor: string = "";
+	public valueConversor: number = 0;
     public alarmPeriodInMinutes: number;
     public badgeBackgroundColor: string;
     public hiddenConversionSection: boolean;
