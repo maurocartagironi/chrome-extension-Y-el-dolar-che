@@ -1,0 +1,18 @@
+<div class="table">
+	<p-table *ngIf="exchangeRatesUpdated.length > 0" [value]="exchangeRatesUpdated" [tableStyle]="{'min-width': '200px'}">
+		<ng-template pTemplate="header" let-columns>
+			<tr>
+				<th>Moneda</th>
+				<th>Compra</th>
+				<th>Venta</th>
+			</tr>
+		</ng-template>
+		<ng-template pTemplate="body" let-exchangeRate let-columns="columns">
+			<tr>
+				<td>{{exchangeRate.nombre}}</td>
+				<td>{{exchangeRate.compra}}</td>
+				<td>{{exchangeRate.venta}}</td>
+			</tr>
+		</ng-template>
+	</p-table>
+</div>

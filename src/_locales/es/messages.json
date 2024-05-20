@@ -154,6 +154,15 @@
 	"label_moon": {
 		"message": "Activar modo oscuro"
 	},
+	"label_quick_pricing": {
+		"message": "Conversión rápida"
+	},
+	"label_quotations": {
+		"message": "Cotizaciones"
+	},
+	"label_refresh": {
+		"message": "Actualizar"
+	},
 	"label_sun": {
 		"message": "Desactivar modo oscuro"
 	},

@@ -6,7 +6,7 @@ export class Config {
 	public tooltipExchangeRateType: string;
     public currencyConversor: string;
 	public exchangeRateConversor: string = "";
-	public valueConversor: number = 0;
+	public valueConversor: number | undefined = 0;
     public alarmPeriodInMinutes: number;
     public badgeBackgroundColor: string;
     public hiddenConversionSection: boolean;

@@ -10,9 +10,9 @@ import { ENDPOINT } from 'src/app/shared/constants/api.constant';
 export class DolarAPIService {
   	constructor() {}
 
-	async getAll(): Promise<ExchangeRate[]> {
+	async getAll(url?: string): Promise<ExchangeRate[]> {
 	   try {
-			const response = await fetch(ENDPOINT);
+			const response = await fetch(url ? url : ENDPOINT);
 			if (!response.ok) {
 				throw new Error(response.status.toString());
 			}

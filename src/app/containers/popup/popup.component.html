@@ -1,35 +1,48 @@
 <div id="container">
-	<div class="header">
-		<div class="logo">
-			<img src="/assets/img/logo.png" alt="" />
+	<app-header (onRefresh)="refreshData()"></app-header>
+	<div class="content" *ngIf="!hasError">		
+		<div class="loading" *ngIf="loading">
+			<p-progressSpinner styleClass="w-2rem h-2rem" strokeWidth="4" fill="rgba(0, 0, 0, 0)" animationDuration="1s"></p-progressSpinner>
 		</div>
-		<div class="buttons">
-			<button type="button" (click)="refreshData()" class="btn btn-primary">
-				<i class="fas fa-refresh fa-refresh"></i>
-			</button>
-			<button type="button" class="btn btn-primary">
-				<i class="fas fa-gear fa-gear"></i>
-			</button>
-		</div>
+		<div class="table">
+			<p-tabView [(activeIndex)]="activeIndex">
+				<p-tabPanel header="{{ getChromeMessage('label_quotations') }}" class="cotizaciones">
+					<ng-template pTemplate="header">
+						<i class="pi pi-chart-line"></i>
+						<span class="tab-title">{{ getChromeMessage('label_quotations') }}</span>
+					</ng-template>
+					<app-table *ngIf="exchangeRates.length > 0" [exchangeRates]="exchangeRates"></app-table>
+					<div class="footer">
+						<p-messages severity="info">
+							<ng-template pTemplate>
+								<i class="pi pi-clock"></i>
+								<div class="footer-text">{{lastUpdated}}</div>
+							</ng-template>
+						</p-messages>
+					</div>
+				</p-tabPanel>
+				<p-tabPanel header="{{ getChromeMessage('label_quick_pricing') }}">
+					<ng-template pTemplate="header">
+						<i class="pi pi-calculator"></i>
+						<span class="tab-title">{{ getChromeMessage('label_quick_pricing') }}</span>
+					</ng-template>
+					<app-quick-pricing *ngIf="exchangeRates.length > 0" [exchangeRateList]="exchangeRates"></app-quick-pricing>
+				</p-tabPanel>	
+				<p-tabPanel header="settings">
+					<ng-template pTemplate="header">
+						<i class="pi pi-cog"></i>
+					</ng-template>
+					<div>Config</div>
+				</p-tabPanel>
+			</p-tabView>			
+		</div>			
 	</div>
-	<div class="content">
-		<div class="section">
-			<div class="table">
-				<table>
-					<tr *ngFor="let exchangeRate of exchangeRateList">
-						<td>{{exchangeRate.nombre}}</td>
-						<td>{{exchangeRate.compra}}</td>
-						<td>{{exchangeRate.venta}}</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="section">
-			<app-quick-pricing [exchangeRateList]="exchangeRateList"></app-quick-pricing>
-		</div>
-	</div>
-	<div class="footer">
-		<div>{{lastUpdated}}</div>
-		<div>{{realLastUpdated}}</div>
+	<div class="error" *ngIf="hasError">
+		<p-messages severity="error">
+			<ng-template pTemplate>
+				<i class="pi pi-exclamation-triangle"></i>
+				<div class="footer-text" [innerHTML]="errorMessage"></div>
+			</ng-template>
+		</p-messages>
 	</div>
 </div>

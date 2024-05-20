@@ -1,0 +1,45 @@
+.panel-content {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	justify-content: space-between;
+}
+::ng-deep .p-panel .p-panel-header, ::ng-deep .p-panel .p-panel-content {
+	padding: 4px 10px;
+}
+.result-content {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+.bold {
+	font-weight: bold;
+}
+::ng-deep p-panel {
+	width: 50%;
+}
+::ng-deep .p-panel-header {
+	background-color: #285417;
+	color: white;
+}
+::ng-deep .p-panel-content {
+	background-color: #d3f0c8;
+}
+::ng-deep .p-toast {
+	width: 100%;
+    padding: 0 15px;
+}
+::ng-deep .p-toast-message-content {
+	align-items: center;
+    text-align: center;
+}
+::ng-deep .p-toast-message-success {
+	border: 1px solid;
+}
+::ng-deep .p-toast-message-text {
+	margin: 0;
+}
+::ng-deep .p-toast-detail {
+	margin: 0;
+}

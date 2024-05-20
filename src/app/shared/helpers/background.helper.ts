@@ -29,9 +29,8 @@ export class BackgroundHelper {
 			await this.setBadgeAndTooltip();
 			await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		} catch (e: any) {
-			chrome.action.setTitle({title: e.message});
+			chrome.action.setTitle({title: e.message.replace(/<p>/g, '').replace(/<\/p>/g, '\n')});
 			removeLocalStorage(LOCALSTORAGE_CONFIG);
-			console.error(e);
 		} 
 	}
 
@@ -41,7 +40,10 @@ export class BackgroundHelper {
 		await this.setBadgeAndTooltip();
 	}
 
-	private async setBadgeAndTooltip(): Promise<void> {		
+	public async setBadgeAndTooltip(exchangeRates?: ExchangeRate[]): Promise<void> {	
+		if(exchangeRates) {
+			this.exchangeRateList = exchangeRates;
+		}
 		this.badgeExchangeRate = this.exchangeRateList.find(value => value.casa === this.config.badgeExchangeRateType)!;
 		this.tooltipExchangeRate = this.exchangeRateList.find(value => value.casa === this.config.tooltipExchangeRateType)!;
 		chrome.action.setBadgeText({

@@ -1,0 +1,50 @@
+.quick-pricing {
+	padding-top: 10px;
+}
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.form span input {
+	width: 30%;
+}
+.form div {
+	display: flex;
+	gap: 10px;
+}
+input {
+	width: 40%;
+}
+::ng-deep app-quick-pricing p-button {
+	display: flex;
+    align-items: center;
+}
+.result-container {
+	padding-top: 2px;
+}
+.result-title {
+	padding-top: 10px;
+	font-weight: bold;
+}
+hr {
+	margin-top: 20px;
+    border: 1px solid rgba(1, 1, 1, 0.07);
+}
+.select-currency {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 60%;
+}
+.input-currency {
+	width: 40%;
+}
+.custom-form {
+	display: flex;
+    gap: 10px;
+	align-items: flex-start;
+}
+#dropdown-input {
+	width: 80%;
+}

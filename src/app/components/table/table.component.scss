@@ -1,0 +1,12 @@
+::ng-deep td {
+	padding: 10px;
+}
+::ng-deep tr:last-child td {
+	border-bottom: 0;
+}
+::ng-deep tr td:first-child {
+	color: gray;
+}
+::ng-deep thead {
+	text-transform: uppercase;
+}
