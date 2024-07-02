@@ -10,8 +10,18 @@
 		<ng-template pTemplate="body" let-exchangeRate let-columns="columns">
 			<tr>
 				<td>{{exchangeRate.nombre}}</td>
-				<td>{{exchangeRate.compra}}</td>
-				<td>{{exchangeRate.venta}}</td>
+				<td>
+					<p-tag [ngClass]="exchangeRate.updatedCompra === 'arrow-trend-down' ? 'p-tag-down' : exchangeRate.updatedCompra === 'arrow-trend-up' ? 'p-tag-up' : 'p-tag-default'">
+						<span class="icon" [ngClass]="exchangeRate.updatedCompra">{{toCurrencyPesos(exchangeRate.compra)}}</span>
+						<i [ngClass]="exchangeRate.updatedCompra" class="fa-solid fa-{{exchangeRate.updatedCompra}}"></i>
+					</p-tag>
+				</td>
+				<td>
+					<p-tag [ngClass]="exchangeRate.updatedVenta === 'arrow-trend-down' ? 'p-tag-down' : exchangeRate.updatedVenta === 'arrow-trend-up' ? 'p-tag-up' : 'p-tag-default'">
+						<span class="icon" [ngClass]="exchangeRate.updatedVenta">{{toCurrencyPesos(exchangeRate.venta)}}</span>
+						<i [ngClass]="exchangeRate.updatedVenta" class="fa-solid fa-{{exchangeRate.updatedVenta}}"></i>
+					</p-tag>
+				</td>
 			</tr>
 		</ng-template>
 	</p-table>

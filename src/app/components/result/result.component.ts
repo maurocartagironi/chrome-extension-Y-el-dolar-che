@@ -25,8 +25,12 @@ export class ResultComponent {
 	constructor(private messageService: MessageService) {}
 
 	copyToClipboard(currencyType: string) {
-		const text = currencyType === 'compra' ? this.compra : this.venta;
-		navigator.clipboard.writeText(text?.toString() || '');
+		let text = currencyType === 'compra' ? this.compra : this.venta;
+		let cleanedStr = text?.replace(/[^0-9,]/g, '');
+		cleanedStr = cleanedStr?.replace(',', '.');
+		let number = cleanedStr ? parseFloat(cleanedStr) : 0;
+		let formattedNumber = number.toLocaleString('es-ES', { useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: 2 });
+		navigator.clipboard.writeText(formattedNumber?.toString() || '');
 		this.messageService.add({ key:'myKey', severity: 'success', detail: currencyType === 'compra' ? 'Se ha copiado el valor de compra' : 'Se ha copiado el valor de venta' });
 	}
 }

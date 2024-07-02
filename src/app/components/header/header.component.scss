@@ -18,3 +18,9 @@
 ::ng-deep button {
 	padding: 5px;
 }
+
+// Colors
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+	border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}

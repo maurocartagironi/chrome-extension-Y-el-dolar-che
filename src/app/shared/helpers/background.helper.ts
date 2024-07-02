@@ -35,7 +35,6 @@ export class BackgroundHelper {
 	}
 
 	public async refreshData(): Promise<void> {
-		console.log('Refreshing data... ' + new Date().toLocaleString());
 		this.exchangeRateList = await this.dolarApiService.getAll();
 		await this.setBadgeAndTooltip();
 	}

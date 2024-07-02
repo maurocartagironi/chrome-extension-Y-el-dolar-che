@@ -4,6 +4,10 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+:root {
+	--primary-color: #3949AB;
+	--background-color: #e3e6f7;
+}
 * {
 	font-size: 12px;
 }

@@ -33,12 +33,10 @@ export class QuickPricingComponent {
 
 	async ngOnInit() {
 		this.config = await getLocalStorage(LOCALSTORAGE_CONFIG) as Config;
-		console.log(this.exchangeRateList);
 		this.exchangeRateList.map(e => {
 			this.picklistCurrency.push({ label: e.nombre + ' a pesos', value: e.casa + '-ars' });
 			this.picklistCurrency.push({ label: 'Pesos a ' + e.nombre, value: 'ars-' + e.casa });
 		})
-		console.log(this.picklistCurrency);
 		this.picklistCurrency.sort((a, b) => a.label.localeCompare(b.label));
 		this.currencyConversor = this.picklistCurrency.find(e => e.value === this.config.currencyConversor);
 		this.setResult();
@@ -46,29 +44,35 @@ export class QuickPricingComponent {
 
 	async onChange(event: any) {
 		let str = event.target.value ? event.target.value.replace(/\./g, '').replace(/,/g, '.').replace(/\$/g, '').replace(/\s/g, '') : undefined;		
+		if(event.target.value === '$ 0,00') {
+			str = event.key;
+		} 
 		if(str?.length > 12) {
 			str = str.substring(0, 11);
 			this.error = "El monto no puede ser mayor a 999 millones con 2 decimales";
 		} else {
 			this.error = '';
 		}
-		const value = str || str === 'NaN' ? parseFloat(str.match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)[0]) : undefined;
+		const value: number = str || str === 'NaN' ? parseFloat(str.match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)[0]) : 0;
 		this.config.valueConversor = value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.setResult();
 	}
-
+	
 	async onSelectChange(event: any) {	
-		this.config.currencyConversor = event;
+		this.config.currencyConversor = event.value;
 		this.currencyConversor = event;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.setResult();
 	}
 
 	async onCurrencyToggle() {
-		const currencies = this.currencyConversor.split('-');
-		this.currencyConversor = currencies[1] + '-' + currencies[0];
-		this.config.currencyConversor = this.currencyConversor;
+		const currencies = this.currencyConversor?.value.split('-');
+		if(currencies) {
+			const newValue = currencies[1] + '-' + currencies[0];
+			this.currencyConversor = this.picklistCurrency.find(e => e.value === newValue);
+		}
+		this.config.currencyConversor = this.currencyConversor.value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.setResult();
 	}
@@ -80,15 +84,18 @@ export class QuickPricingComponent {
 			currency: 'ARS'
 		});
 
-		const currencies = this.currencyConversor.split('-');
-		let currencyConversor = currencies[0];
-		if(currencies[0] === 'ars') {
-			currencyConversor = currencies[1];
+		const currencies = this.currencyConversor?.value.split('-');
+		let currencyConversor = undefined;
+		if(currencies) {
+			currencyConversor = currencies[0];
+			if(currencies[0] === 'ars') {
+				currencyConversor = currencies[1];
+			}
 		}
 		const currentExchangeRate: ExchangeRate = this.exchangeRateList.find(e => e.casa === currencyConversor) as ExchangeRate;
 		if(currentExchangeRate) {
 			const valueConversor = this.config.valueConversor;
-			if(valueConversor) {
+			if(valueConversor && currencies) {
 				if(currencies[0] === 'ars') {
 					this.result.set('compra', formatter.format(valueConversor / currentExchangeRate.compra));
 					this.result.set('venta', formatter.format(valueConversor / currentExchangeRate.venta));
@@ -104,8 +111,8 @@ export class QuickPricingComponent {
 	}
 
 	showTitleResult() {
-		const currencies = this.currencyConversor.split('-');
-		if(currencies[0] === 'ars') {
+		const currencies = this.currencyConversor?.value.split('-');
+		if(currencies && currencies[0] === 'ars') {
 			return 'Pesos argentinos a ' + this.exchangeRateList.find(e => e.casa === currencies[1])?.nombre.toLowerCase() + ': ';
 		} 
 			

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
+import { LOCALSTORAGE_CONFIG, LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
 import { calculateTimeDifference, getLocalStorage } from '@shared/utils';
+import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
@@ -32,7 +33,12 @@ export class PopupComponent implements OnInit {
 		try {
 			this.loading = true;
 			this.config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-			this.exchangeRates = await this.dolarApiService.getAll();
+			
+			const servicesExchangeRates = await this.dolarApiService.getAll();
+			const OldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
+			
+			this.updateExchangeRates(OldExchangeRates, servicesExchangeRates);	
+			
 			await this.backgroundHelper.setBadgeAndTooltip(this.exchangeRates);
 			const lastUpdated = calculateTimeDifference(this.exchangeRates[0].fechaActualizacion);
 			this.lastUpdated = chrome.i18n.getMessage("footer", lastUpdated);
@@ -54,4 +60,54 @@ export class PopupComponent implements OnInit {
 	getChromeMessage(key: string): string {
 		return this.chromeService.getMessage(key);
 	}
+
+	async updateExchangeRates(exchangeRatesOld: ExchangeRate[], exchangeRatesNew: ExchangeRate[]) {
+		if(exchangeRatesOld === undefined) {
+			this.exchangeRates = exchangeRatesNew;
+			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);
+		}
+		let exchangeRatesUpdated: ExchangeRate[] = exchangeRatesNew.map((exchangeRate) => {
+			const oldExchange = exchangeRatesOld.find((e: any) => e.casa === exchangeRate.casa);
+
+			if(oldExchange) {
+				if(oldExchange.fechaActualizacion !== exchangeRate.fechaActualizacion) {
+					let updatedCompra = oldExchange.updatedCompra;
+					let updatedVenta = oldExchange.updatedVenta;
+						
+					if (oldExchange.compra < exchangeRate.compra) {
+						updatedCompra = 'arrow-trend-up';
+					} else if (oldExchange.compra > exchangeRate.compra) {
+						updatedCompra = 'arrow-trend-down';
+					} else {
+						updatedCompra = '';
+					}
+
+					if (oldExchange.venta < exchangeRate.venta) {
+						updatedVenta = 'arrow-trend-up';
+					} else if (oldExchange.venta > exchangeRate.venta) {
+						updatedVenta = 'arrow-trend-down';
+					} else {
+						updatedVenta = '';
+					}
+
+					return new ExchangeRate(
+						exchangeRate.casa,				
+						exchangeRate.nombre,
+						exchangeRate.compra,
+						exchangeRate.venta,				
+						exchangeRate.fechaActualizacion,
+						updatedCompra,
+						updatedVenta
+					);
+				} else {
+					return oldExchange;
+				}
+			}
+
+			return exchangeRate;
+		});
+
+		this.exchangeRates = exchangeRatesUpdated;
+		await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);
+	}  
 }
