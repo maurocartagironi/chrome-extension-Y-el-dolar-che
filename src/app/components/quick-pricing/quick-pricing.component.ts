@@ -43,18 +43,9 @@ export class QuickPricingComponent {
 	}
 
 	async onChange(event: any) {
-		let str = event.target.value ? event.target.value.replace(/\./g, '').replace(/,/g, '.').replace(/\$/g, '').replace(/\s/g, '') : undefined;		
-		if(event.target.value === '$ 0,00') {
-			str = event.key;
-		} 
-		if(str?.length > 12) {
-			str = str.substring(0, 11);
-			this.error = "El monto no puede ser mayor a 999 millones con 2 decimales";
-		} else {
-			this.error = '';
+		if(event.target.value === "$ 0,00") {
+			event.target.value = "";
 		}
-		const value: number = str || str === 'NaN' ? parseFloat(str.match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)[0]) : 0;
-		this.config.valueConversor = value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.setResult();
 	}

@@ -12,6 +12,7 @@ export const environment = {
 	defaultBadgeBackgroundColor: "#4A4A4A",
 	defaultHiddenConversionSection: false,
 	defaultDarkMode: false,
+	defaultTab: 0,
 	defaultValueConversor: 0
 };
 

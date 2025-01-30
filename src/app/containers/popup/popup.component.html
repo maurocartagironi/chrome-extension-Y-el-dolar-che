@@ -21,7 +21,7 @@
 						</p-messages>
 					</div>
 				</p-tabPanel>
-				<p-tabPanel header="{{ getChromeMessage('label_quick_pricing') }}">
+				<p-tabPanel *ngIf="!config.hiddenConversionSection" header="{{ getChromeMessage('label_quick_pricing') }}">
 					<ng-template pTemplate="header">
 						<i class="pi pi-calculator"></i>
 						<span class="tab-title">{{ getChromeMessage('label_quick_pricing') }}</span>
@@ -32,7 +32,7 @@
 					<ng-template pTemplate="header">
 						<i class="pi pi-cog"></i>
 					</ng-template>
-					<app-setting></app-setting>
+					<app-setting *ngIf="exchangeRates.length > 0" [exchangeRateList]="exchangeRates" (onRefresh)="refreshData($event)"></app-setting>
 				</p-tabPanel>
 			</p-tabView>			
 		</div>			

@@ -7,7 +7,7 @@
 		<div class="select-currency">
 			<ng-select *ngIf="picklistCurrency.length > 0" id="dropdown-input" [searchable]="false" [placeholder]="'Convertir de...'"
 						[clearable]="false" [items]="picklistCurrency" optionLabel="label" optionValue="value" [(ngModel)]="currencyConversor"
-						(change)="onSelectChange($event)">
+						(change)="onSelectChange($event)" class="select-currency">
 			</ng-select>
 			<p-button [text]="true" pTooltip="Alterar moneda" tooltipPosition="left" icon="pi pi-arrow-right-arrow-left" (click)="onCurrencyToggle()"></p-button>
 		</div>

@@ -4,7 +4,7 @@ import { Config } from "@shared/models/Config";
 import { ExchangeRate } from "@shared/models/ExchangeRate";
 import { DolarAPIService } from "@shared/services/dolar-api.service";
 import { calculateTimeDifference, formatCurrency } from "@shared/utils/general.utils";
-import { removeLocalStorage, setLocalStorage } from "@shared/utils/storage.util";
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from "@shared/utils/storage.util";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -26,8 +26,7 @@ export class BackgroundHelper {
 				periodInMinutes: environment.defaultAlarmPeriodInMinutes,
 			});
 			this.exchangeRateList = await this.dolarApiService.getAll();
-			await this.setBadgeAndTooltip();
-			await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+			await this.refreshData();
 		} catch (e: any) {
 			chrome.action.setTitle({title: e.message.replace(/<p>/g, '').replace(/<\/p>/g, '\n')});
 			removeLocalStorage(LOCALSTORAGE_CONFIG);
@@ -35,6 +34,13 @@ export class BackgroundHelper {
 	}
 
 	public async refreshData(): Promise<void> {
+		const config = await getLocalStorage(LOCALSTORAGE_CONFIG);
+		if(config) {
+			this.config = config;
+		} else {
+			await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		}
+		
 		this.exchangeRateList = await this.dolarApiService.getAll();
 		await this.setBadgeAndTooltip();
 	}
@@ -45,6 +51,10 @@ export class BackgroundHelper {
 		}
 		this.badgeExchangeRate = this.exchangeRateList.find(value => value.casa === this.config.badgeExchangeRateType)!;
 		this.tooltipExchangeRate = this.exchangeRateList.find(value => value.casa === this.config.tooltipExchangeRateType)!;
+
+		console.log(this.badgeExchangeRate);
+		console.log(this.tooltipExchangeRate);
+		console.log(this.config.badgeExchangeRateAction);
 		chrome.action.setBadgeText({
 			text: this.config.badgeExchangeRateAction === 'sell' ? this.badgeExchangeRate.venta.toString() : this.badgeExchangeRate.compra.toString()
 		});

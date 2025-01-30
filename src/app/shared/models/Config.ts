@@ -10,10 +10,11 @@ export class Config {
     public alarmPeriodInMinutes: number;
     public badgeBackgroundColor: string;
     public hiddenConversionSection: boolean;
+	public defaultTab: number = 0;
     public darkMode: boolean;
     public hasError: boolean;
 
-    constructor(badgeExchangeRateType?: string, badgeExchangeRateAction?: string, tooltipExchangeRateType?: string, currencyConversor?: string, alarmPeriodInMinutes?: number, badgeBackgroundColor?: string, hiddenConversionSection?: boolean, darkMode?: boolean, hasError?: boolean, valueConversor?: number) {
+    constructor(badgeExchangeRateType?: string, badgeExchangeRateAction?: string, tooltipExchangeRateType?: string, currencyConversor?: string, alarmPeriodInMinutes?: number, badgeBackgroundColor?: string, hiddenConversionSection?: boolean, darkMode?: boolean, hasError?: boolean, valueConversor?: number, defaultTab?: number) {
         this.badgeExchangeRateType = badgeExchangeRateType || environment.defaultBadgeExchangeRateType;
         this.badgeExchangeRateAction = badgeExchangeRateAction || environment.defaultBadgeExchangeRateAction;
 		this.tooltipExchangeRateType = tooltipExchangeRateType || environment.defaultTooltipExchangeRateType;
@@ -23,6 +24,7 @@ export class Config {
 		this.badgeBackgroundColor = badgeBackgroundColor ||	environment.defaultBadgeBackgroundColor;
         this.hiddenConversionSection = hiddenConversionSection || environment.defaultHiddenConversionSection;
         this.darkMode = darkMode || environment.defaultDarkMode;
+		this.defaultTab = defaultTab || environment.defaultTab;
         this.hasError = hasError || false; 
     }
 }

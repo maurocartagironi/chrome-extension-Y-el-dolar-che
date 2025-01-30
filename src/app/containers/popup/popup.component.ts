@@ -22,6 +22,7 @@ export class PopupComponent implements OnInit {
 	public hasError: boolean = false;
 	public errorMessage: string = "";
 	public activeIndex: number = 0;
+	public tab: any;
 	
   	constructor(public dolarApiService: DolarAPIService, public backgroundHelper: BackgroundHelper, public chromeService: ChromeService) {}
 
@@ -31,20 +32,23 @@ export class PopupComponent implements OnInit {
 
 	async getData() {
 		try {
-			this.loading = true;
+			if(!this.tab) {
+				this.loading = true;
+			}
 			this.config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-			
+			console.log(this.config);
 			const servicesExchangeRates = await this.dolarApiService.getAll();
 			const OldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
 			
 			this.updateExchangeRates(OldExchangeRates, servicesExchangeRates);	
 			
-			await this.backgroundHelper.setBadgeAndTooltip(this.exchangeRates);
+			await this.backgroundHelper.refreshData();
 			const lastUpdated = calculateTimeDifference(this.exchangeRates[0].fechaActualizacion);
 			this.lastUpdated = chrome.i18n.getMessage("footer", lastUpdated);
 			this.realLastUpdated = new Date();
 			this.loading = false;
 			this.hasError = false;
+			this.activeIndex = this.config.defaultTab;
 		} catch (error: any) {
 			this.loading = false;
 			this.hasError = true;
@@ -52,9 +56,10 @@ export class PopupComponent implements OnInit {
 		}
 	}
 
-	refreshData() {
+	refreshData(tab?: any) {
+		this.tab = tab;
 		this.getData();
-		this.activeIndex = 0;
+		this.activeIndex = tab ? tab : 0;
 	}
 
 	getChromeMessage(key: string): string {

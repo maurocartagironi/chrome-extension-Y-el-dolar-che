@@ -34,6 +34,9 @@
 	align-items: center;
     text-align: center;
 }
+::ng-deep .p-toast .p-toast-message {
+	margin: 0;
+}
 ::ng-deep .p-toast-message-success {
 	border: 1px solid;
 }

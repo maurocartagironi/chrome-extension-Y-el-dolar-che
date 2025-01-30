@@ -139,6 +139,12 @@
 	"label_hide_conversor_desc": {
 		"message": "Puedes alternar la visibilidad del conversor."
 	},
+	"label_default_tab_opt": {
+		"message": "Tab por defecto"
+	},
+	"label_default_tab_desc": {
+		"message": "Selecciona la tab en la cual queres posicionarte al abrir la extensión."
+	},
 	"label_group_badge": {
 		"message": "Indicador"
 	},
@@ -147,6 +153,9 @@
 	},
 	"label_group_conversor": {
 		"message": "Conversor"
+	},
+	"label_group_tab": {
+		"message": "Tab"
 	},
 	"label_gear": {
 		"message": "Configuración"
