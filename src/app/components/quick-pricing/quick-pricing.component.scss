@@ -1,0 +1,57 @@
+.quick-pricing {
+	padding-top: 10px;
+}
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.form span input {
+	width: 30%;
+}
+.form div {
+	display: flex;
+	gap: 10px;
+}
+input {
+	width: 40%;
+}
+::ng-deep app-quick-pricing p-button {
+	display: flex;
+    align-items: center;
+}
+.result-container {
+	padding-top: 2px;
+}
+.result-title {
+	padding-top: 10px;
+	font-weight: bold;
+}
+hr {
+	margin-top: 20px;
+    border: 1px solid rgba(1, 1, 1, 0.07);
+}
+.select-currency {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 60%;
+}
+.input-currency {
+	width: 40%;
+}
+.custom-form {
+	display: flex;
+    gap: 10px;
+	align-items: flex-start;
+}
+::ng-deep p-inputNumber .p-inputtext {
+	padding: 0.79rem 0.75rem;
+    border: 1px solid #d1d5db;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    border-radius: 4px;
+}
+#dropdown-input {
+	width: 80%;
+}

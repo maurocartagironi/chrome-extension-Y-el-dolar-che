@@ -1,0 +1,34 @@
+::ng-deep td {
+	padding: 10px;
+}
+::ng-deep tr:last-child td {
+	border-bottom: 0;
+}
+::ng-deep thead {
+	text-transform: uppercase;
+}
+.icon {
+	padding-right: 3px;
+}
+.arrow-trend-up, ::ng-deep .p-tag-up > span {	
+	color: #E97070;
+	background: #FFEBEE !important;
+}
+.arrow-trend-down, ::ng-deep .p-tag-down > span {
+	color: #6FB598;
+	background: #E8F5E9 !important;
+}
+::ng-deep .p-tag-default > span {
+	color: #888;
+	background: #ebebeb !important;
+}
+
+// Colors
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+	background-color: var(--background-color);
+	color: var(--primary-color);
+}
+::ng-deep tr td:first-child {
+	color: rgb(88, 88, 88);
+	font-weight: 500;
+}

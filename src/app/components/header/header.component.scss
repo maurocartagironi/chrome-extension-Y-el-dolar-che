@@ -1,0 +1,26 @@
+.logo img {
+	width: 75px;
+	background-color: #ffff;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.buttons {
+	gap: 5px;
+	display: flex;
+	align-items: center;
+}
+::ng-deep button {
+	padding: 5px;
+}
+
+// Colors
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+	border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}

@@ -1,0 +1,18 @@
+<div class="quick-pricing">
+	<div class="custom-form card flex flex-wrap gap-3 p-fluid">
+		<div class="flex-auto input-currency">
+			<p-inputNumber class="form-input" inputId="currency-ar" mode="currency" currency="ARS" locale="es-AR" [(ngModel)]="config.valueConversor" (keyup)="onChange($event)" placeholder="Ingrese un monto"></p-inputNumber>
+			<span *ngIf="error !==''">{{error}}</span>
+		</div>
+		<div class="select-currency">
+			<ng-select *ngIf="picklistCurrency.length > 0" id="dropdown-input" [searchable]="false" [placeholder]="'Convertir de...'"
+						[clearable]="false" [items]="picklistCurrency" optionLabel="label" optionValue="value" [(ngModel)]="currencyConversor"
+						(change)="onSelectChange($event)" class="select-currency">
+			</ng-select>
+			<p-button [text]="true" pTooltip="Alterar moneda" tooltipPosition="left" icon="pi pi-arrow-right-arrow-left" (click)="onCurrencyToggle()"></p-button>
+		</div>
+	</div>
+	<hr *ngIf="currencyConversor && config.valueConversor" />
+	<div class="result-title" *ngIf="currencyConversor && config.valueConversor">{{showTitleResult()}}</div>
+	<div class="result-container" *ngIf="currencyConversor && config.valueConversor"><app-result [compra]="result.get('compra')" [venta]="result.get('venta')"></app-result></div>
+</div>
