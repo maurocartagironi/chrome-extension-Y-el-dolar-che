@@ -1,41 +1,66 @@
 <div id="container">
 	<app-header (onRefresh)="refreshData()"></app-header>
-	<div class="content" *ngIf="!hasError">		
+	<div class="content" *ngIf="!hasError">
 		<div class="loading" *ngIf="loading">
-			<p-progressSpinner styleClass="w-2rem h-2rem" strokeWidth="4" fill="rgba(0, 0, 0, 0)" animationDuration="1s"></p-progressSpinner>
+			<p-progressSpinner
+				styleClass="w-2rem h-2rem"
+				strokeWidth="4"
+				fill="rgba(0, 0, 0, 0)"
+				animationDuration="1s"
+			></p-progressSpinner>
 		</div>
 		<div class="table">
 			<p-tabView [(activeIndex)]="activeIndex">
-				<p-tabPanel header="{{ getChromeMessage('label_quotations') }}" class="cotizaciones">
+				<p-tabPanel
+					header="{{ getChromeMessage('label_quotations') }}"
+					class="cotizaciones"
+				>
 					<ng-template pTemplate="header">
 						<i class="pi pi-chart-line"></i>
-						<span class="tab-title">{{ getChromeMessage('label_quotations') }}</span>
+						<span class="tab-title">{{
+							getChromeMessage("label_quotations")
+						}}</span>
 					</ng-template>
-					<app-table *ngIf="exchangeRates.length > 0" [exchangeRates]="exchangeRates"></app-table>
+					<app-table
+						*ngIf="exchangeRates.length > 0"
+						[exchangeRates]="exchangeRates"
+					></app-table>
 					<div class="footer">
 						<p-messages severity="info">
 							<ng-template pTemplate>
 								<i class="pi pi-clock"></i>
-								<div class="footer-text">{{lastUpdated}}</div>
+								<div class="footer-text">{{ lastUpdated }}</div>
 							</ng-template>
 						</p-messages>
 					</div>
 				</p-tabPanel>
-				<p-tabPanel *ngIf="!config.hiddenConversionSection" header="{{ getChromeMessage('label_quick_pricing') }}">
+				<p-tabPanel
+					*ngIf="!config.hiddenConversionSection"
+					header="{{ getChromeMessage('label_quick_pricing') }}"
+				>
 					<ng-template pTemplate="header">
 						<i class="pi pi-calculator"></i>
-						<span class="tab-title">{{ getChromeMessage('label_quick_pricing') }}</span>
+						<span class="tab-title">{{
+							getChromeMessage("label_quick_pricing")
+						}}</span>
 					</ng-template>
-					<app-quick-pricing *ngIf="exchangeRates.length > 0" [exchangeRateList]="exchangeRates"></app-quick-pricing>
-				</p-tabPanel>	
+					<app-quick-pricing
+						*ngIf="exchangeRates.length > 0"
+						[exchangeRateList]="exchangeRates"
+					></app-quick-pricing>
+				</p-tabPanel>
 				<p-tabPanel header="settings">
 					<ng-template pTemplate="header">
 						<i class="pi pi-cog"></i>
 					</ng-template>
-					<app-setting *ngIf="exchangeRates.length > 0" [exchangeRateList]="exchangeRates" (onRefresh)="refreshData($event)"></app-setting>
+					<app-setting
+						*ngIf="exchangeRates.length > 0"
+						[exchangeRateList]="exchangeRates"
+						(onRefresh)="refreshData($event)"
+					></app-setting>
 				</p-tabPanel>
-			</p-tabView>			
-		</div>			
+			</p-tabView>
+		</div>
 	</div>
 	<div class="error" *ngIf="hasError">
 		<p-messages severity="error">

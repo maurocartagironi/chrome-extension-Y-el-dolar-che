@@ -14,7 +14,18 @@ import { TableComponent } from 'src/app/components/table/table.component';
 import { SettingComponent } from 'src/app/components/setting/setting.component';
 
 @NgModule({
-  declarations: [PopupComponent],
-  imports: [CommonModule, PopupRoutingModule, SharedModule, QuickPricingComponent, HeaderComponent, TableComponent, TabViewModule, MessagesModule, ProgressSpinnerModule, SettingComponent],
+	declarations: [PopupComponent],
+	imports: [
+		CommonModule,
+		PopupRoutingModule,
+		SharedModule,
+		QuickPricingComponent,
+		HeaderComponent,
+		TableComponent,
+		TabViewModule,
+		MessagesModule,
+		ProgressSpinnerModule,
+		SettingComponent,
+	],
 })
 export class PopupModule {}

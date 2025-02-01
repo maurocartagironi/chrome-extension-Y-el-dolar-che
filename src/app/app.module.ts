@@ -5,11 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DecimalPipe } from '@angular/common';
 
-
 @NgModule({
-  declarations: [AppComponent],
-  providers: [DecimalPipe],
-  imports: [BrowserModule, AppRoutingModule, NoopAnimationsModule],
-  bootstrap: [AppComponent],
+	declarations: [AppComponent],
+	providers: [DecimalPipe],
+	imports: [BrowserModule, AppRoutingModule, NoopAnimationsModule],
+	bootstrap: [AppComponent],
 })
 export class AppModule {}

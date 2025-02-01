@@ -5,7 +5,8 @@
 	align-items: center;
 	justify-content: space-between;
 }
-::ng-deep .p-panel .p-panel-header, ::ng-deep .p-panel .p-panel-content {
+::ng-deep .p-panel .p-panel-header,
+::ng-deep .p-panel .p-panel-content {
 	padding: 4px 10px;
 }
 .result-content {
@@ -28,11 +29,11 @@
 }
 ::ng-deep .p-toast {
 	width: 100%;
-    padding: 0 15px;
+	padding: 0 15px;
 }
 ::ng-deep .p-toast-message-content {
 	align-items: center;
-    text-align: center;
+	text-align: center;
 }
 ::ng-deep .p-toast .p-toast-message {
 	margin: 0;

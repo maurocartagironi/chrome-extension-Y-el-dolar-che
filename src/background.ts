@@ -1,5 +1,5 @@
-import { BackgroundHelper } from "@shared/helpers/background.helper";
-import { onChangedCallback } from "@shared/utils/storage.util";
+import { BackgroundHelper } from '@shared/helpers/background.helper';
+import { onChangedCallback } from '@shared/utils/storage.util';
 
 // Inicializador
 chrome.runtime.onInstalled.addListener(initializeExtension);
@@ -27,7 +27,7 @@ function refreshData(): void {
 function receiveMessageFromPopup(
 	message: string,
 	sender: chrome.runtime.MessageSender,
-	sendResponse: (response?: any) => void
+	sendResponse: (response?: any) => void,
 ): void {
 	console.log('Received message from popup:', message);
 	console.log('sender:', sender);

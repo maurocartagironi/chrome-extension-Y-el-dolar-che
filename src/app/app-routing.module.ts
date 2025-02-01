@@ -4,21 +4,23 @@ import { AppComponent } from './app.component';
 import { TargetGuard } from './target.guard';
 
 const routes: Routes = [
-  {
-    path: 'popup',
-    loadChildren: () =>
-      import('@containers/popup/popup.module').then((m) => m.PopupModule),
-  },
-  {
-    path: 'options',
-    loadChildren: () =>
-      import('@containers/options/options.module').then((m) => m.OptionsModule),
-  },
-  { path: '**', component: AppComponent, canActivate: [TargetGuard] },
+	{
+		path: 'popup',
+		loadChildren: () =>
+			import('@containers/popup/popup.module').then((m) => m.PopupModule),
+	},
+	{
+		path: 'options',
+		loadChildren: () =>
+			import('@containers/options/options.module').then(
+				(m) => m.OptionsModule,
+			),
+	},
+	{ path: '**', component: AppComponent, canActivate: [TargetGuard] },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
 })
 export class AppRoutingModule {}

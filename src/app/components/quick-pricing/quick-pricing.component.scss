@@ -18,7 +18,7 @@ input {
 }
 ::ng-deep app-quick-pricing p-button {
 	display: flex;
-    align-items: center;
+	align-items: center;
 }
 .result-container {
 	padding-top: 2px;
@@ -29,7 +29,7 @@ input {
 }
 hr {
 	margin-top: 20px;
-    border: 1px solid rgba(1, 1, 1, 0.07);
+	border: 1px solid rgba(1, 1, 1, 0.07);
 }
 .select-currency {
 	display: flex;
@@ -42,15 +42,19 @@ hr {
 }
 .custom-form {
 	display: flex;
-    gap: 10px;
+	gap: 10px;
 	align-items: flex-start;
 }
 ::ng-deep p-inputNumber .p-inputtext {
 	padding: 0.79rem 0.75rem;
-    border: 1px solid #d1d5db;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
-    border-radius: 4px;
+	border: 1px solid #d1d5db;
+	transition:
+		background-color 0.2s,
+		color 0.2s,
+		border-color 0.2s,
+		box-shadow 0.2s;
+	appearance: none;
+	border-radius: 4px;
 }
 #dropdown-input {
 	width: 80%;

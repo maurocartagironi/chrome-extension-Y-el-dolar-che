@@ -11,12 +11,20 @@ import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 
 @Component({
-  selector: 'app-result',
-  standalone: true,
-  imports: [CommonModule, PanelModule, ButtonModule, MenuModule, TooltipModule, ToastModule, RippleModule],
-  providers: [MessageService],
-  templateUrl: './result.component.html',
-  styleUrl: './result.component.scss'
+	selector: 'app-result',
+	standalone: true,
+	imports: [
+		CommonModule,
+		PanelModule,
+		ButtonModule,
+		MenuModule,
+		TooltipModule,
+		ToastModule,
+		RippleModule,
+	],
+	providers: [MessageService],
+	templateUrl: './result.component.html',
+	styleUrl: './result.component.scss',
 })
 export class ResultComponent {
 	@Input() compra: string | undefined;
@@ -29,8 +37,19 @@ export class ResultComponent {
 		let cleanedStr = text?.replace(/[^0-9,]/g, '');
 		cleanedStr = cleanedStr?.replace(',', '.');
 		let number = cleanedStr ? parseFloat(cleanedStr) : 0;
-		let formattedNumber = number.toLocaleString('es-ES', { useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 });
+		let formattedNumber = number.toLocaleString('es-ES', {
+			useGrouping: false,
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 2,
+		});
 		navigator.clipboard.writeText(formattedNumber?.toString() || '');
-		this.messageService.add({ key:'myKey', severity: 'success', detail: currencyType === 'compra' ? 'Se ha copiado el valor de compra' : 'Se ha copiado el valor de venta' });
+		this.messageService.add({
+			key: 'myKey',
+			severity: 'success',
+			detail:
+				currencyType === 'compra'
+					? 'Se ha copiado el valor de compra'
+					: 'Se ha copiado el valor de venta',
+		});
 	}
 }

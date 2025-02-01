@@ -8,7 +8,7 @@
 		"48": "assets/img/icon.png",
 		"128": "assets/img/icon.png",
 		"256": "assets/img/icon.png"
-		},
+	},
 	"host_permissions": ["https://dolarapi.com/*"],
 	"permissions": ["alarms", "storage"],
 	"action": {
@@ -27,8 +27,8 @@
 	},
 	"content_scripts": [
 		{
-		"matches": ["*://*/*"],
-		"js": ["runtime.js"]
+			"matches": ["*://*/*"],
+			"js": ["runtime.js"]
 		}
 	]
 }
