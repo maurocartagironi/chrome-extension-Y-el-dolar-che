@@ -8,13 +8,7 @@ import { Observable } from 'rxjs';
 export class TargetGuard {
 	constructor(private router: Router) {}
 
-	canActivate(
-		route: ActivatedRouteSnapshot,
-	):
-		| Observable<boolean | UrlTree>
-		| Promise<boolean | UrlTree>
-		| boolean
-		| UrlTree {
+	canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const target = route.queryParams['target'];
 		if (['popup', 'options'].includes(target)) {
 			document.body.classList.add(target);

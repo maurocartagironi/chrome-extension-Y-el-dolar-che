@@ -26,8 +26,7 @@
 				[(ngModel)]="currencyConversor"
 				(change)="onSelectChange($event)"
 				class="select-currency"
-			>
-			</ng-select>
+			></ng-select>
 			<p-button
 				[text]="true"
 				pTooltip="Alterar moneda"
@@ -38,19 +37,10 @@
 		</div>
 	</div>
 	<hr *ngIf="currencyConversor && config.valueConversor" />
-	<div
-		class="result-title"
-		*ngIf="currencyConversor && config.valueConversor"
-	>
+	<div class="result-title" *ngIf="currencyConversor && config.valueConversor">
 		{{ showTitleResult() }}
 	</div>
-	<div
-		class="result-container"
-		*ngIf="currencyConversor && config.valueConversor"
-	>
-		<app-result
-			[compra]="result.get('compra')"
-			[venta]="result.get('venta')"
-		></app-result>
+	<div class="result-container" *ngIf="currencyConversor && config.valueConversor">
+		<app-result [compra]="result.get('compra')" [venta]="result.get('venta')"></app-result>
 	</div>
 </div>

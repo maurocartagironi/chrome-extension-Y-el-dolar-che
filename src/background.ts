@@ -24,11 +24,7 @@ function refreshData(): void {
 }
 
 // Función para recibir un mensaje del popup
-function receiveMessageFromPopup(
-	message: string,
-	sender: chrome.runtime.MessageSender,
-	sendResponse: (response?: any) => void,
-): void {
+function receiveMessageFromPopup(message: string, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void): void {
 	console.log('Received message from popup:', message);
 	console.log('sender:', sender);
 	console.log('sendResponse:', sendResponse);

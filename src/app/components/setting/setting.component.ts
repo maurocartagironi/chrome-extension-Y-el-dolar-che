@@ -14,14 +14,7 @@ import { TooltipModule } from 'primeng/tooltip';
 @Component({
 	selector: 'app-setting',
 	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		NgSelectModule,
-		BadgeModule,
-		TooltipModule,
-	],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule, BadgeModule, TooltipModule],
 	templateUrl: './setting.component.html',
 	styleUrl: './setting.component.scss',
 })
@@ -62,31 +55,17 @@ export class SettingComponent {
 			});
 		});
 		this.picklistCurrency.sort((a, b) => a.label.localeCompare(b.label));
-		this.picklistCurrencyTooltip.sort((a, b) =>
-			a.label.localeCompare(b.label),
-		);
+		this.picklistCurrencyTooltip.sort((a, b) => a.label.localeCompare(b.label));
 
-		this.badgeExchangeRateType = this.picklistCurrency.find(
-			(e) => e.value === this.config.badgeExchangeRateType,
-		);
-		this.tooltipExchangeRateType = this.picklistCurrencyTooltip.find(
-			(e) => e.value === this.config.tooltipExchangeRateType,
-		);
-		this.badgeIsSell =
-			this.config.badgeExchangeRateAction === 'sell' ? true : false;
+		this.badgeExchangeRateType = this.picklistCurrency.find((e) => e.value === this.config.badgeExchangeRateType);
+		this.tooltipExchangeRateType = this.picklistCurrencyTooltip.find((e) => e.value === this.config.tooltipExchangeRateType);
+		this.badgeIsSell = this.config.badgeExchangeRateAction === 'sell' ? true : false;
 		this.quickConversionIsHidden = this.config.hiddenConversionSection;
 		this.badgeBackgroundColor = this.config.badgeBackgroundColor;
 		this.defaultTab = this.tabs[this.config.defaultTab];
 
-		document
-			.getElementById('toggle')
-			?.setAttribute('checked', this.badgeIsSell ? 'checked' : '');
-		document
-			.getElementById('toggleHideConversor')
-			?.setAttribute(
-				'checked',
-				this.quickConversionIsHidden ? 'checked' : '',
-			);
+		document.getElementById('toggle')?.setAttribute('checked', this.badgeIsSell ? 'checked' : '');
+		document.getElementById('toggleHideConversor')?.setAttribute('checked', this.quickConversionIsHidden ? 'checked' : '');
 	}
 
 	onSelectChange() {
@@ -96,15 +75,12 @@ export class SettingComponent {
 	}
 
 	onSelectChangeTooltip() {
-		this.config.tooltipExchangeRateType =
-			this.tooltipExchangeRateType.value;
+		this.config.tooltipExchangeRateType = this.tooltipExchangeRateType.value;
 		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.backgroundHelper.refreshData();
 	}
 	onCheckSellOrBuy(e: any) {
-		this.config.badgeExchangeRateAction = e.target?.checked
-			? 'sell'
-			: 'buy';
+		this.config.badgeExchangeRateAction = e.target?.checked ? 'sell' : 'buy';
 		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.backgroundHelper.refreshData();
 	}

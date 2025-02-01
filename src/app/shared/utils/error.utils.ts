@@ -11,11 +11,5 @@ export const formatError = (message: string): string => {
 		);
 	}
 
-	return (
-		'<p>' +
-		chrome.i18n.getMessage('error_general_title') +
-		'</p><p>' +
-		chrome.i18n.getMessage('error_general_description') +
-		'</p>'
-	);
+	return '<p>' + chrome.i18n.getMessage('error_general_title') + '</p><p>' + chrome.i18n.getMessage('error_general_description') + '</p>';
 };

@@ -6,15 +6,11 @@ import { TargetGuard } from './target.guard';
 const routes: Routes = [
 	{
 		path: 'popup',
-		loadChildren: () =>
-			import('@containers/popup/popup.module').then((m) => m.PopupModule),
+		loadChildren: () => import('@containers/popup/popup.module').then((m) => m.PopupModule),
 	},
 	{
 		path: 'options',
-		loadChildren: () =>
-			import('@containers/options/options.module').then(
-				(m) => m.OptionsModule,
-			),
+		loadChildren: () => import('@containers/options/options.module').then((m) => m.OptionsModule),
 	},
 	{ path: '**', component: AppComponent, canActivate: [TargetGuard] },
 ];

@@ -3,15 +3,8 @@ import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
-import {
-	calculateTimeDifference,
-	formatCurrency,
-} from '@shared/utils/general.utils';
-import {
-	getLocalStorage,
-	removeLocalStorage,
-	setLocalStorage,
-} from '@shared/utils/storage.util';
+import { calculateTimeDifference, formatCurrency } from '@shared/utils/general.utils';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -53,18 +46,12 @@ export class BackgroundHelper {
 		await this.setBadgeAndTooltip();
 	}
 
-	public async setBadgeAndTooltip(
-		exchangeRates?: ExchangeRate[],
-	): Promise<void> {
+	public async setBadgeAndTooltip(exchangeRates?: ExchangeRate[]): Promise<void> {
 		if (exchangeRates) {
 			this.exchangeRateList = exchangeRates;
 		}
-		this.badgeExchangeRate = this.exchangeRateList.find(
-			(value) => value.casa === this.config.badgeExchangeRateType,
-		)!;
-		this.tooltipExchangeRate = this.exchangeRateList.find(
-			(value) => value.casa === this.config.tooltipExchangeRateType,
-		)!;
+		this.badgeExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType)!;
+		this.tooltipExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.tooltipExchangeRateType)!;
 
 		console.log(this.badgeExchangeRate);
 		console.log(this.tooltipExchangeRate);
@@ -83,17 +70,11 @@ export class BackgroundHelper {
 	}
 
 	private async generateTooltip(): Promise<string> {
-		const sinceDate = calculateTimeDifference(
-			this.tooltipExchangeRate.fechaActualizacion,
-		);
+		const sinceDate = calculateTimeDifference(this.tooltipExchangeRate.fechaActualizacion);
 		return chrome.i18n.getMessage('tooltip', [
 			this.tooltipExchangeRate.nombre,
-			formatCurrency(
-				this.tooltipExchangeRate.compra.toString(),
-			).toString(),
-			formatCurrency(
-				this.tooltipExchangeRate.venta.toString(),
-			).toString(),
+			formatCurrency(this.tooltipExchangeRate.compra.toString()).toString(),
+			formatCurrency(this.tooltipExchangeRate.venta.toString()).toString(),
 			sinceDate,
 		]);
 	}

@@ -27,8 +27,6 @@ export async function removeLocalStorage(param: string) {
 export function onChangedCallback(changes: { [x: string]: any }) {
 	for (let key in changes) {
 		let storageChange = changes[key];
-		console.log(
-			`Storage key "${key}" changed. Old value: ${storageChange.oldValue}, New value: ${storageChange.newValue}`,
-		);
+		console.log(`Storage key "${key}" changed. Old value: ${storageChange.oldValue}, New value: ${storageChange.newValue}`);
 	}
 }

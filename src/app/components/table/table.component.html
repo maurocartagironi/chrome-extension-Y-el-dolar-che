@@ -1,9 +1,5 @@
 <div class="table">
-	<p-table
-		*ngIf="exchangeRatesUpdated.length > 0"
-		[value]="exchangeRatesUpdated"
-		[tableStyle]="{ 'min-width': '200px' }"
-	>
+	<p-table *ngIf="exchangeRatesUpdated.length > 0" [value]="exchangeRatesUpdated" [tableStyle]="{ 'min-width': '200px' }">
 		<ng-template pTemplate="header" let-columns>
 			<tr>
 				<th>Moneda</th>
@@ -19,21 +15,13 @@
 						[ngClass]="
 							exchangeRate.updatedCompra === 'arrow-trend-down'
 								? 'p-tag-down'
-								: exchangeRate.updatedCompra ===
-									  'arrow-trend-up'
+								: exchangeRate.updatedCompra === 'arrow-trend-up'
 									? 'p-tag-up'
 									: 'p-tag-default'
 						"
 					>
-						<span
-							class="icon"
-							[ngClass]="exchangeRate.updatedCompra"
-							>{{ toCurrencyPesos(exchangeRate.compra) }}</span
-						>
-						<i
-							[ngClass]="exchangeRate.updatedCompra"
-							class="fa-solid fa-{{ exchangeRate.updatedCompra }}"
-						></i>
+						<span class="icon" [ngClass]="exchangeRate.updatedCompra">{{ toCurrencyPesos(exchangeRate.compra) }}</span>
+						<i [ngClass]="exchangeRate.updatedCompra" class="fa-solid fa-{{ exchangeRate.updatedCompra }}"></i>
 					</p-tag>
 				</td>
 				<td>
@@ -46,15 +34,8 @@
 									: 'p-tag-default'
 						"
 					>
-						<span
-							class="icon"
-							[ngClass]="exchangeRate.updatedVenta"
-							>{{ toCurrencyPesos(exchangeRate.venta) }}</span
-						>
-						<i
-							[ngClass]="exchangeRate.updatedVenta"
-							class="fa-solid fa-{{ exchangeRate.updatedVenta }}"
-						></i>
+						<span class="icon" [ngClass]="exchangeRate.updatedVenta">{{ toCurrencyPesos(exchangeRate.venta) }}</span>
+						<i [ngClass]="exchangeRate.updatedVenta" class="fa-solid fa-{{ exchangeRate.updatedVenta }}"></i>
 					</p-tag>
 				</td>
 			</tr>

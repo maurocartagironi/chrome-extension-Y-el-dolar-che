@@ -27,25 +27,14 @@ export class Config {
 		valueConversor?: number,
 		defaultTab?: number,
 	) {
-		this.badgeExchangeRateType =
-			badgeExchangeRateType || environment.defaultBadgeExchangeRateType;
-		this.badgeExchangeRateAction =
-			badgeExchangeRateAction ||
-			environment.defaultBadgeExchangeRateAction;
-		this.tooltipExchangeRateType =
-			tooltipExchangeRateType ||
-			environment.defaultTooltipExchangeRateType;
-		this.currencyConversor =
-			currencyConversor || environment.defaultCurrencyConversor;
-		this.alarmPeriodInMinutes =
-			alarmPeriodInMinutes || environment.defaultAlarmPeriodInMinutes;
-		this.valueConversor =
-			valueConversor || environment.defaultValueConversor;
-		this.badgeBackgroundColor =
-			badgeBackgroundColor || environment.defaultBadgeBackgroundColor;
-		this.hiddenConversionSection =
-			hiddenConversionSection ||
-			environment.defaultHiddenConversionSection;
+		this.badgeExchangeRateType = badgeExchangeRateType || environment.defaultBadgeExchangeRateType;
+		this.badgeExchangeRateAction = badgeExchangeRateAction || environment.defaultBadgeExchangeRateAction;
+		this.tooltipExchangeRateType = tooltipExchangeRateType || environment.defaultTooltipExchangeRateType;
+		this.currencyConversor = currencyConversor || environment.defaultCurrencyConversor;
+		this.alarmPeriodInMinutes = alarmPeriodInMinutes || environment.defaultAlarmPeriodInMinutes;
+		this.valueConversor = valueConversor || environment.defaultValueConversor;
+		this.badgeBackgroundColor = badgeBackgroundColor || environment.defaultBadgeBackgroundColor;
+		this.hiddenConversionSection = hiddenConversionSection || environment.defaultHiddenConversionSection;
 		this.darkMode = darkMode || environment.defaultDarkMode;
 		this.defaultTab = defaultTab || environment.defaultTab;
 		this.hasError = hasError || false;

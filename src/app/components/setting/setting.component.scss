@@ -68,12 +68,12 @@
 .toggle-label::before {
 	content: "";
 	position: absolute;
-	width: 15px;
-	height: 15px;
+	width: 16px;
+	height: 16px;
 	border-radius: 50%;
 	background-color: white;
-	top: 5px;
-	left: 5px;
+	top: 4px;
+	left: 4px;
 	transition: transform 0.3s;
 }
 
@@ -111,21 +111,21 @@
 	display: block;
 }
 
-.color-input {
+#badgeColor {
+	-webkit-appearance: none;
+	-moz-appearance: none;
 	appearance: none;
-	border: none;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	cursor: pointer;
-	padding: 0;
 	background-color: transparent;
+	width: 35px;
+	height: 35px;
+	border: none;
+	cursor: pointer;
 }
-
-.color-input::-webkit-color-swatch,
-.color-input::-moz-color-swatch {
+#badgeColor::-webkit-color-swatch {
 	border-radius: 50%;
-	border: 2px solid #ddd;
+}
+#badgeColor::-moz-color-swatch {
+	border-radius: 50%;
 }
 
 .toggle-container-hide-conversor {
@@ -150,12 +150,12 @@
 .toggle-container-hide-conversor .toggle-label::before {
 	content: "";
 	position: absolute;
-	width: 15px;
-	height: 15px;
+	width: 16px;
+	height: 16px;
 	border-radius: 50%;
 	background-color: white;
 	top: 4px;
-	left: 5px;
+	left: 4px;
 	transition: transform 0.3s;
 }
 
@@ -163,9 +163,7 @@
 	background-color: #4caf50;
 }
 
-.toggle-container-hide-conversor
-	.toggle-checkbox:checked
-	+ .toggle-label::before {
+.toggle-container-hide-conversor .toggle-checkbox:checked + .toggle-label::before {
 	transform: translateX(26px);
 }
 .p-element {

@@ -7,16 +7,14 @@
 
 			<!-- Badge Exchange Rate -->
 			<div class="option-item">
-				<label for="badgeExchangeRate"
-					>{{ getChromeMessage("label_badge_exchange_rate_opt")
-					}}<p-badge
+				<label for="badgeExchangeRate">
+					{{ getChromeMessage("label_badge_exchange_rate_opt") }}
+					<p-badge
 						value="ℹ️"
-						pTooltip="{{
-							getChromeMessage('label_badge_exchange_rate_desc')
-						}}"
+						pTooltip="{{ getChromeMessage('label_badge_exchange_rate_desc') }}"
 						tooltipPosition="bottom"
-					></p-badge
-				></label>
+					></p-badge>
+				</label>
 				<ng-select
 					*ngIf="picklistCurrency.length > 0"
 					id="dropdown-input"
@@ -29,22 +27,15 @@
 					[(ngModel)]="badgeExchangeRateType"
 					(change)="onSelectChange()"
 					class="select-currency"
-				>
-				</ng-select>
+				></ng-select>
 			</div>
 
 			<!-- Badge Buy/Sell -->
 			<div class="option-item">
-				<label for="buySell"
-					>{{ getChromeMessage("label_badge_buy_sell_opt")
-					}}<p-badge
-						value="ℹ️"
-						pTooltip="{{
-							getChromeMessage('label_badge_buy_sell_desc')
-						}}"
-						tooltipPosition="bottom"
-					></p-badge
-				></label>
+				<label for="buySell">
+					{{ getChromeMessage("label_badge_buy_sell_opt") }}
+					<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_badge_buy_sell_desc') }}" tooltipPosition="bottom"></p-badge>
+				</label>
 				<div class="toggle-container">
 					<input
 						type="checkbox"
@@ -54,28 +45,18 @@
 						(change)="onCheckSellOrBuy($event)"
 					/>
 					<label for="toggle" class="toggle-label">
-						<span class="toggle-text toggle-text-left">{{
-							getChromeMessage("result_buy")
-						}}</span>
-						<span class="toggle-text toggle-text-right">{{
-							getChromeMessage("result_sell")
-						}}</span>
+						<span class="toggle-text toggle-text-left">{{ getChromeMessage("result_buy") }}</span>
+						<span class="toggle-text toggle-text-right">{{ getChromeMessage("result_sell") }}</span>
 					</label>
 				</div>
 			</div>
 
 			<!-- Badge Color -->
 			<div class="option-item">
-				<label for="badgeColor"
-					>{{ getChromeMessage("label_badge_color_opt")
-					}}<p-badge
-						value="ℹ️"
-						pTooltip="{{
-							getChromeMessage('label_badge_color_desc')
-						}}"
-						tooltipPosition="bottom"
-					></p-badge
-				></label>
+				<label for="badgeColor">
+					{{ getChromeMessage("label_badge_color_opt") }}
+					<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_badge_color_desc') }}" tooltipPosition="bottom"></p-badge>
+				</label>
 				<input
 					type="color"
 					id="badgeColor"
@@ -92,18 +73,14 @@
 				</h3>
 
 				<div class="option-item">
-					<label for="tooltipExchangeRate"
-						>{{ getChromeMessage("label_tooltip_exchange_rate_opt")
-						}}<p-badge
+					<label for="tooltipExchangeRate">
+						{{ getChromeMessage("label_tooltip_exchange_rate_opt") }}
+						<p-badge
 							value="ℹ️"
-							pTooltip="{{
-								getChromeMessage(
-									'label_tooltip_exchange_rate_desc'
-								)
-							}}"
+							pTooltip="{{ getChromeMessage('label_tooltip_exchange_rate_desc') }}"
 							tooltipPosition="bottom"
-						></p-badge
-					></label>
+						></p-badge>
+					</label>
 					<ng-select
 						*ngIf="picklistCurrencyTooltip.length > 0"
 						id="dropdown-input"
@@ -116,8 +93,7 @@
 						[(ngModel)]="tooltipExchangeRateType"
 						(change)="onSelectChangeTooltip()"
 						class="select-currency"
-					>
-					</ng-select>
+					></ng-select>
 				</div>
 			</div>
 
@@ -127,16 +103,14 @@
 					{{ getChromeMessage("label_group_conversor") }}
 				</h3>
 				<div class="option-item">
-					<label for="hideConversor"
-						>{{ getChromeMessage("label_hide_conversor_opt")
-						}}<p-badge
+					<label for="hideConversor">
+						{{ getChromeMessage("label_hide_conversor_opt") }}
+						<p-badge
 							value="ℹ️"
-							pTooltip="{{
-								getChromeMessage('label_hide_conversor_desc')
-							}}"
+							pTooltip="{{ getChromeMessage('label_hide_conversor_desc') }}"
 							tooltipPosition="bottom"
-						></p-badge
-					></label>
+						></p-badge>
+					</label>
 					<div class="toggle-container-hide-conversor">
 						<input
 							type="checkbox"
@@ -145,10 +119,7 @@
 							(change)="hideQuickConversion($event)"
 							[(ngModel)]="quickConversionIsHidden"
 						/>
-						<label
-							for="toggleHideConversor"
-							class="toggle-label"
-						></label>
+						<label for="toggleHideConversor" class="toggle-label"></label>
 					</div>
 				</div>
 			</div>
@@ -159,16 +130,10 @@
 					{{ getChromeMessage("label_group_tab") }}
 				</h3>
 				<div class="option-item">
-					<label for="hideConversor"
-						>{{ getChromeMessage("label_default_tab_opt")
-						}}<p-badge
-							value="ℹ️"
-							pTooltip="{{
-								getChromeMessage('label_default_tab_desc')
-							}}"
-							tooltipPosition="bottom"
-						></p-badge
-					></label>
+					<label for="hideConversor">
+						{{ getChromeMessage("label_default_tab_opt") }}
+						<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_default_tab_desc') }}" tooltipPosition="bottom"></p-badge>
+					</label>
 					<ng-select
 						*ngIf="tabs.length > 0"
 						id="dropdown-input"
@@ -181,22 +146,14 @@
 						[(ngModel)]="defaultTab"
 						(change)="onSelectTab($event)"
 						class="select-tab"
-					>
-					</ng-select>
+					></ng-select>
 				</div>
 			</div>
 
 			<!-- Link -->
 			<div class="link-container">
-				<a
-					href="https://www.buymeacoffee.com/mauropitu"
-					target="_blank"
-				>
-					<img
-						src="/assets/img/buymeacoffee.png"
-						alt="Buy me a coffee"
-						class="bmac-img"
-					/>
+				<a href="https://www.buymeacoffee.com/mauropitu" target="_blank">
+					<img src="/assets/img/buymeacoffee.png" alt="Buy me a coffee" class="bmac-img" />
 				</a>
 			</div>
 		</div>

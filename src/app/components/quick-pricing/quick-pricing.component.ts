@@ -54,9 +54,7 @@ export class QuickPricingComponent {
 			});
 		});
 		this.picklistCurrency.sort((a, b) => a.label.localeCompare(b.label));
-		this.currencyConversor = this.picklistCurrency.find(
-			(e) => e.value === this.config.currencyConversor,
-		);
+		this.currencyConversor = this.picklistCurrency.find((e) => e.value === this.config.currencyConversor);
 		this.setResult();
 	}
 
@@ -79,9 +77,7 @@ export class QuickPricingComponent {
 		const currencies = this.currencyConversor?.value.split('-');
 		if (currencies) {
 			const newValue = currencies[1] + '-' + currencies[0];
-			this.currencyConversor = this.picklistCurrency.find(
-				(e) => e.value === newValue,
-			);
+			this.currencyConversor = this.picklistCurrency.find((e) => e.value === newValue);
 		}
 		this.config.currencyConversor = this.currencyConversor.value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
@@ -103,38 +99,16 @@ export class QuickPricingComponent {
 				currencyConversor = currencies[1];
 			}
 		}
-		const currentExchangeRate: ExchangeRate = this.exchangeRateList.find(
-			(e) => e.casa === currencyConversor,
-		) as ExchangeRate;
+		const currentExchangeRate: ExchangeRate = this.exchangeRateList.find((e) => e.casa === currencyConversor) as ExchangeRate;
 		if (currentExchangeRate) {
 			const valueConversor = this.config.valueConversor;
 			if (valueConversor && currencies) {
 				if (currencies[0] === 'ars') {
-					this.result.set(
-						'compra',
-						formatter.format(
-							valueConversor / currentExchangeRate.compra,
-						),
-					);
-					this.result.set(
-						'venta',
-						formatter.format(
-							valueConversor / currentExchangeRate.venta,
-						),
-					);
+					this.result.set('compra', formatter.format(valueConversor / currentExchangeRate.compra));
+					this.result.set('venta', formatter.format(valueConversor / currentExchangeRate.venta));
 				} else {
-					this.result.set(
-						'compra',
-						formatter.format(
-							valueConversor * currentExchangeRate.compra,
-						),
-					);
-					this.result.set(
-						'venta',
-						formatter.format(
-							valueConversor * currentExchangeRate.venta,
-						),
-					);
+					this.result.set('compra', formatter.format(valueConversor * currentExchangeRate.compra));
+					this.result.set('venta', formatter.format(valueConversor * currentExchangeRate.venta));
 				}
 			} else {
 				this.result.set('compra', undefined);
@@ -146,19 +120,9 @@ export class QuickPricingComponent {
 	showTitleResult() {
 		const currencies = this.currencyConversor?.value.split('-');
 		if (currencies && currencies[0] === 'ars') {
-			return (
-				'Pesos argentinos a ' +
-				this.exchangeRateList
-					.find((e) => e.casa === currencies[1])
-					?.nombre.toLowerCase() +
-				': '
-			);
+			return 'Pesos argentinos a ' + this.exchangeRateList.find((e) => e.casa === currencies[1])?.nombre.toLowerCase() + ': ';
 		}
 
-		return (
-			this.exchangeRateList
-				.find((e) => e.casa === currencies[0])
-				?.nombre.toLowerCase() + ' a pesos argentinos: '
-		);
+		return this.exchangeRateList.find((e) => e.casa === currencies[0])?.nombre.toLowerCase() + ' a pesos argentinos: ';
 	}
 }

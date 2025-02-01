@@ -13,15 +13,7 @@ import { RippleModule } from 'primeng/ripple';
 @Component({
 	selector: 'app-result',
 	standalone: true,
-	imports: [
-		CommonModule,
-		PanelModule,
-		ButtonModule,
-		MenuModule,
-		TooltipModule,
-		ToastModule,
-		RippleModule,
-	],
+	imports: [CommonModule, PanelModule, ButtonModule, MenuModule, TooltipModule, ToastModule, RippleModule],
 	providers: [MessageService],
 	templateUrl: './result.component.html',
 	styleUrl: './result.component.scss',
@@ -46,10 +38,7 @@ export class ResultComponent {
 		this.messageService.add({
 			key: 'myKey',
 			severity: 'success',
-			detail:
-				currencyType === 'compra'
-					? 'Se ha copiado el valor de compra'
-					: 'Se ha copiado el valor de venta',
+			detail: currencyType === 'compra' ? 'Se ha copiado el valor de compra' : 'Se ha copiado el valor de venta',
 		});
 	}
 }
