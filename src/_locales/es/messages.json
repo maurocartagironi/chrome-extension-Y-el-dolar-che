@@ -1,9 +1,9 @@
 {
 	"appName": {
-		"message": "¿Y el dólar che?"
+		"message": "¿Y el dólar, che? - Cotización del dólar en Argentina en tiempo real"
 	},
 	"appDesc": {
-		"message": "Muestra los valores actualizados del dólar en Argentina y además es posible hacer conversiones rápidas."
+		"message": "Consulta la cotización del dólar en Argentina en tiempo real con un solo clic. Con ¿Y el dólar, che?, podrás ver el valor del dólar oficial, blue, MEP y CCL sin salir de tu navegador."
 	},
 	"error_general_title": {
 		"message": "Ha ocurrido un error inesperado. Vuelve a intentarlo más tarde."
@@ -11,45 +11,8 @@
 	"error_general_description": {
 		"message": "Si el problema persiste, no dudes en contactarme."
 	},
-	"table_thead_col_exchange": {
-		"message": "Cambio"
-	},
-	"table_thead_col_buy": {
-		"message": "Compra"
-	},
-	"table_thead_col_sell": {
-		"message": "Venta"
-	},
 	"blue": {
 		"message": "Dólar libre"
-	},
-	"item_usd_to_pesos": {
-		"message": "$var$ a pesos",
-		"placeholders": {
-			"var": {
-				"content": "$1"
-			}
-		}
-	},
-	"item_pesos_to_usd": {
-		"message": "Pesos a $var$",
-		"placeholders": {
-			"var": {
-				"content": "$1"
-			}
-		}
-	},
-	"title_table": {
-		"message": "Tipos de cambio"
-	},
-	"title_quick_pricing": {
-		"message": "Conversión rápida"
-	},
-	"placeholder_amount": {
-		"message": "Monto"
-	},
-	"placeholder_select_exchange_rate": {
-		"message": "A convertir"
 	},
 	"result_buy": {
 		"message": "Compra"
@@ -93,18 +56,6 @@
 	},
 	"n_secs": {
 		"message": " segundo(s)"
-	},
-	"title_option": {
-		"message": "Opciones"
-	},
-	"changes_saved": {
-		"message": "Los cambios se han guardado correctamente..."
-	},
-	"button_cancel": {
-		"message": "Cancelar"
-	},
-	"button_save": {
-		"message": "Guardar"
 	},
 	"label_badge_exchange_rate_opt": {
 		"message": "Tipo de cambio"
@@ -157,12 +108,6 @@
 	"label_group_tab": {
 		"message": "Tab"
 	},
-	"label_gear": {
-		"message": "Configuración"
-	},
-	"label_moon": {
-		"message": "Activar modo oscuro"
-	},
 	"label_quick_pricing": {
 		"message": "Conversión rápida"
 	},
@@ -172,16 +117,10 @@
 	"label_refresh": {
 		"message": "Actualizar"
 	},
-	"label_sun": {
-		"message": "Desactivar modo oscuro"
+	"legal_terms_title": {
+		"message": "📋 Términos y condiciones"
 	},
-	"label_arrow_right_arrow_left": {
-		"message": "Alternar entre pesos y dolares"
-	},
-	"label_gavel": {
-		"message": "Aviso legal"
-	},
-	"label_gavel_description": {
-		"message": "La cotización del dólar mostrada es obtenida de DolarAPI.com y puede variar. No garantizamos su precisión. Se recomienda verificar la información antes de tomar decisiones financieras. No nos hacemos responsables por daños o decisiones basadas en esta información. La extensión no ofrece asesoramiento financiero ni recomendaciones de inversión."
+	"legal_terms_text": {
+		"message": "Esta extensión proporciona información sobre la cotización del dólar en tiempo real para fines informativos. Los valores mostrados corresponden a los datos proporcionados por el servicio de <b>dolarapi.com</b>, y no deben considerarse como una recomendación financiera, de inversión o de cualquier otro tipo. La extensión no es responsable de la precisión, disponibilidad o cualquier cambio en los datos. El uso de esta extensión es bajo el propio riesgo del usuario, y los datos presentados no sustituyen el consejo profesional.<br /><br />Los usuarios son responsables de verificar la exactitud de los valores mostrados y de tomar decisiones basadas en su propio juicio y asesoramiento profesional. No nos hacemos responsables de ningún daño o pérdida derivada del uso de esta extensión.<br /><br />Esta extensión respeta y protege la privacidad de sus usuarios. No recopilamos información personal de los usuarios que utilicen esta extensión, ni se almacenan datos sensibles relacionados con el uso de la aplicación. Toda la información proporcionada por esta extensión está destinada únicamente a mostrar las cotizaciones del dólar en tiempo real, obtenidas de <b>dolarapi.com</b>.<br /><br />Los datos relacionados con el uso de la extensión (como el historial de cotizaciones) pueden almacenarse localmente en su navegador mediante la API de almacenamiento de Chrome. Sin embargo, esta información no será compartida con terceros ni utilizada para fines fuera de la funcionalidad de la extensión.<br /><br />Si en algún momento decidimos realizar cambios en nuestra política de privacidad, notificaremos a los usuarios a través de actualizaciones en la extensión. Al usar esta extensión, usted acepta los términos de esta política de privacidad."
 	}
 }

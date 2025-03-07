@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
 import { LOCALSTORAGE_CONFIG, LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
 import { Config } from '@shared/models/Config';
@@ -7,6 +8,7 @@ import { DolarAPIService } from '@shared/services/dolar-api.service';
 import { calculateTimeDifference, getLocalStorage } from '@shared/utils';
 import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeService } from '@shared/utils/chrome.utils';
+import { LegalTermsComponent } from 'src/app/components/legalterms/legalterms.component';
 
 @Component({
 	selector: 'app-popup',
@@ -14,6 +16,8 @@ import { ChromeService } from '@shared/utils/chrome.utils';
 	styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
+	@ViewChild('legal-terms') legalTerms!: LegalTermsComponent;
+
 	public exchangeRates: ExchangeRate[] = [];
 	public lastUpdated: string = '';
 	public realLastUpdated: Date = new Date();
@@ -24,11 +28,7 @@ export class PopupComponent implements OnInit {
 	public activeIndex: number = 0;
 	public tab: any;
 
-	constructor(
-		public dolarApiService: DolarAPIService,
-		public backgroundHelper: BackgroundHelper,
-		public chromeService: ChromeService,
-	) {}
+	constructor(public dolarApiService: DolarAPIService, public backgroundHelper: BackgroundHelper, public chromeService: ChromeService) {}
 
 	async ngOnInit() {
 		this.getData();
@@ -106,7 +106,7 @@ export class PopupComponent implements OnInit {
 						exchangeRate.venta,
 						exchangeRate.fechaActualizacion,
 						updatedCompra,
-						updatedVenta,
+						updatedVenta
 					);
 				} else {
 					return oldExchange;

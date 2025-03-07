@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { TableModule } from 'primeng/table';
@@ -7,7 +7,7 @@ import { TagModule } from 'primeng/tag';
 @Component({
 	selector: 'app-table',
 	standalone: true,
-	imports: [TableModule, CommonModule, CurrencyPipe, TagModule],
+	imports: [TableModule, CommonModule, TagModule],
 	templateUrl: './table.component.html',
 	styleUrl: './table.component.scss',
 })

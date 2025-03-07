@@ -78,3 +78,18 @@
 	border: 0;
 	color: white;
 }
+.legal-terms {
+	margin-top: 10px;
+	text-align: right;
+}
+.legal-terms p,
+.legal-terms a {
+	font-weight: bold;
+	font-size: 9px;
+}
+.legal-terms a {
+	cursor: pointer;
+}
+.legal-terms a:hover {
+	color: var(--primary-color);
+}

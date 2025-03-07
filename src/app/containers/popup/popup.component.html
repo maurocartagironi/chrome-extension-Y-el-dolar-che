@@ -25,6 +25,10 @@
 							</ng-template>
 						</p-messages>
 					</div>
+					<div class="legal-terms">
+						<a (click)="legalTerms.openModal()">{{ getChromeMessage("legal_terms_title") }}</a>
+						<legal-terms #legalTerms></legal-terms>
+					</div>
 				</p-tabPanel>
 				<p-tabPanel *ngIf="!config.hiddenConversionSection" header="{{ getChromeMessage('label_quick_pricing') }}">
 					<ng-template pTemplate="header">

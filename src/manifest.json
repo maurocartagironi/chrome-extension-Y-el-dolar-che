@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"manifest_version": 3,
 	"icons": {
 		"16": "assets/img/icon.png",
@@ -18,7 +18,7 @@
 			"24": "assets/img/icon.png",
 			"32": "assets/img/icon.png"
 		},
-		"default_title": "¿Y el dólar che?"
+		"default_title": "__MSG_appName__"
 	},
 	"options_page": "index.html?target=options",
 	"default_locale": "es",
@@ -27,7 +27,7 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["*://*/*"],
+			"matches": ["https://dolarapi.com/*"],
 			"js": ["runtime.js"]
 		}
 	]
