@@ -12,7 +12,7 @@
 - Acceso rápido a la información desde la barra de herramientas de Chrome.
 - Términos legales incluidos (Descargo de responsabilidad y Política de privacidad).
 
-## Instalación
+## Instalaciónes
 
 1. Descarga o clona el repositorio.
 2. Ve a `chrome://extensions/` en tu navegador.
@@ -20,15 +20,20 @@
 4. Haz clic en "Cargar descomprimida" y selecciona la carpeta del proyecto.
 5. La extensión se instalará y estará disponible en tu barra de herramientas.
 
+1. Accede a la url del market de google extensions: https://chromewebstore.google.com/detail/¿y-el-dólar-che/bhekococoidbofnmckchcajcjmlekcna
+2. Instalar extensión
+3. La extensión se instalará y estará disponible en tu barra de herramientas.
+
 ## Uso
 
 1. Haz clic en el icono de la extensión en la barra de herramientas de Chrome.
 2. Se abrirá una ventana emergente con la tabla que muestra la cotización del dólar.
 3. Puedes consultar la información en tiempo real directamente desde la extensión.
+4. Puedes cotizar en tiempo real con cualquier cotización de dólar.
 
 ## Contribuciones
 
-Las contribuciones son bienvenidas. Si deseas mejorar el proyecto, por favor realiza un fork y abre un pull request.
+Las contribuciones son bienvenidas desde la extensión en la sección "Settings".
 
 ## Licencia
 
