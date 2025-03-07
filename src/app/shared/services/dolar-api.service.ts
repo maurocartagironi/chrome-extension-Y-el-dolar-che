@@ -4,35 +4,34 @@ import { formatError } from '@shared/utils/error.utils';
 import { ENDPOINT } from 'src/app/shared/constants/api.constant';
 
 @Injectable({
-  	providedIn: 'root',
+	providedIn: 'root',
 })
-
 export class DolarAPIService {
-  	constructor() {}
+	constructor() {}
 
 	async getAll(url?: string): Promise<ExchangeRate[]> {
-	   try {
+		try {
 			const response = await fetch(url ? url : ENDPOINT);
 			if (!response.ok) {
 				throw new Error(response.status.toString());
 			}
-		  	const data = await response.json();			
+			const data = await response.json();
 			return data as ExchangeRate[];
-	   } catch (error: any) {
-			throw new Error(formatError("Error en la solicitud"));
-	   }
+		} catch (error: any) {
+			throw new Error(formatError('Error en la solicitud'));
+		}
 	}
 
 	async getByType(type: string): Promise<ExchangeRate> {
 		try {
-		   	const response = await fetch(ENDPOINT + '/' + type);
+			const response = await fetch(ENDPOINT + '/' + type);
 			if (!response.ok) {
 				throw new Error(response.status.toString());
 			}
-		   	const data = await response.json();
-		   	return data as ExchangeRate;
+			const data = await response.json();
+			return data as ExchangeRate;
 		} catch (error: any) {
-			throw new Error(formatError("Error en la solicitud"));
+			throw new Error(formatError('Error en la solicitud'));
 		}
-	 }
+	}
 }

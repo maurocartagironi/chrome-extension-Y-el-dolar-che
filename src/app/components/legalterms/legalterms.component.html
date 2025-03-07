@@ -1,0 +1,10 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()"></div>
+<div class="modal" *ngIf="isOpen">
+	<!-- Botón de cierre (X) -->
+	<span class="close-btn" (click)="closeModal()">✖</span>
+
+	<div class="modal-content">
+		<h2>{{ getChromeMessage("legal_terms_title") }}</h2>
+		<p [innerHTML]="getChromeMessage('legal_terms_text')"></p>
+	</div>
+</div>

@@ -1,1 +1,1 @@
-export const ENDPOINT: string = "https://dolarapi.com/v1/dolares"
+export const ENDPOINT: string = 'https://dolarapi.com/v1/dolares';

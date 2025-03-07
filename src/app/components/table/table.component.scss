@@ -10,13 +10,15 @@
 .icon {
 	padding-right: 3px;
 }
-.arrow-trend-up, ::ng-deep .p-tag-up > span {	
-	color: #E97070;
-	background: #FFEBEE !important;
+.arrow-trend-up,
+::ng-deep .p-tag-up > span {
+	color: #e97070;
+	background: #ffebee !important;
 }
-.arrow-trend-down, ::ng-deep .p-tag-down > span {
-	color: #6FB598;
-	background: #E8F5E9 !important;
+.arrow-trend-down,
+::ng-deep .p-tag-down > span {
+	color: #6fb598;
+	background: #e8f5e9 !important;
 }
 ::ng-deep .p-tag-default > span {
 	color: #888;

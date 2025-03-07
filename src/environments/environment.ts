@@ -3,17 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  	production: false,
-	defaultBadgeExchangeRateType: "blue", // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
-	defaultBadgeExchangeRateAction: "buy", // "buy" | "sell"
-	defaultTooltipExchangeRateType: "blue", // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
-	defaultCurrencyConversor: "blue-ars", // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
+	production: false,
+	defaultBadgeExchangeRateType: 'blue', // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
+	defaultBadgeExchangeRateAction: 'buy', // "buy" | "sell"
+	defaultTooltipExchangeRateType: 'blue', // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
+	defaultCurrencyConversor: 'blue-ars', // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
 	defaultAlarmPeriodInMinutes: 10,
-	defaultBadgeBackgroundColor: "#4A4A4A",
+	defaultBadgeBackgroundColor: '#4A4A4A',
 	defaultHiddenConversionSection: false,
 	defaultDarkMode: false,
 	defaultTab: 0,
-	defaultValueConversor: 0
+	defaultValueConversor: 0,
 };
 
 /*
