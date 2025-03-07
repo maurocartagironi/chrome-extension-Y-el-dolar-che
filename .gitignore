@@ -1,0 +1,8 @@
+# Ignorar node_modules
+node_modules/
+
+# Ignorar la carpeta de distribución generada
+dist/
+
+# Ignorar la carpeta de configuración de Angular
+.angular/
