@@ -6,3 +6,5 @@ dist/
 
 # Ignorar la carpeta de configuración de Angular
 .angular/
+
+dist.zip
