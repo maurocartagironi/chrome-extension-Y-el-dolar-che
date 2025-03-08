@@ -1,4 +1,4 @@
-<div id="container">
+<div id="container" [className]="config.darkMode ? 'dark' : ''">
 	<app-header (onRefresh)="refreshData()"></app-header>
 	<div class="content" *ngIf="!hasError">
 		<div class="loading" *ngIf="loading">

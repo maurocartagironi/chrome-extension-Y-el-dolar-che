@@ -53,9 +53,6 @@ export class BackgroundHelper {
 		this.badgeExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType)!;
 		this.tooltipExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.tooltipExchangeRateType)!;
 
-		console.log(this.badgeExchangeRate);
-		console.log(this.tooltipExchangeRate);
-		console.log(this.config.badgeExchangeRateAction);
 		chrome.action.setBadgeText({
 			text:
 				this.config.badgeExchangeRateAction === 'sell'

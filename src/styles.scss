@@ -6,7 +6,13 @@
 
 :root {
 	--primary-color: #3949ab;
+	--primary-dark-color: #a4aff4;
+	--secondary-color: #6b7280;
+	--secondary-dark-color: #e3e6f7;
 	--background-color: #e3e6f7;
+	--background-primary-color: #fff;
+	--background-dark-color: #333;
+	--table-background-dark-color: #444;
 }
 
 * {
@@ -23,7 +29,11 @@ body {
 }
 
 html {
-	background-color: white;
+	background-color: var(--background-primary-color);
+}
+
+html.dark {
+	background-color: var(--background-dark-color);
 }
 
 button:focus {

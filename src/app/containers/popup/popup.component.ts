@@ -40,7 +40,7 @@ export class PopupComponent implements OnInit {
 				this.loading = true;
 			}
 			this.config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-			console.log(this.config);
+			this.config.darkMode ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
 			const servicesExchangeRates = await this.dolarApiService.getAll();
 			const OldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
 
