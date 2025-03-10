@@ -1,16 +1,25 @@
 <div class="header">
-	<div [className]="config.darkMode ? 'dark logo' : 'logo'">
-		<img *ngIf="!config.darkMode" src="/assets/img/logo.png" alt="" />
-		<img *ngIf="config.darkMode" src="/assets/img/logo-dark.png" alt="" />
+	<div [className]="isDarkMode ? 'dark logo' : 'logo'">
+		<img *ngIf="!isDarkMode" src="/assets/img/logo.png" alt="" />
+		<img *ngIf="isDarkMode" src="/assets/img/logo-dark.png" alt="" />
 	</div>
 	<div class="buttons">
 		<p-button
 			[text]="true"
-			pTooltip="{{ getChromeMessage('label_refresh') }}"
+			pTooltip="{{
+				currentMode === 'auto'
+					? getChromeMessage('label_darkmode')
+					: currentMode === 'dark'
+					? getChromeMessage('label_lightmode')
+					: getChromeMessage('label_automode')
+			}}"
 			tooltipPosition="left"
-			icon="{{ isDarkMode ? 'pi pi-sun' : 'pi pi-moon' }}"
+			[icon]="hoveredIcon || getIcon()"
 			(click)="toggleDarkMode()"
+			(mouseenter)="onMouseEnter()"
+			(mouseleave)="onMouseLeave()"
 		></p-button>
+
 		<p-button
 			[text]="true"
 			pTooltip="{{ getChromeMessage('label_refresh') }}"

@@ -1,5 +1,5 @@
-<div id="container" [className]="config.darkMode ? 'dark' : ''">
-	<app-header (onRefresh)="refreshData()"></app-header>
+<div id="container" [className]="getDarkModeClass(config.darkMode)">
+	<app-header (onRefresh)="refreshData(currentTab)"></app-header>
 	<div class="content" *ngIf="!hasError">
 		<div class="loading" *ngIf="loading">
 			<p-progressSpinner
@@ -10,7 +10,7 @@
 			></p-progressSpinner>
 		</div>
 		<div class="table">
-			<p-tabView [(activeIndex)]="activeIndex">
+			<p-tabView [(activeIndex)]="activeIndex" (activeIndexChange)="onTabChange($event)">
 				<p-tabPanel header="{{ getChromeMessage('label_quotations') }}" class="cotizaciones">
 					<ng-template pTemplate="header">
 						<i class="pi pi-chart-line"></i>

@@ -5,7 +5,7 @@ import { BackgroundHelper } from '@shared/helpers/background.helper';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
-import { calculateTimeDifference, getLocalStorage } from '@shared/utils';
+import { calculateTimeDifference, evaluateDarkMode, getLocalStorage } from '@shared/utils';
 import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeService } from '@shared/utils/chrome.utils';
 import { LegalTermsComponent } from 'src/app/components/legalterms/legalterms.component';
@@ -27,6 +27,7 @@ export class PopupComponent implements OnInit {
 	public errorMessage: string = '';
 	public activeIndex: number = 0;
 	public tab: any;
+	public currentTab = this.config.defaultTab;
 
 	constructor(public dolarApiService: DolarAPIService, public backgroundHelper: BackgroundHelper, public chromeService: ChromeService) {}
 
@@ -40,7 +41,9 @@ export class PopupComponent implements OnInit {
 				this.loading = true;
 			}
 			this.config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-			this.config.darkMode ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
+
+			evaluateDarkMode(this.config.darkMode);
+
 			const servicesExchangeRates = await this.dolarApiService.getAll();
 			const OldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
 
@@ -60,6 +63,10 @@ export class PopupComponent implements OnInit {
 		}
 	}
 
+	onTabChange(event: any) {
+		this.currentTab = event;
+	}
+
 	refreshData(tab?: any) {
 		this.tab = tab;
 		this.getData();
@@ -70,11 +77,20 @@ export class PopupComponent implements OnInit {
 		return this.chromeService.getMessage(key);
 	}
 
+	getDarkModeClass(darkMode: string) {
+		if (darkMode === 'auto') {
+			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : '';
+		} else {
+			return darkMode === 'dark' ? 'dark' : '';
+		}
+	}
+
 	async updateExchangeRates(exchangeRatesOld: ExchangeRate[], exchangeRatesNew: ExchangeRate[]) {
 		if (exchangeRatesOld === undefined) {
 			this.exchangeRates = exchangeRatesNew;
 			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);
 		}
+
 		let exchangeRatesUpdated: ExchangeRate[] = exchangeRatesNew.map((exchangeRate) => {
 			const oldExchange = exchangeRatesOld.find((e: any) => e.casa === exchangeRate.casa);
 

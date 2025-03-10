@@ -9,10 +9,6 @@
 	display: flex;
 	flex-direction: column;
 }
-#container.dark {
-	background-color: var(--background-dark-color);
-}
-
 .content {
 	display: flex;
 	flex-direction: column;
@@ -81,32 +77,9 @@
 	border: 0;
 	color: var(--background-primary-color);
 }
-#container.dark ::ng-deep .p-message.p-message-info {
-	background-color: var(--primary-dark-color);
-	border: 0;
-	color: var(--background-dark-color);
-}
-#container.dark ::ng-deep .p-tabview .p-tabview-nav,
-#container.dark ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link,
-#container.dark ::ng-deep .p-tabview .p-tabview-nav .p-tabview-nav-link {
-	background-color: var(--background-dark-color);
-}
 ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
 	border-color: var(--primary-color) !important;
 	color: var(--primary-color) !important;
-}
-#container.dark ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-	border-color: var(--primary-dark-color) !important;
-	color: var(--primary-dark-color) !important;
-}
-#container.dark ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-	color: var(--secondary-dark-color);
-}
-#container.dark ::ng-deep .p-datatable .p-datatable-tbody > tr {
-	background-color: var(--table-background-dark-color);
-}
-#container.dark ::ng-deep .p-datatable .p-datatable-tbody > tr {
-	border-color: var(--background-dark-color);
 }
 
 .legal-terms {
@@ -123,4 +96,74 @@
 }
 .legal-terms a:hover {
 	color: var(--primary-color);
+}
+
+// darkMode
+#container.dark ::ng-deep .p-message.p-message-info {
+	background-color: var(--primary-dark-color);
+	border: 0;
+	color: var(--background-dark-color);
+}
+#container.dark,
+#container.dark ::ng-deep .p-tabview .p-tabview-nav,
+#container.dark ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link,
+#container.dark ::ng-deep .p-tabview .p-tabview-nav .p-tabview-nav-link,
+#container.dark ::ng-deep .p-tabview .p-tabview-panels,
+#container.dark ::ng-deep .p-button.p-button-text,
+#container.dark ::ng-deep .legal-terms {
+	background-color: var(--background-dark-color);
+}
+#container.dark ::ng-deep .p-tabview .p-tabview-panels {
+	color: var(--secondary-dark-color);
+}
+#container.dark ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+	border-color: var(--primary-dark-color) !important;
+	color: var(--primary-dark-color) !important;
+}
+#container.dark ::ng-deep .p-datatable .p-datatable-tbody > tr {
+	background-color: var(--background-dark-color);
+}
+#container.dark ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+#container.dark ::ng-deep .group-label {
+	background-color: var(--table-background-dark-color);
+}
+#container.dark ::ng-deep .p-datatable .p-datatable-tbody > tr,
+#container.dark ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+#container.dark ::ng-deep .group-label {
+	border-color: var(--background-dark-color);
+}
+#container.dark ::ng-deep .p-button.p-button-text,
+#container.dark ::ng-deep .p-datatable .p-datatable-tbody > tr > td,
+#container.dark ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link,
+#container.dark ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+#container.dark ::ng-deep .group-label {
+	color: var(--secondary-dark-color);
+}
+#container.dark ::ng-deep .p-button.p-button-text:hover {
+	background-color: var(--table-background-dark-color);
+}
+#container.dark ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+	border-color: var(--table-background-dark-color);
+}
+#container.dark ::ng-deep .legal-terms {
+	color: var(--primary-dark-color);
+}
+#container.dark ::ng-deep .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+	border-color: var(--third-dark-color);
+}
+#container.dark .legal-terms a:hover,
+#container.dark ::ng-deep .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+	color: var(--third-dark-color);
+}
+#container.dark ::ng-deep .p-tag-default > span {
+	color: var(--label-dark-color) !important;
+	background: var(--label-dark-background) !important;
+}
+#container.dark ::ng-deep .arrow-trend-up,
+#container.dark ::ng-deep .p-tag-up > span {
+	background: #6b2b34 !important;
+}
+#container.dark ::ng-deep .arrow-trend-down,
+#container.dark ::ng-deep .p-tag-down > span {
+	background: #365038 !important;
 }

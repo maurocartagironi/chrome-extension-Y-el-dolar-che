@@ -11,7 +11,7 @@ export class Config {
 	public badgeBackgroundColor: string;
 	public hiddenConversionSection: boolean;
 	public defaultTab: number = 0;
-	public darkMode: boolean;
+	public darkMode: string;
 	public hasError: boolean;
 
 	constructor(
@@ -22,10 +22,10 @@ export class Config {
 		alarmPeriodInMinutes?: number,
 		badgeBackgroundColor?: string,
 		hiddenConversionSection?: boolean,
-		darkMode?: boolean,
+		darkMode?: string,
 		hasError?: boolean,
 		valueConversor?: number,
-		defaultTab?: number,
+		defaultTab?: number
 	) {
 		this.badgeExchangeRateType = badgeExchangeRateType || environment.defaultBadgeExchangeRateType;
 		this.badgeExchangeRateAction = badgeExchangeRateAction || environment.defaultBadgeExchangeRateAction;

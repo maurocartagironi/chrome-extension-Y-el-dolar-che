@@ -122,5 +122,14 @@
 	},
 	"legal_terms_text": {
 		"message": "Esta extensión proporciona información sobre la cotización del dólar en tiempo real para fines informativos. Los valores mostrados corresponden a los datos proporcionados por el servicio de <b>dolarapi.com</b>, y no deben considerarse como una recomendación financiera, de inversión o de cualquier otro tipo. La extensión no es responsable de la precisión, disponibilidad o cualquier cambio en los datos. El uso de esta extensión es bajo el propio riesgo del usuario, y los datos presentados no sustituyen el consejo profesional.<br /><br />Los usuarios son responsables de verificar la exactitud de los valores mostrados y de tomar decisiones basadas en su propio juicio y asesoramiento profesional. No nos hacemos responsables de ningún daño o pérdida derivada del uso de esta extensión.<br /><br />Esta extensión respeta y protege la privacidad de sus usuarios. No recopilamos información personal de los usuarios que utilicen esta extensión, ni se almacenan datos sensibles relacionados con el uso de la aplicación. Toda la información proporcionada por esta extensión está destinada únicamente a mostrar las cotizaciones del dólar en tiempo real, obtenidas de <b>dolarapi.com</b>.<br /><br />Los datos relacionados con el uso de la extensión (como el historial de cotizaciones) pueden almacenarse localmente en su navegador mediante la API de almacenamiento de Chrome. Sin embargo, esta información no será compartida con terceros ni utilizada para fines fuera de la funcionalidad de la extensión.<br /><br />Si en algún momento decidimos realizar cambios en nuestra política de privacidad, notificaremos a los usuarios a través de actualizaciones en la extensión. Al usar esta extensión, usted acepta los términos de esta política de privacidad."
+	},
+	"label_darkmode": {
+		"message": "Cambiar a modo oscuro"
+	},
+	"label_lightmode": {
+		"message": "Cambiar a modo claro"
+	},
+	"label_automode": {
+		"message": "Cambiar a modo configurado por el navegador"
 	}
 }

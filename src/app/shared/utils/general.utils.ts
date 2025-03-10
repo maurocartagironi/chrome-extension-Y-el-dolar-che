@@ -22,8 +22,18 @@ export const calculateTimeDifference = (dateToCompare: any): string => {
 	return inDays > 0
 		? inDays + chrome.i18n.getMessage('n_days')
 		: inHours > 0
-			? inHours + chrome.i18n.getMessage('n_hours')
-			: inMinutes > 0
-				? inMinutes + chrome.i18n.getMessage('n_mins')
-				: inSeconds + chrome.i18n.getMessage('n_secs');
+		? inHours + chrome.i18n.getMessage('n_hours')
+		: inMinutes > 0
+		? inMinutes + chrome.i18n.getMessage('n_mins')
+		: inSeconds + chrome.i18n.getMessage('n_secs');
+};
+
+export const evaluateDarkMode = (mode: string): boolean => {
+	if ((mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) || mode === 'dark') {
+		document.documentElement.classList.add('dark');
+		return true;
+	} else {
+		document.documentElement.classList.remove('dark');
+		return false;
+	}
 };
