@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
+import { BinanceP2PService } from '@shared/services/binance-p2p.service';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
 import { calculateTimeDifference, formatCurrency } from '@shared/utils/general.utils';
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
@@ -15,6 +16,7 @@ export class BackgroundHelper {
 	public tooltipExchangeRate: ExchangeRate = new ExchangeRate();
 	public config: Config = new Config();
 	public dolarApiService: DolarAPIService = new DolarAPIService();
+	public binanceP2PService: BinanceP2PService = new BinanceP2PService();
 	public exchangeRateList: ExchangeRate[] = [];
 
 	constructor() {}
@@ -43,6 +45,7 @@ export class BackgroundHelper {
 		}
 
 		this.exchangeRateList = await this.dolarApiService.getAll();
+		await this.binanceP2PService.get();
 		await this.setBadgeAndTooltip();
 	}
 

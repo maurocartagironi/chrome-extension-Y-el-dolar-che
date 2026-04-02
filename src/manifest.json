@@ -9,7 +9,7 @@
 		"128": "assets/img/icon.png",
 		"256": "assets/img/icon.png"
 	},
-	"host_permissions": ["https://dolarapi.com/*"],
+	"host_permissions": ["https://dolarapi.com/*", "https://p2p.binance.com/*"],
 	"permissions": ["alarms", "storage"],
 	"action": {
 		"default_popup": "index.html?target=popup",
