@@ -25,17 +25,17 @@ Después, en `chrome://extensions/`: activar el modo de desarrollador, "Cargar d
 
 ## Desarrollo
 
-| Comando | Qué hace |
-| --- | --- |
-| `npm run build` | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest. |
-| `npm run watch` | Build de desarrollo en modo watch (el popup). |
-| `npm run build:background` | Compila solo el service worker con esbuild. |
-| `npm run preview` | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal. |
-| `npm run preview:shot` | Lo mismo pero saca una captura a `preview.png`. Acepta `--dark` y `--tab=1|2`. |
-| `npm test` | Tests unitarios en modo watch (Karma + Jasmine). |
-| `npm run test:ci` | Los mismos tests una sola vez, en Chrome headless. |
-| `npm run lint` | ESLint sobre `.ts` y templates. |
-| `npm run package` | Build + `dist.zip` listo para subir a la store (Windows). |
+| Comando                    | Qué hace                                                                                                              |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `npm run build`            | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest.                   |
+| `npm run watch`            | Build de desarrollo en modo watch (el popup).                                                                         |
+| `npm run build:background` | Compila solo el service worker con esbuild.                                                                           |
+| `npm run preview`          | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal. |
+| `npm run preview:shot`     | Lo mismo pero saca una captura a `preview.png`. Acepta `--dark` y `--tab=1                                            | 2`. |
+| `npm test`                 | Tests unitarios en modo watch (Karma + Jasmine).                                                                      |
+| `npm run test:ci`          | Los mismos tests una sola vez, en Chrome headless.                                                                    |
+| `npm run lint`             | ESLint sobre `.ts` y templates.                                                                                       |
+| `npm run package`          | Build + `dist.zip` listo para subir a la store (Windows).                                                             |
 
 Puntos a tener en cuenta al tocar el código:
 
@@ -43,7 +43,9 @@ Puntos a tener en cuenta al tocar el código:
 - **El background se compila aparte**, con `scripts/build-background.mjs` (esbuild), no con el builder de Angular. Ojo: esbuild no aplica el `fileReplacements` de `angular.json`, así que el script hace el alias al `environment.prod.ts` a mano.
 - **La config se rehidrata con `new Config(guardado ?? {})`**, nunca con un cast. Así los campos que una versión anterior no guardó toman su valor por defecto en vez de quedar en `undefined`.
 - **Para ver un cambio visual no hace falta empaquetar la extensión.** `npm run preview` levanta el popup en un browser normal con chrome.* stubbeado y datos de ejemplo (con las tres tendencias, para ver los tres colores de chip). Con `--shot` saca la captura directo.
-- **No hay librería de componentes.** Los selects, el input de monto y los tooltips de ayuda son HTML nativo estilado con los design tokens de `styles.scss`. Lo único de terceros en la UI es la fuente de iconos (`primeicons`). Antes de sumar una librería por un componente, conviene medir: PrimeNG y ng-select costaban 1,3 MB empaquetados para tres widgets.
+- **No hay librería de componentes.** La tabla, los selects, el input de monto y los tooltips de ayuda son HTML nativo estilado con los tokens de `styles.scss`. Antes de sumar una librería por un componente, conviene medir: PrimeNG y ng-select costaban 1,3 MB empaquetados para cuatro widgets.
+- **Los valores por defecto de la configuración viven en `shared/constants/defaults.constant.ts`,** no en `environments/`. Ahí quedó solo el flag `production`: cuando los defaults estaban duplicados en dos archivos de environment, uno quedó desactualizado y el build publicado salió con `production: false`.
+- **El icono (`assets/img/icon.png`) es de 48×48.** El manifest declara 16, 32 y 48 porque es lo que ese archivo puede cubrir sin verse borroso. Para la ficha de la store conviene exportar un 128×128 desde el diseño original y agregarlo al manifest.
 - **El tema de los controles nativos sale de `color-scheme`.** `:root { color-scheme: light }` y `html.dark { color-scheme: dark }` hacen que el desplegable de los `<select>`, el input de color y las scrollbars sigan el modo oscuro sin CSS extra.
 - **Sin `baseUrl` en el tsconfig.** TypeScript 6 lo deprecó, así que los alias (`@shared/*`, `@containers/*`, `src/*`) están en `paths` con rutas relativas al tsconfig. Si agregás un alias nuevo, va ahí.
 - **ESLint usa flat config** (`eslint.config.js`), que es lo único que soporta ESLint 10. El `any` está permitido solo en los specs y en `src/testing/`, donde se imitan APIs del browser.
@@ -51,7 +53,7 @@ Puntos a tener en cuenta al tocar el código:
 
 ## Stack
 
-Angular 22 (standalone, sin NgModules, con control flow `@if`/`@for` y `OnPush` en todos los componentes), builder `@angular/build:application` para el popup y esbuild para el service worker. Sin librerías de componentes.
+Angular 22 standalone, **sin router y sin zone.js**: la extensión tiene una sola pantalla, así que `main.ts` monta `PopupComponent` directo y la detección de cambios es zoneless. Todos los componentes son `OnPush` y marcan la vista a mano después de cada `await` — eso es lo que hace que zoneless funcione, así que **si agregás código asíncrono que toca el estado, acordate del `markForCheck()`**. El popup lo compila `@angular/build:application` y el service worker esbuild, por separado. Sin librerías de componentes: la única dependencia de UI es la fuente de iconos (`primeicons`).
 
 ## Estructura
 

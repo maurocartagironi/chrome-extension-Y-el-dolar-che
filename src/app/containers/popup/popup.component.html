@@ -19,12 +19,12 @@
 			<div class="tab-bar">
 				<button class="tab-btn" [class.active]="activeIndex === 0" (click)="activeIndex = 0; onTabChange(0)">
 					<i class="pi pi-chart-line"></i>
-					<span>{{ getChromeMessage("label_quotations") }}</span>
+					<span>{{ getChromeMessage('label_quotations') }}</span>
 				</button>
 				@if (!config.hiddenConversionSection) {
 					<button class="tab-btn" [class.active]="activeIndex === 1" (click)="activeIndex = 1; onTabChange(1)">
 						<i class="pi pi-calculator"></i>
-						<span>{{ getChromeMessage("label_quick_pricing") }}</span>
+						<span>{{ getChromeMessage('label_quick_pricing') }}</span>
 					</button>
 				}
 				<button
@@ -49,7 +49,7 @@
 								<span>{{ lastUpdated }}</span>
 							</div>
 							<div class="legal-terms">
-								<a (click)="legalTerms.openModal()">{{ getChromeMessage("legal_terms_title") }}</a>
+								<a (click)="legalTerms.openModal()">{{ getChromeMessage('legal_terms_title') }}</a>
 							</div>
 						</div>
 					}

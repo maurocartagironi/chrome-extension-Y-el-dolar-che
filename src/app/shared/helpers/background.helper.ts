@@ -52,8 +52,7 @@ export class BackgroundHelper {
 
 		if (!this.badgeExchangeRate || !this.tooltipExchangeRate) return;
 
-		const badgeValue =
-			this.config.badgeExchangeRateAction === 'sell' ? this.badgeExchangeRate.venta : this.badgeExchangeRate.compra;
+		const badgeValue = this.config.badgeExchangeRateAction === 'sell' ? this.badgeExchangeRate.venta : this.badgeExchangeRate.compra;
 
 		// El badge muestra ~4 caracteres: redondear evita que se corte en "1480.5".
 		await chrome.action.setBadgeText({ text: Math.round(badgeValue).toString() });

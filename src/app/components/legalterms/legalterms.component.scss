@@ -53,4 +53,6 @@
 	transition: color var(--transition);
 	line-height: 1;
 }
-.close-btn:hover { color: var(--text-primary); }
+.close-btn:hover {
+	color: var(--text-primary);
+}

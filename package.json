@@ -12,6 +12,8 @@
 		"test": "ng test",
 		"test:ci": "ng test --watch=false --browsers=ChromeHeadless",
 		"lint": "ng lint",
+		"format": "prettier --write \"src/**/*.{ts,html,scss}\" \"scripts/*.mjs\" \"*.{json,md}\"",
+		"format:check": "prettier --check \"src/**/*.{ts,html,scss}\" \"scripts/*.mjs\" \"*.{json,md}\"",
 		"build:background": "node scripts/build-background.mjs",
 		"preview": "node scripts/preview.mjs",
 		"preview:shot": "node scripts/preview.mjs --shot"
@@ -24,7 +26,6 @@
 		"@angular/forms": "^22.3.0",
 		"@angular/platform-browser": "^22.3.0",
 		"@angular/platform-browser-dynamic": "^22.3.0",
-		"@angular/router": "^22.3.0",
 		"primeicons": "^7.0.0",
 		"rxjs": "^7.8.1",
 		"tslib": "^2.3.0",

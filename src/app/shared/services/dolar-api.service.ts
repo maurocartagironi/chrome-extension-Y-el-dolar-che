@@ -8,8 +8,8 @@ const REQUEST_TIMEOUT_MS = 8 * 1000; // 8 segundos
 
 /**
  * Sin `@Injectable`: este servicio también corre en el service worker y el
- * decorador arrastraría @angular/core al bundle del background.
- * Se provee a mano en PopupModule.
+ * decorador arrastraría @angular/core al bundle del background. Se provee a
+ * mano en los `providers` de PopupComponent.
  */
 export class DolarAPIService {
 	private abortController: AbortController | null = null;
@@ -55,16 +55,18 @@ export class DolarAPIService {
 			throw new Error('La respuesta de la API no tiene el formato esperado.');
 		}
 
-		const rates = payload.filter(isRatePayload).map(
-			(item) =>
-				new ExchangeRate(
-					item.casa,
-					typeof item.nombre === 'string' ? item.nombre : item.casa,
-					Number(item.compra),
-					Number(item.venta),
-					typeof item.fechaActualizacion === 'string' ? item.fechaActualizacion : undefined
-				)
-		);
+		const rates = payload
+			.filter(isRatePayload)
+			.map(
+				(item) =>
+					new ExchangeRate(
+						item.casa,
+						typeof item.nombre === 'string' ? item.nombre : item.casa,
+						Number(item.compra),
+						Number(item.venta),
+						typeof item.fechaActualizacion === 'string' ? item.fechaActualizacion : undefined,
+					),
+			);
 
 		if (!rates.length) {
 			throw new Error('La respuesta de la API no trajo cotizaciones válidas.');
@@ -95,8 +97,6 @@ function isRatePayload(item: unknown): item is RatePayload {
 	if (!item || typeof item !== 'object') return false;
 	const candidate = item as Record<string, unknown>;
 	return (
-		typeof candidate['casa'] === 'string' &&
-		Number.isFinite(Number(candidate['compra'])) &&
-		Number.isFinite(Number(candidate['venta']))
+		typeof candidate['casa'] === 'string' && Number.isFinite(Number(candidate['compra'])) && Number.isFinite(Number(candidate['venta']))
 	);
 }

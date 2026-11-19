@@ -120,7 +120,7 @@ export class PopupComponent implements OnInit {
 				exchangeRate.venta,
 				exchangeRate.fechaActualizacion,
 				this.trendIcon(oldExchange.compra, exchangeRate.compra),
-				this.trendIcon(oldExchange.venta, exchangeRate.venta)
+				this.trendIcon(oldExchange.venta, exchangeRate.venta),
 			);
 		});
 

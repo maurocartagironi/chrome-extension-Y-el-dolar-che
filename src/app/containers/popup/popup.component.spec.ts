@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { installChromeMock } from 'src/testing/chrome-mock';
 import { PopupComponent } from './popup.component';
 
-const PAYLOAD = [
-	{ casa: 'blue', nombre: 'Dólar libre', compra: 1400, venta: 1450, fechaActualizacion: '2026-11-19T12:00:00.000Z' },
-];
+const PAYLOAD = [{ casa: 'blue', nombre: 'Dólar libre', compra: 1400, venta: 1450, fechaActualizacion: '2026-11-19T12:00:00.000Z' }];
 
 describe('PopupComponent', () => {
 	let component: PopupComponent;
@@ -26,7 +23,7 @@ describe('PopupComponent', () => {
 		} as Response);
 
 		await TestBed.configureTestingModule({
-			imports: [PopupComponent, RouterTestingModule],
+			imports: [PopupComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(PopupComponent);

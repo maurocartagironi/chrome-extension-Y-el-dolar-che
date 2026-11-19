@@ -21,7 +21,9 @@ export class ResultComponent {
 		const cleaned = raw?.replace(/[^0-9,]/g, '').replace(',', '.') ?? '';
 		const number = Number.parseFloat(cleaned);
 		if (!Number.isNaN(number)) {
-			navigator.clipboard.writeText(number.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+			void navigator.clipboard
+				.writeText(number.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
+				.catch(() => undefined);
 		}
 		this.toastVisible = true;
 		if (this.toastTimer) clearTimeout(this.toastTimer);

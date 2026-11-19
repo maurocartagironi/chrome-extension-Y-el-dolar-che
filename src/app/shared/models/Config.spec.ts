@@ -1,13 +1,13 @@
-import { environment } from 'src/environments/environment';
+import { DEFAULTS } from '@shared/constants/defaults.constant';
 import { Config } from './Config';
 
 describe('Config', () => {
-	it('toma los valores por defecto del environment', () => {
+	it('toma los valores por defecto', () => {
 		const config = new Config();
 
-		expect(config.badgeExchangeRateType).toBe(environment.defaultBadgeExchangeRateType);
-		expect(config.darkMode).toBe(environment.defaultDarkMode);
-		expect(config.alarmPeriodInMinutes).toBe(environment.defaultAlarmPeriodInMinutes);
+		expect(config.badgeExchangeRateType).toBe(DEFAULTS.badgeExchangeRateType);
+		expect(config.darkMode).toBe(DEFAULTS.darkMode);
+		expect(config.alarmPeriodInMinutes).toBe(DEFAULTS.alarmPeriodInMinutes);
 	});
 
 	it('respeta lo que viene guardado', () => {
@@ -25,9 +25,9 @@ describe('Config', () => {
 		const config = new Config(guardadoViejo);
 
 		expect(config.darkMode).toBe('light');
-		expect(config.defaultTab).toBe(environment.defaultTab);
-		expect(config.badgeBackgroundColor).toBe(environment.defaultBadgeBackgroundColor);
-		expect(config.hiddenConversionSection).toBe(environment.defaultHiddenConversionSection);
+		expect(config.defaultTab).toBe(DEFAULTS.defaultTab);
+		expect(config.badgeBackgroundColor).toBe(DEFAULTS.badgeBackgroundColor);
+		expect(config.hiddenConversionSection).toBe(DEFAULTS.hiddenConversionSection);
 	});
 
 	it('no confunde un false guardado con un valor ausente', () => {

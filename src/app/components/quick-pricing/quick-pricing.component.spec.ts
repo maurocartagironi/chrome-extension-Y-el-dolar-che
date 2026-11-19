@@ -33,7 +33,7 @@ describe('QuickPricingComponent', () => {
 	});
 
 	describe('input de monto', () => {
-		// Reemplaza el enmascarado de p-inputNumber: esta es la lógica propia.
+		// El formato del monto es lógica propia: vale tenerla cubierta.
 		it('agrupa los miles mientras se tipea', async () => {
 			await component.onAmountInput('1234567');
 
@@ -161,10 +161,7 @@ describe('QuickPricingComponent', () => {
 
 			const options = fixture.nativeElement.querySelectorAll('.currency-select option');
 			expect(options.length).toBe(2);
-			expect(Array.from(options, (o: any) => o.textContent.trim()).sort()).toEqual([
-				'Dólar libre a pesos',
-				'Pesos a Dólar libre',
-			]);
+			expect(Array.from(options, (o: any) => o.textContent.trim()).sort()).toEqual(['Dólar libre a pesos', 'Pesos a Dólar libre']);
 		});
 	});
 });

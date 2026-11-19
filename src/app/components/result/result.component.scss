@@ -17,7 +17,10 @@
 	text-align: left;
 	width: 100%;
 	position: relative;
-	transition: background var(--transition), border-color var(--transition), transform 150ms ease;
+	transition:
+		background var(--transition),
+		border-color var(--transition),
+		transform 150ms ease;
 }
 
 .result-card:hover {
@@ -25,7 +28,9 @@
 	border-color: var(--accent);
 	transform: translateY(-1px);
 }
-.result-card:active { transform: translateY(0); }
+.result-card:active {
+	transform: translateY(0);
+}
 
 .result-label {
 	font-size: 10px;
@@ -50,4 +55,6 @@
 	opacity: 0;
 	transition: opacity var(--transition);
 }
-.result-card:hover .copy-icon { opacity: 1; }
+.result-card:hover .copy-icon {
+	opacity: 1;
+}

@@ -55,8 +55,8 @@ export class QuickPricingComponent implements OnInit {
 	}
 
 	/**
-	 * Reemplaza el enmascarado de p-inputNumber: deja tipear dígitos y una coma
-	 * decimal, agrupa los miles en vivo y mantiene el valor numérico en la config.
+	 * Deja tipear dígitos y una coma decimal, agrupa los miles en vivo y
+	 * mantiene el valor numérico en la config.
 	 */
 	async onAmountInput(raw: string): Promise<void> {
 		const cleaned = raw.replace(/[^\d,]/g, '');

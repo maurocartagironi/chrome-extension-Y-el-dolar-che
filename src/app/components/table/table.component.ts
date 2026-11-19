@@ -36,7 +36,9 @@ export class TableComponent {
 			minimumFractionDigits: 2,
 			maximumFractionDigits: 2,
 		});
-		navigator.clipboard.writeText(formatted);
+		// Si el permiso de portapapeles falla no hay nada que hacer, pero la
+		// promise sin manejar sí ensucia la consola.
+		void navigator.clipboard.writeText(formatted).catch(() => undefined);
 		this.copiedText = `${this.toCurrencyPesos(value)} copiado`;
 		this.scheduleToastHide();
 	}

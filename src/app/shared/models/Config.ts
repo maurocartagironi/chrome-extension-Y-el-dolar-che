@@ -1,4 +1,4 @@
-import { environment } from 'src/environments/environment';
+import { DEFAULTS } from '@shared/constants/defaults.constant';
 
 export interface ConfigOptions {
 	badgeExchangeRateType?: string;
@@ -26,15 +26,15 @@ export class Config {
 	public darkMode: string;
 
 	constructor(opts: ConfigOptions = {}) {
-		this.badgeExchangeRateType = opts.badgeExchangeRateType ?? environment.defaultBadgeExchangeRateType;
-		this.badgeExchangeRateAction = opts.badgeExchangeRateAction ?? environment.defaultBadgeExchangeRateAction;
-		this.tooltipExchangeRateType = opts.tooltipExchangeRateType ?? environment.defaultTooltipExchangeRateType;
-		this.currencyConversor = opts.currencyConversor ?? environment.defaultCurrencyConversor;
-		this.alarmPeriodInMinutes = opts.alarmPeriodInMinutes ?? environment.defaultAlarmPeriodInMinutes;
-		this.valueConversor = opts.valueConversor ?? environment.defaultValueConversor;
-		this.badgeBackgroundColor = opts.badgeBackgroundColor ?? environment.defaultBadgeBackgroundColor;
-		this.hiddenConversionSection = opts.hiddenConversionSection ?? environment.defaultHiddenConversionSection;
-		this.darkMode = opts.darkMode ?? environment.defaultDarkMode;
-		this.defaultTab = opts.defaultTab ?? environment.defaultTab;
+		this.badgeExchangeRateType = opts.badgeExchangeRateType ?? DEFAULTS.badgeExchangeRateType;
+		this.badgeExchangeRateAction = opts.badgeExchangeRateAction ?? DEFAULTS.badgeExchangeRateAction;
+		this.tooltipExchangeRateType = opts.tooltipExchangeRateType ?? DEFAULTS.tooltipExchangeRateType;
+		this.currencyConversor = opts.currencyConversor ?? DEFAULTS.currencyConversor;
+		this.alarmPeriodInMinutes = opts.alarmPeriodInMinutes ?? DEFAULTS.alarmPeriodInMinutes;
+		this.valueConversor = opts.valueConversor ?? DEFAULTS.valueConversor;
+		this.badgeBackgroundColor = opts.badgeBackgroundColor ?? DEFAULTS.badgeBackgroundColor;
+		this.hiddenConversionSection = opts.hiddenConversionSection ?? DEFAULTS.hiddenConversionSection;
+		this.darkMode = opts.darkMode ?? DEFAULTS.darkMode;
+		this.defaultTab = opts.defaultTab ?? DEFAULTS.defaultTab;
 	}
 }

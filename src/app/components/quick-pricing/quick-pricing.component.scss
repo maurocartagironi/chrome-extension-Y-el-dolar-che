@@ -31,7 +31,9 @@
 	box-shadow: 0 0 0 3px var(--accent-light);
 }
 
-.amount-input::placeholder { color: var(--text-muted); }
+.amount-input::placeholder {
+	color: var(--text-muted);
+}
 
 .currency-select-row {
 	display: flex;
@@ -39,7 +41,9 @@
 	align-items: center;
 }
 
-.flex-1 { flex: 1; }
+.flex-1 {
+	flex: 1;
+}
 
 .icon-btn {
 	display: flex;
@@ -53,7 +57,9 @@
 	background: var(--bg-card);
 	color: var(--text-secondary);
 	cursor: pointer;
-	transition: background var(--transition), color var(--transition);
+	transition:
+		background var(--transition),
+		color var(--transition);
 }
 
 .icon-btn:hover {
@@ -62,7 +68,9 @@
 	border-color: var(--accent);
 }
 
-.swap-btn i { font-size: 13px; }
+.swap-btn i {
+	font-size: 13px;
+}
 
 .result-section {
 	display: flex;

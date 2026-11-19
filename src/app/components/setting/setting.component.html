@@ -2,13 +2,13 @@
 	<div class="main-content">
 		<div class="settings-group">
 			<h3 class="group-label">
-				{{ getChromeMessage("label_group_badge") }}
+				{{ getChromeMessage('label_group_badge') }}
 			</h3>
 
 			<!-- Badge Exchange Rate -->
 			<div class="option-item">
 				<label for="badgeExchangeRateType">
-					{{ getChromeMessage("label_badge_exchange_rate_opt") }}
+					{{ getChromeMessage('label_badge_exchange_rate_opt') }}
 					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_exchange_rate_desc')">ℹ️</span>
 				</label>
 				@if (picklistCurrency.length > 0) {
@@ -30,7 +30,7 @@
 			<!-- Badge Buy/Sell -->
 			<div class="option-item">
 				<label for="toggle">
-					{{ getChromeMessage("label_badge_buy_sell_opt") }}
+					{{ getChromeMessage('label_badge_buy_sell_opt') }}
 					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_buy_sell_desc')">ℹ️</span>
 				</label>
 				<div class="toggle-container">
@@ -42,8 +42,8 @@
 						(change)="onCheckSellOrBuy($event)"
 					/>
 					<label for="toggle" class="toggle-label">
-						<span class="toggle-text toggle-text-left">{{ getChromeMessage("result_buy") }}</span>
-						<span class="toggle-text toggle-text-right">{{ getChromeMessage("result_sell") }}</span>
+						<span class="toggle-text toggle-text-left">{{ getChromeMessage('result_buy') }}</span>
+						<span class="toggle-text toggle-text-right">{{ getChromeMessage('result_sell') }}</span>
 					</label>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 			<!-- Badge Color -->
 			<div class="option-item">
 				<label for="badgeColor">
-					{{ getChromeMessage("label_badge_color_opt") }}
+					{{ getChromeMessage('label_badge_color_opt') }}
 					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_color_desc')">ℹ️</span>
 				</label>
 				<input
@@ -66,12 +66,12 @@
 			<!-- Tooltip Settings -->
 			<div class="settings-group">
 				<h3 class="group-label">
-					{{ getChromeMessage("label_group_tooltip") }}
+					{{ getChromeMessage('label_group_tooltip') }}
 				</h3>
 
 				<div class="option-item">
 					<label for="tooltipExchangeRateType">
-						{{ getChromeMessage("label_tooltip_exchange_rate_opt") }}
+						{{ getChromeMessage('label_tooltip_exchange_rate_opt') }}
 						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_tooltip_exchange_rate_desc')">ℹ️</span>
 					</label>
 					@if (picklistCurrency.length > 0) {
@@ -94,11 +94,11 @@
 			<!-- Conversion Settings -->
 			<div class="settings-group">
 				<h3 class="group-label">
-					{{ getChromeMessage("label_group_conversor") }}
+					{{ getChromeMessage('label_group_conversor') }}
 				</h3>
 				<div class="option-item">
 					<label for="toggleHideConversor">
-						{{ getChromeMessage("label_hide_conversor_opt") }}
+						{{ getChromeMessage('label_hide_conversor_opt') }}
 						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_hide_conversor_desc')">ℹ️</span>
 					</label>
 					<div class="toggle-container-hide-conversor">
@@ -117,11 +117,11 @@
 			<!-- Tab Settings -->
 			<div class="settings-group">
 				<h3 class="group-label">
-					{{ getChromeMessage("label_group_tab") }}
+					{{ getChromeMessage('label_group_tab') }}
 				</h3>
 				<div class="option-item">
 					<label for="defaultTab">
-						{{ getChromeMessage("label_default_tab_opt") }}
+						{{ getChromeMessage('label_default_tab_opt') }}
 						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_default_tab_desc')">ℹ️</span>
 					</label>
 					@if (tabs.length > 0) {

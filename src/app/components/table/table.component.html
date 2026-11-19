@@ -2,9 +2,9 @@
 	<table>
 		<thead>
 			<tr>
-				<th>Moneda</th>
-				<th>Compra</th>
-				<th>Venta</th>
+				<th scope="col">Moneda</th>
+				<th scope="col">Compra</th>
+				<th scope="col">Venta</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -12,10 +12,20 @@
 				<tr>
 					<td class="rate-name">{{ rate.nombre }}</td>
 					<td>
-						<button class="price-chip" [ngClass]="trendClass(rate.updatedCompra)" (click)="copyPrice(rate.compra)" title="Copiar precio de compra">
+						<button
+							class="price-chip"
+							[ngClass]="trendClass(rate.updatedCompra)"
+							(click)="copyPrice(rate.compra)"
+							title="Copiar precio de compra"
+						>
 							<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
 							@if (rate.updatedCompra) {
-								<svg class="trend-icon" [class.down]="rate.updatedCompra === 'arrow-trend-down'" viewBox="0 0 24 14" aria-hidden="true">
+								<svg
+									class="trend-icon"
+									[class.down]="rate.updatedCompra === 'arrow-trend-down'"
+									viewBox="0 0 24 14"
+									aria-hidden="true"
+								>
 									<path d="M1 12.5 L8 5.5 L12 9.5 L21 1.5" />
 									<path d="M15 1.5 L21.5 1.5 L21.5 8" />
 								</svg>
@@ -23,10 +33,20 @@
 						</button>
 					</td>
 					<td>
-						<button class="price-chip" [ngClass]="trendClass(rate.updatedVenta)" (click)="copyPrice(rate.venta)" title="Copiar precio de venta">
+						<button
+							class="price-chip"
+							[ngClass]="trendClass(rate.updatedVenta)"
+							(click)="copyPrice(rate.venta)"
+							title="Copiar precio de venta"
+						>
 							<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
 							@if (rate.updatedVenta) {
-								<svg class="trend-icon" [class.down]="rate.updatedVenta === 'arrow-trend-down'" viewBox="0 0 24 14" aria-hidden="true">
+								<svg
+									class="trend-icon"
+									[class.down]="rate.updatedVenta === 'arrow-trend-down'"
+									viewBox="0 0 24 14"
+									aria-hidden="true"
+								>
 									<path d="M1 12.5 L8 5.5 L12 9.5 L21 1.5" />
 									<path d="M15 1.5 L21.5 1.5 L21.5 8" />
 								</svg>

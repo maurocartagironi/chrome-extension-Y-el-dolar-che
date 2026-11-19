@@ -10,16 +10,32 @@
  *   node scripts/preview.mjs --shot --dark # la captura en modo oscuro
  */
 import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { readFile, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, resolve } from 'node:path';
 
 const PORT = 4210;
+const VIRTUAL_TIME_MS = 6000;
+/** El click va cerca del final del presupuesto de tiempo virtual, para que
+ * la captura agarre los estados efímeros (como el toast de copiado). */
+const CLICK_AT_MS = VIRTUAL_TIME_MS - 800;
 const DIST = 'dist';
-const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+/** Se puede forzar con CHROME_BIN; si no, se prueban las rutas habituales. */
+const CHROME_CANDIDATES = [
+	process.env['CHROME_BIN'],
+	'C:/Program Files/Google/Chrome/Application/chrome.exe',
+	'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
+	process.env['LOCALAPPDATA'] && `${process.env['LOCALAPPDATA']}/Google/Chrome/Application/chrome.exe`,
+	'/usr/bin/google-chrome',
+	'/usr/bin/chromium',
+	'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+].filter(Boolean);
 
 const dark = process.argv.includes('--dark');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
+/** Selector a clickear antes de la captura, para ver estados interactivos. */
+const click = (process.argv.find((a) => a.startsWith('--click=')) ?? '--click=').split('=').slice(1).join('=');
 const shot = process.argv.includes('--shot');
 
 const TYPES = {
@@ -60,7 +76,7 @@ window.chrome = {
 					fechaActualizacion: hace3horas,
 					updatedCompra: TREND[i],
 					updatedVenta: TREND[(i + 1) % TREND.length],
-				}))
+				})),
 			)},
 			'exchangerates:lastUpdated': Date.now(),
 		}));
@@ -84,6 +100,14 @@ window.chrome = {
 	action: { setBadgeText: async () => {}, setBadgeBackgroundColor: async () => {}, setTitle: async () => {} },
 	alarms: { get: async () => undefined, create: async () => {} },
 };
+// Permite capturar estados que requieren interacción (clicks).
+if (${JSON.stringify(Boolean(click))}) {
+	setTimeout(() => {
+		const target = document.querySelector(${JSON.stringify(click)});
+		if (target) target.click();
+		else console.warn('preview: no encontré', ${JSON.stringify(click)});
+	}, ${CLICK_AT_MS});
+}
 window.fetch = async () => ({
 	ok: true, status: 200, statusText: 'OK',
 	json: async () => ${JSON.stringify(RATES.map((r) => ({ ...r, fechaActualizacion: hace3horas })))},
@@ -126,15 +150,22 @@ server.listen(PORT, async () => {
 	if (!shot) return;
 
 	// Chrome headless necesita la ruta absoluta para la captura.
-	const out = resolve(`preview${tab ? '-tab' + tab : ''}${dark ? '-dark' : ''}.png`);
+	const chromeBin = CHROME_CANDIDATES.find((candidate) => existsSync(candidate));
+	if (!chromeBin) {
+		console.error('preview: no encontré Chrome. Pasá la ruta en CHROME_BIN.');
+		server.close();
+		return;
+	}
+
+	const out = resolve(`preview${tab ? '-tab' + tab : ''}${click ? '-click' : ''}${dark ? '-dark' : ''}.png`);
 	await rm(out, { force: true });
-	const chrome = spawn(CHROME, [
+	const chrome = spawn(chromeBin, [
 		'--headless=new',
 		'--disable-gpu',
 		'--hide-scrollbars',
 		'--force-device-scale-factor=2',
 		'--window-size=460,760',
-		'--virtual-time-budget=6000',
+		`--virtual-time-budget=${VIRTUAL_TIME_MS}`,
 		`--screenshot=${out}`,
 		target,
 	]);

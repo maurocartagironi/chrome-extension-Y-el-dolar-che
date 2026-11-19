@@ -4,6 +4,7 @@
  * 1. La extensión corre solo en Chromium, que siempre elige woff2. PrimeIcons
  *    empaqueta además eot/ttf/woff/svg (~600 kB muertos en el .zip).
  * 2. El builder emite prerendered-routes.json, que no tiene sentido acá.
+ * 3. `ng test` deja un dist/test-out que no va en el paquete.
  */
 import { readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -15,11 +16,11 @@ const DROP = /^primeicons\.(eot|ttf|woff|svg)$/;
 
 // El builder reescribe las url() a ./media/, así que el patrón acepta cualquier
 // prefijo de ruta y las comillas opcionales que mete el minificador.
-const FONT_FACE =
-	/@font-face\{font-family:primeicons;([^}]*?)src:url\(\s*"?[^")]*primeicons\.eot"?\s*\);src:[^;]*;/;
+const FONT_FACE = /@font-face\{font-family:primeicons;([^}]*?)src:url\(\s*"?[^")]*primeicons\.eot"?\s*\);src:[^;]*;/;
 
-// El builder emite este archivo para prerender, que no aplica a una extensión.
+// Archivos que generan el builder o el runner de tests y que no van al .zip.
 await rm(join(DIST, 'prerendered-routes.json'), { force: true });
+await rm(join(DIST, 'test-out'), { force: true, recursive: true });
 
 const css = await readFile(CSS, 'utf8');
 
@@ -36,11 +37,7 @@ if (!woff2) {
 	process.exit(0);
 }
 
-await writeFile(
-	CSS,
-	css.replace(FONT_FACE, `@font-face{font-family:primeicons;$1src:url("${woff2[1]}") format("woff2");`),
-	'utf8'
-);
+await writeFile(CSS, css.replace(FONT_FACE, `@font-face{font-family:primeicons;$1src:url("${woff2[1]}") format("woff2");`), 'utf8');
 
 let removed = 0;
 for (const dir of [FONT_DIR, DIST]) {

@@ -1,5 +1,5 @@
 // Lo único de terceros que queda es la fuente de iconos.
-@import "primeicons/primeicons.css";
+@import 'primeicons/primeicons.css';
 
 /* ── Paleta ────────────────────────────────────────────────────
    Los colores son los de la versión publicada: el indigo #3949ab como
@@ -80,7 +80,7 @@ html.dark {
 
 body {
 	margin: 0;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 13px;
 	background-color: var(--bg-base);
 	color: var(--text-primary);
@@ -200,7 +200,7 @@ select:focus-visible {
 }
 
 .info-tip::before {
-	content: "";
+	content: '';
 	position: absolute;
 	top: calc(100% + 1px);
 	left: 2px;
