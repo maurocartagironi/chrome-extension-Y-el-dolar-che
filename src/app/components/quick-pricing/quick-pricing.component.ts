@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
@@ -15,6 +15,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 	standalone: true,
 	imports: [CommonModule, FormsModule, InputNumberModule, ResultComponent, NgSelectModule],
 	templateUrl: './quick-pricing.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './quick-pricing.component.scss',
 })
 export class QuickPricingComponent implements OnInit {
@@ -23,6 +24,8 @@ export class QuickPricingComponent implements OnInit {
 	public result: Map<string, string | undefined> = new Map<string, string>();
 	public config: Config = new Config();
 	public currencyConversor: any;
+
+	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	ngOnInit() {
 		this.initialize();
@@ -84,6 +87,9 @@ export class QuickPricingComponent implements OnInit {
 			this.result.set('compra', undefined);
 			this.result.set('venta',  undefined);
 		}
+
+		// Con OnPush hay que marcar la vista: setResult() corre después de un await.
+		this.changeDetector.markForCheck();
 	}
 
 	showTitleResult() {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { evaluateDarkMode, getLocalStorage, setLocalStorage } from '@shared/utils';
@@ -10,10 +10,11 @@ import { ChromeService } from '@shared/utils/chrome.utils';
 	standalone: true,
 	imports: [CommonModule],
 	templateUrl: './header.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-	constructor(private chromeService: ChromeService) {}
+	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
 
 	@Output() refresh = new EventEmitter();
 	currentMode: string = '';
@@ -25,6 +26,8 @@ export class HeaderComponent implements OnInit {
 		this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
 		this.currentMode = this.config.darkMode;
 		this.isDarkMode = evaluateDarkMode(this.currentMode);
+		// Con OnPush hay que marcar la vista: esto corre después de un await.
+		this.changeDetector.markForCheck();
 	}
 
 	async toggleDarkMode() {
@@ -32,6 +35,7 @@ export class HeaderComponent implements OnInit {
 		this.config.darkMode = this.currentMode;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.isDarkMode = evaluateDarkMode(this.currentMode);
+		this.changeDetector.markForCheck();
 		this.refreshData();
 	}
 

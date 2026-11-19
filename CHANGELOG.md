@@ -1,6 +1,6 @@
 # Changelog
 
-## [Sin publicar]
+## [v3.1.0] - 19-11-2026
 
 ### Novedades
 

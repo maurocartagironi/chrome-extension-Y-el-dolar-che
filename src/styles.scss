@@ -1,6 +1,7 @@
-// El tema de PrimeNG (theme.css + primeng.min.css) lo inyecta angular.json:
-// importarlo acá también duplicaba ~170 kB de CSS en el bundle.
-@import "@ng-select/ng-select/themes/default.theme.css";
+// Los temas de terceros los inyecta angular.json, en este orden:
+//   ng-select -> PrimeNG theme -> PrimeNG core -> este archivo.
+// Importarlos acá además duplicaba ~170 kB de CSS, y el orden importa:
+// ng-select tiene que ir ANTES de PrimeNG para que la cascada no cambie.
 @import "primeicons/primeicons.css";
 
 /* ── Design tokens ─────────────────────────────────────────── */

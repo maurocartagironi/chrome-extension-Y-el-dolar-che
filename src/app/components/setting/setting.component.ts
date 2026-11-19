@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
@@ -16,10 +16,11 @@ import { TooltipModule } from 'primeng/tooltip';
 	standalone: true,
 	imports: [CommonModule, FormsModule, NgSelectModule, BadgeModule, TooltipModule],
 	templateUrl: './setting.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './setting.component.scss',
 })
 export class SettingComponent implements OnInit {
-	constructor(private chromeService: ChromeService) {}
+	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
 
 	@Input() exchangeRateList: ExchangeRate[] = [];
 	public picklistCurrency: any[] = [];
@@ -63,6 +64,8 @@ export class SettingComponent implements OnInit {
 		this.quickConversionIsHidden = this.config.hiddenConversionSection;
 		this.badgeBackgroundColor = this.config.badgeBackgroundColor;
 		this.defaultTab = this.tabs[this.config.defaultTab];
+		// Con OnPush hay que marcar la vista: esto corre después de un await.
+		this.changeDetector.markForCheck();
 	}
 
 	refreshData() {

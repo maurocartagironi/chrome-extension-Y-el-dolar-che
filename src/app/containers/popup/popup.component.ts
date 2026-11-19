@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 
 import { LOCALSTORAGE_CONFIG, LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
@@ -13,6 +13,7 @@ import { LegalTermsComponent } from 'src/app/components/legalterms/legalterms.co
 @Component({
 	selector: 'app-popup',
 	templateUrl: './popup.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
@@ -32,7 +33,11 @@ export class PopupComponent implements OnInit {
 
 	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
 
-	constructor(public dolarApiService: DolarAPIService, public chromeService: ChromeService) {}
+	constructor(
+		public dolarApiService: DolarAPIService,
+		public chromeService: ChromeService,
+		private changeDetector: ChangeDetectorRef
+	) {}
 
 	ngOnInit() {
 		this.getData();
@@ -60,12 +65,16 @@ export class PopupComponent implements OnInit {
 			this.loading = false;
 			this.hasError = false;
 			this.activeIndex = !this.tab ? this.config.defaultTab : this.tab;
+			// Con OnPush hay que marcar la vista: esto corre después de un await.
+			this.changeDetector.markForCheck();
 		} catch (error: any) {
 			// Un AbortError significa que ya salió un pedido más nuevo: ese actualiza la vista.
 			if (error?.name === 'AbortError') return;
 			this.loading = false;
 			this.hasError = true;
 			this.errorMessage = error?.message ?? this.chromeService.getMessage('error_general_title');
+			// Con OnPush hay que marcar la vista: esto corre después de un await.
+			this.changeDetector.markForCheck();
 		}
 	}
 

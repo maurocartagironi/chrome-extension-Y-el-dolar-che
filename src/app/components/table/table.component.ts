@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 
 @Component({
@@ -7,12 +7,15 @@ import { ExchangeRate } from '@shared/models/ExchangeRate';
 	standalone: true,
 	imports: [CommonModule],
 	templateUrl: './table.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './table.component.scss',
 })
 export class TableComponent {
 	@Input() exchangeRates: ExchangeRate[] = [];
 	copiedText = '';
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
+
+	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	trackByCasa(_index: number, rate: ExchangeRate): string {
 		return rate.casa;
@@ -33,7 +36,15 @@ export class TableComponent {
 		});
 		navigator.clipboard.writeText(formatted);
 		this.copiedText = `${this.toCurrencyPesos(value)} copiado`;
+		this.scheduleToastHide();
+	}
+
+	private scheduleToastHide(): void {
 		if (this.toastTimer) clearTimeout(this.toastTimer);
-		this.toastTimer = setTimeout(() => (this.copiedText = ''), 2000);
+		this.toastTimer = setTimeout(() => {
+			this.copiedText = '';
+			// Con OnPush el timeout no dispara change detection por sí solo.
+			this.changeDetector.markForCheck();
+		}, 2000);
 	}
 }

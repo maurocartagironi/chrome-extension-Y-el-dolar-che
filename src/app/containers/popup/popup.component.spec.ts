@@ -38,6 +38,31 @@ describe('PopupComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	// Con OnPush, si getData() no marcara la vista, el popup quedaría en el
+	// skeleton de carga para siempre.
+	it('pinta las cotizaciones en el DOM al terminar de cargar', async () => {
+		fixture.detectChanges();
+
+		await component.getData(true);
+		fixture.detectChanges();
+
+		expect(fixture.nativeElement.querySelector('.skeleton-wrapper')).toBeNull();
+		expect(fixture.nativeElement.querySelector('app-table')).not.toBeNull();
+		expect(fixture.nativeElement.textContent).toContain('Dólar libre');
+	});
+
+	it('muestra la tarjeta de error en el DOM si falla', async () => {
+		fixture.detectChanges();
+		(window.fetch as jasmine.Spy).and.rejectWith(new Error('sin red'));
+
+		await component.getData(true);
+		fixture.detectChanges();
+
+		const card = fixture.nativeElement.querySelector('.error-card');
+		expect(card).not.toBeNull();
+		expect(card.textContent).toContain('No se pudo obtener la cotización');
+	});
+
 	it('carga las cotizaciones y sale del estado de carga', async () => {
 		await component.getData(true);
 
