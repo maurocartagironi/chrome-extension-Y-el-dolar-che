@@ -29,7 +29,7 @@ export class QuickPricingComponent implements OnInit {
 	}
 
 	private async initialize() {
-		this.config = (await getLocalStorage(LOCALSTORAGE_CONFIG)) as Config;
+		this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
 		this.picklistCurrency = this.exchangeRateList.flatMap((e) => [
 			{ label: e.nombre + ' a pesos', value: e.casa + '-ars' },
 			{ label: 'Pesos a ' + e.nombre, value: 'ars-' + e.casa },

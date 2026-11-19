@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-	production: false,
+	production: true,
 	defaultBadgeExchangeRateType: 'blue', // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"
 	defaultBadgeExchangeRateAction: 'buy', // "buy" | "sell"
 	defaultTooltipExchangeRateType: 'blue', // "blue" | "oficial" | "bolsa" | "contadoconliqui" | "mayorista" | "cripto" | "tarjeta"

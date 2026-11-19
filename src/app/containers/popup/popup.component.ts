@@ -25,11 +25,14 @@ export class PopupComponent implements OnInit {
 	public loading: boolean = true;
 	public hasError: boolean = false;
 	public errorMessage: string = '';
+	public isDarkMode: boolean = false;
 	public activeIndex: number = 0;
 	public tab: any;
 	public currentTab = this.config.defaultTab;
 
-	constructor(public dolarApiService: DolarAPIService, public backgroundHelper: BackgroundHelper, public chromeService: ChromeService) {}
+	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
+
+	constructor(public dolarApiService: DolarAPIService, public chromeService: ChromeService) {}
 
 	ngOnInit() {
 		this.getData();
@@ -40,12 +43,10 @@ export class PopupComponent implements OnInit {
 			if (!this.tab) {
 				this.loading = true;
 			}
-			const savedConfig = await getLocalStorage(LOCALSTORAGE_CONFIG);
-			if (savedConfig) {
-				this.config = savedConfig;
-			}
+			// Rehidratar con el constructor: lo guardado puede ser de una versión con menos campos.
+			this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
 
-			evaluateDarkMode(this.config.darkMode);
+			this.isDarkMode = evaluateDarkMode(this.config.darkMode);
 
 			const oldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
 			const servicesExchangeRates = await this.dolarApiService.getAll(forceRefresh);
@@ -60,9 +61,11 @@ export class PopupComponent implements OnInit {
 			this.hasError = false;
 			this.activeIndex = !this.tab ? this.config.defaultTab : this.tab;
 		} catch (error: any) {
+			// Un AbortError significa que ya salió un pedido más nuevo: ese actualiza la vista.
+			if (error?.name === 'AbortError') return;
 			this.loading = false;
 			this.hasError = true;
-			this.errorMessage = error.message;
+			this.errorMessage = error?.message ?? this.chromeService.getMessage('error_general_title');
 		}
 	}
 
@@ -84,63 +87,35 @@ export class PopupComponent implements OnInit {
 		return this.chromeService.getMessage(key);
 	}
 
-	getDarkModeClass(darkMode: string) {
-		if (darkMode === 'auto') {
-			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : '';
-		} else {
-			return darkMode === 'dark' ? 'dark' : '';
-		}
-	}
-
 	async updateExchangeRates(exchangeRatesOld: ExchangeRate[], exchangeRatesNew: ExchangeRate[]) {
-		if (exchangeRatesOld === undefined) {
+		if (!exchangeRatesOld?.length) {
 			this.exchangeRates = exchangeRatesNew;
 			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);
 			return;
 		}
 
-		let exchangeRatesUpdated: ExchangeRate[] = exchangeRatesNew.map((exchangeRate) => {
-			const oldExchange = exchangeRatesOld.find((e: any) => e.casa === exchangeRate.casa);
+		this.exchangeRates = exchangeRatesNew.map((exchangeRate) => {
+			const oldExchange = exchangeRatesOld.find((e) => e.casa === exchangeRate.casa);
+			if (!oldExchange) return exchangeRate;
+			if (oldExchange.fechaActualizacion === exchangeRate.fechaActualizacion) return oldExchange;
 
-			if (oldExchange) {
-				if (oldExchange.fechaActualizacion !== exchangeRate.fechaActualizacion) {
-					let updatedCompra = oldExchange.updatedCompra;
-					let updatedVenta = oldExchange.updatedVenta;
-
-					if (oldExchange.compra < exchangeRate.compra) {
-						updatedCompra = 'arrow-trend-up';
-					} else if (oldExchange.compra > exchangeRate.compra) {
-						updatedCompra = 'arrow-trend-down';
-					} else {
-						updatedCompra = '';
-					}
-
-					if (oldExchange.venta < exchangeRate.venta) {
-						updatedVenta = 'arrow-trend-up';
-					} else if (oldExchange.venta > exchangeRate.venta) {
-						updatedVenta = 'arrow-trend-down';
-					} else {
-						updatedVenta = '';
-					}
-
-					return new ExchangeRate(
-						exchangeRate.casa,
-						exchangeRate.nombre,
-						exchangeRate.compra,
-						exchangeRate.venta,
-						exchangeRate.fechaActualizacion,
-						updatedCompra,
-						updatedVenta
-					);
-				} else {
-					return oldExchange;
-				}
-			}
-
-			return exchangeRate;
+			return new ExchangeRate(
+				exchangeRate.casa,
+				exchangeRate.nombre,
+				exchangeRate.compra,
+				exchangeRate.venta,
+				exchangeRate.fechaActualizacion,
+				this.trendIcon(oldExchange.compra, exchangeRate.compra),
+				this.trendIcon(oldExchange.venta, exchangeRate.venta)
+			);
 		});
 
-		this.exchangeRates = exchangeRatesUpdated;
 		await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);
+	}
+
+	private trendIcon(previous: number, current: number): string {
+		if (previous < current) return 'arrow-trend-up';
+		if (previous > current) return 'arrow-trend-down';
+		return '';
 	}
 }

@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { LOCALSTORAGE_EXCHANGERATES, LOCALSTORAGE_LAST_UPDATED } from '@shared/constants/storage.constant';
+import { LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
-import { getLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
-import { ENDPOINT } from 'src/app/shared/constants/api.constant';
+import { getLastUpdated, getLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
+import { ENDPOINT } from '@shared/constants/api.constant';
 
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutos
+const REQUEST_TIMEOUT_MS = 8 * 1000; // 8 segundos
 
-@Injectable({
-	providedIn: 'root',
-})
+/**
+ * Sin `@Injectable`: este servicio también corre en el service worker y el
+ * decorador arrastraría @angular/core al bundle del background.
+ * Se provee a mano en PopupModule.
+ */
 export class DolarAPIService {
 	private abortController: AbortController | null = null;
-
-	constructor() {}
 
 	async getAll(forceRefresh = false): Promise<ExchangeRate[]> {
 		if (!forceRefresh) {
@@ -21,44 +21,70 @@ export class DolarAPIService {
 		}
 
 		this.abortController?.abort();
-		this.abortController = new AbortController();
+		const controller = new AbortController();
+		this.abortController = controller;
+		const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
 		try {
-			const response = await fetch(ENDPOINT, { signal: this.abortController.signal });
+			const response = await fetch(ENDPOINT, { signal: controller.signal });
 			if (!response.ok) {
 				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 			}
-			const data: ExchangeRate[] = await response.json();
-			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, data);
-			return data;
+			const rates = this.parseRates(await response.json());
+			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, rates);
+			return rates;
 		} catch (error: any) {
-			if (error.name === 'AbortError') {
+			if (error?.name === 'AbortError') {
 				throw error;
 			}
 			const fallback = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
-			if (fallback) return fallback;
-			throw new Error(`<p>No se pudo obtener la cotización.</p><p>${error.message}</p>`);
+			if (fallback?.length) return fallback;
+			throw new Error(`No se pudo obtener la cotización.\n${error?.message ?? error}`);
+		} finally {
+			clearTimeout(timeout);
+			if (this.abortController === controller) {
+				this.abortController = null;
+			}
 		}
 	}
 
-	async getByType(type: string): Promise<ExchangeRate> {
-		try {
-			const response = await fetch(`${ENDPOINT}/${type}`);
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-			}
-			return await response.json() as ExchangeRate;
-		} catch (error: any) {
-			throw new Error(`<p>No se pudo obtener la cotización (${type}).</p><p>${error.message}</p>`);
+	/** Descarta lo que no tenga la forma esperada: la respuesta es data de terceros. */
+	private parseRates(payload: unknown): ExchangeRate[] {
+		if (!Array.isArray(payload)) {
+			throw new Error('La respuesta de la API no tiene el formato esperado.');
 		}
+
+		const rates = payload
+			.filter(
+				(item: any) =>
+					!!item &&
+					typeof item.casa === 'string' &&
+					Number.isFinite(Number(item.compra)) &&
+					Number.isFinite(Number(item.venta))
+			)
+			.map(
+				(item: any) =>
+					new ExchangeRate(
+						item.casa,
+						typeof item.nombre === 'string' ? item.nombre : item.casa,
+						Number(item.compra),
+						Number(item.venta),
+						item.fechaActualizacion
+					)
+			);
+
+		if (!rates.length) {
+			throw new Error('La respuesta de la API no trajo cotizaciones válidas.');
+		}
+
+		return rates;
 	}
 
 	private async getCachedRates(): Promise<ExchangeRate[] | null> {
-		const lastUpdated = await getLocalStorage(LOCALSTORAGE_LAST_UPDATED);
+		const lastUpdated = await getLastUpdated(LOCALSTORAGE_EXCHANGERATES);
 		if (!lastUpdated) return null;
-		const age = Date.now() - Number(lastUpdated);
-		if (age > CACHE_TTL_MS) return null;
+		if (Date.now() - lastUpdated > CACHE_TTL_MS) return null;
 		const cached = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
-		return cached ?? null;
+		return cached?.length ? cached : null;
 	}
 }

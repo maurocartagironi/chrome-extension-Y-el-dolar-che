@@ -1,18 +1,19 @@
 {
-	"name": "app",
-	"version": "0.0.0",
+	"name": "y-el-dolar-che",
+	"version": "3.0.1",
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
-		"build": "ng build --delete-output-path",
+		"build": "ng build --delete-output-path && npm run postbuild",
 		"watch": "ng build --delete-output-path --watch --configuration development",
 		"test": "ng test",
-		"lint": "ng lint"
+		"lint": "ng lint",
+		"package": "npm run build && powershell -NoProfile -Command \"Compress-Archive -Path dist/* -DestinationPath dist.zip -Force\"",
+		"postbuild": "node scripts/prune-fonts.mjs"
 	},
 	"private": true,
 	"dependencies": {
 		"@angular/animations": "^17.3.4",
-		"@angular/cdk": "^17.3.4",
 		"@angular/common": "^17.3.4",
 		"@angular/compiler": "^17.3.4",
 		"@angular/core": "^17.3.4",
@@ -20,16 +21,11 @@
 		"@angular/platform-browser": "^17.3.4",
 		"@angular/platform-browser-dynamic": "^17.3.4",
 		"@angular/router": "^17.3.4",
-		"@fortawesome/angular-fontawesome": "^0.14.1",
-		"@fortawesome/fontawesome-free": "^6.5.2",
 		"@ng-select/ng-select": "^12.0.7",
-		"http-proxy-middleware": "^2.0.8",
-		"ngx-color-picker": "^12.0.1",
 		"primeicons": "^7.0.0",
 		"primeng": "^17.13.0",
 		"rxjs": "^7.8.1",
 		"tslib": "^2.3.0",
-		"undici": "^6.21.1",
 		"zone.js": "~0.14.4"
 	},
 	"devDependencies": {
@@ -46,7 +42,6 @@
 		"@types/jasmine": "~4.0.0",
 		"@typescript-eslint/eslint-plugin": "5.27.1",
 		"@typescript-eslint/parser": "5.27.1",
-		"@vitejs/plugin-basic-ssl": "^2.0.0",
 		"esbuild": "^0.25.2",
 		"eslint": "^8.17.0",
 		"jasmine-core": "~4.1.0",
@@ -57,7 +52,6 @@
 		"karma-jasmine-html-reporter": "~1.7.0",
 		"prettier": "2.7.1",
 		"typescript": "~5.4.5",
-		"vite": "^6.3.2",
 		"webpack": "^5.94.0"
 	}
 }

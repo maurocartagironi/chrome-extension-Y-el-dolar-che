@@ -1,89 +1,89 @@
-import { Injectable } from '@angular/core';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
-import { BinanceP2PService } from '@shared/services/binance-p2p.service';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
 import { calculateTimeDifference, formatCurrency } from '@shared/utils/general.utils';
-import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
-import { environment } from 'src/environments/environment';
+import { getLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
 
-@Injectable({
-	providedIn: 'root',
-})
+export const ALARM_NAME = 'dolar-refresh';
+
+/**
+ * Lógica que corre en el service worker. A propósito sin `@Injectable`:
+ * ese decorador arrastra todo @angular/core al bundle del background.
+ */
 export class BackgroundHelper {
-	public badgeExchangeRate: ExchangeRate = new ExchangeRate();
-	public tooltipExchangeRate: ExchangeRate = new ExchangeRate();
+	public badgeExchangeRate: ExchangeRate | undefined;
+	public tooltipExchangeRate: ExchangeRate | undefined;
 	public config: Config = new Config();
 	public dolarApiService: DolarAPIService = new DolarAPIService();
-	public binanceP2PService: BinanceP2PService = new BinanceP2PService();
 	public exchangeRateList: ExchangeRate[] = [];
 
-	constructor() {}
-
 	public async init(): Promise<void> {
-		try {
-			const existing = await chrome.alarms.get('dolar-refresh');
-			if (!existing) {
-				chrome.alarms.create('dolar-refresh', {
-					periodInMinutes: environment.defaultAlarmPeriodInMinutes,
-				});
-			}
-			await this.refreshData();
-		} catch (e: any) {
-			chrome.action.setTitle({
-				title: e.message.replace(/<p>/g, '').replace(/<\/p>/g, '\n'),
+		await this.loadConfig();
+
+		const existing = await chrome.alarms.get(ALARM_NAME);
+		if (!existing) {
+			await chrome.alarms.create(ALARM_NAME, {
+				periodInMinutes: this.config.alarmPeriodInMinutes,
 			});
-			removeLocalStorage(LOCALSTORAGE_CONFIG);
 		}
+
+		await this.refreshData();
 	}
 
+	/** Desde la alarma o el arranque del browser: siempre pide datos nuevos. */
 	public async refreshData(): Promise<void> {
-		const config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-		if (config) {
-			this.config = config;
-		} else {
-			await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		}
-
-		this.exchangeRateList = await this.dolarApiService.getAll();
-		await this.binanceP2PService.get();
+		await this.loadConfig();
+		this.exchangeRateList = await this.dolarApiService.getAll(true);
 		await this.setBadgeAndTooltip();
 	}
 
 	public async setBadgeAndTooltip(exchangeRates?: ExchangeRate[]): Promise<void> {
-		if (exchangeRates) {
+		if (exchangeRates?.length) {
 			this.exchangeRateList = exchangeRates;
 		}
 
-		const config = await getLocalStorage(LOCALSTORAGE_CONFIG);
-		if (config) {
-			this.config = config;
-		}
+		await this.loadConfig();
 
-		this.badgeExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType)
-			?? this.exchangeRateList[0];
-		this.tooltipExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.tooltipExchangeRateType)
-			?? this.exchangeRateList[0];
+		this.badgeExchangeRate =
+			this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType) ?? this.exchangeRateList[0];
+		this.tooltipExchangeRate =
+			this.exchangeRateList.find((value) => value.casa === this.config.tooltipExchangeRateType) ?? this.exchangeRateList[0];
 
 		if (!this.badgeExchangeRate || !this.tooltipExchangeRate) return;
 
-		const badgeValue = this.config.badgeExchangeRateAction === 'sell'
-			? this.badgeExchangeRate.venta
-			: this.badgeExchangeRate.compra;
+		const badgeValue =
+			this.config.badgeExchangeRateAction === 'sell' ? this.badgeExchangeRate.venta : this.badgeExchangeRate.compra;
 
-		chrome.action.setBadgeText({ text: badgeValue.toString() });
-		chrome.action.setBadgeBackgroundColor({ color: this.config.badgeBackgroundColor.toString() });
-		const title = await this.generateTooltip();
-		chrome.action.setTitle({ title });
+		// El badge muestra ~4 caracteres: redondear evita que se corte en "1480.5".
+		await chrome.action.setBadgeText({ text: Math.round(badgeValue).toString() });
+		await chrome.action.setBadgeBackgroundColor({ color: this.config.badgeBackgroundColor });
+		await chrome.action.setTitle({ title: this.generateTooltip() });
 	}
 
-	private async generateTooltip(): Promise<string> {
+	/** Muestra el error en el tooltip del icono, sin tocar la config guardada. */
+	public async showError(error: unknown): Promise<void> {
+		const message = error instanceof Error ? error.message : String(error);
+		await chrome.action.setBadgeText({ text: '!' });
+		await chrome.action.setTitle({ title: message });
+	}
+
+	private async loadConfig(): Promise<void> {
+		const saved = await getLocalStorage(LOCALSTORAGE_CONFIG);
+		// Rehidratar con el constructor rellena los campos que una versión previa no guardó.
+		this.config = new Config(saved ?? {});
+		if (!saved) {
+			await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		}
+	}
+
+	private generateTooltip(): string {
+		if (!this.tooltipExchangeRate) return '';
 		const sinceDate = calculateTimeDifference(this.tooltipExchangeRate.fechaActualizacion);
 		return chrome.i18n.getMessage('tooltip', [
 			this.tooltipExchangeRate.nombre,
-			formatCurrency(this.tooltipExchangeRate.compra.toString()).toString(),
-			formatCurrency(this.tooltipExchangeRate.venta.toString()).toString(),
+			formatCurrency(this.tooltipExchangeRate.compra),
+			formatCurrency(this.tooltipExchangeRate.venta),
 			sinceDate,
 		]);
 	}

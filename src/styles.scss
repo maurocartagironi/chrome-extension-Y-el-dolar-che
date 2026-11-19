@@ -1,6 +1,6 @@
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+// El tema de PrimeNG (theme.css + primeng.min.css) lo inyecta angular.json:
+// importarlo acá también duplicaba ~170 kB de CSS en el bundle.
+@import "@ng-select/ng-select/themes/default.theme.css";
 @import "primeicons/primeicons.css";
 
 /* ── Design tokens ─────────────────────────────────────────── */

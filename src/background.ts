@@ -1,23 +1,27 @@
-import { BackgroundHelper } from '@shared/helpers/background.helper';
+import { ALARM_NAME, BackgroundHelper } from '@shared/helpers/background.helper';
 
-// Inicializador
-chrome.runtime.onInstalled.addListener(initializeExtension);
+// Al instalar o actualizar: crea la alarma y trae los datos.
+chrome.runtime.onInstalled.addListener(() => void run((helper) => helper.init()));
 
-// Cada {periodInMinutes} minutos se ejecuta este método para que actualice los datos
+// Al arrancar el browser: el badge no sobrevive al reinicio, hay que repintarlo.
+chrome.runtime.onStartup.addListener(() => void run((helper) => helper.init()));
+
+// Cada {alarmPeriodInMinutes} minutos se actualizan los datos.
 chrome.alarms.onAlarm.addListener((alarm) => {
-	if (alarm.name === 'dolar-refresh') {
-		refreshData();
+	if (alarm.name === ALARM_NAME) {
+		void run((helper) => helper.refreshData());
 	}
 });
 
-// Función de inicialización de la extensión
-function initializeExtension(): void {
-	const backgroundHelper = new BackgroundHelper();
-	backgroundHelper.init();
-}
-
-// Función para actualizar los datos
-function refreshData(): void {
-	const backgroundHelper = new BackgroundHelper();
-	backgroundHelper.refreshData();
+/**
+ * Corre una tarea del background atrapando los errores: una promise rechazada
+ * acá mata la actualización del badge y queda como unhandled rejection.
+ */
+async function run(task: (helper: BackgroundHelper) => Promise<void>): Promise<void> {
+	const helper = new BackgroundHelper();
+	try {
+		await task(helper);
+	} catch (error) {
+		await helper.showError(error).catch(() => undefined);
+	}
 }

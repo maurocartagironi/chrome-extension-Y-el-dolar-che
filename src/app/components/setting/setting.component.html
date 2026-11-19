@@ -7,7 +7,7 @@
 
 			<!-- Badge Exchange Rate -->
 			<div class="option-item">
-				<label for="badgeExchangeRate">
+				<label for="badgeExchangeRateType">
 					{{ getChromeMessage("label_badge_exchange_rate_opt") }}
 					<p-badge
 						value="ℹ️"
@@ -17,7 +17,7 @@
 				</label>
 				<ng-select
 					*ngIf="picklistCurrency.length > 0"
-					id="dropdown-input"
+					labelForId="badgeExchangeRateType"
 					[searchable]="false"
 					[placeholder]="'Seleccionar una moneda'"
 					[clearable]="false"
@@ -32,7 +32,7 @@
 
 			<!-- Badge Buy/Sell -->
 			<div class="option-item">
-				<label for="buySell">
+				<label for="toggle">
 					{{ getChromeMessage("label_badge_buy_sell_opt") }}
 					<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_badge_buy_sell_desc') }}" tooltipPosition="bottom"></p-badge>
 				</label>
@@ -73,7 +73,7 @@
 				</h3>
 
 				<div class="option-item">
-					<label for="tooltipExchangeRate">
+					<label for="tooltipExchangeRateType">
 						{{ getChromeMessage("label_tooltip_exchange_rate_opt") }}
 						<p-badge
 							value="ℹ️"
@@ -83,7 +83,7 @@
 					</label>
 					<ng-select
 						*ngIf="picklistCurrencyTooltip.length > 0"
-						id="dropdown-input"
+						labelForId="tooltipExchangeRateType"
 						[searchable]="false"
 						[placeholder]="'Seleccionar una moneda'"
 						[clearable]="false"
@@ -103,7 +103,7 @@
 					{{ getChromeMessage("label_group_conversor") }}
 				</h3>
 				<div class="option-item">
-					<label for="hideConversor">
+					<label for="toggleHideConversor">
 						{{ getChromeMessage("label_hide_conversor_opt") }}
 						<p-badge
 							value="ℹ️"
@@ -130,13 +130,13 @@
 					{{ getChromeMessage("label_group_tab") }}
 				</h3>
 				<div class="option-item">
-					<label for="hideConversor">
+					<label for="defaultTab">
 						{{ getChromeMessage("label_default_tab_opt") }}
 						<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_default_tab_desc') }}" tooltipPosition="bottom"></p-badge>
 					</label>
 					<ng-select
 						*ngIf="tabs.length > 0"
-						id="dropdown-input"
+						labelForId="defaultTab"
 						[searchable]="false"
 						[placeholder]="'Seleccionar una tab'"
 						[clearable]="false"
@@ -152,7 +152,7 @@
 
 			<!-- Link -->
 			<div class="link-container">
-				<a href="https://www.buymeacoffee.com/mauropitu" target="_blank">
+				<a href="https://www.buymeacoffee.com/mauropitu" target="_blank" rel="noopener noreferrer">
 					<img src="/assets/img/buymeacoffee.png" alt="Buy me a coffee" class="bmac-img" />
 				</a>
 			</div>

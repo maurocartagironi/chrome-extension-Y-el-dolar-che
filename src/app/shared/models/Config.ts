@@ -9,7 +9,6 @@ export interface ConfigOptions {
 	badgeBackgroundColor?: string;
 	hiddenConversionSection?: boolean;
 	darkMode?: string;
-	hasError?: boolean;
 	valueConversor?: number;
 	defaultTab?: number;
 }
@@ -25,7 +24,6 @@ export class Config {
 	public hiddenConversionSection: boolean;
 	public defaultTab: number;
 	public darkMode: string;
-	public hasError: boolean;
 
 	constructor(opts: ConfigOptions = {}) {
 		this.badgeExchangeRateType = opts.badgeExchangeRateType ?? environment.defaultBadgeExchangeRateType;
@@ -38,6 +36,5 @@ export class Config {
 		this.hiddenConversionSection = opts.hiddenConversionSection ?? environment.defaultHiddenConversionSection;
 		this.darkMode = opts.darkMode ?? environment.defaultDarkMode;
 		this.defaultTab = opts.defaultTab ?? environment.defaultTab;
-		this.hasError = opts.hasError ?? false;
 	}
 }

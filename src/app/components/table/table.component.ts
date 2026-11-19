@@ -14,6 +14,10 @@ export class TableComponent {
 	copiedText = '';
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
+	trackByCasa(_index: number, rate: ExchangeRate): string {
+		return rate.casa;
+	}
+
 	toCurrencyPesos(value: number): string {
 		return new Intl.NumberFormat('es-AR', {
 			style: 'currency',

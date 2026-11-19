@@ -10,9 +10,9 @@ export class TargetGuard {
 
 	canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const target = route.queryParams['target'];
-		if (['popup', 'options'].includes(target)) {
+		if (target === 'popup') {
 			document.body.classList.add(target);
-			this.router.navigate([`/${target}`]);
+			this.router.navigate(['/popup']);
 			return false;
 		}
 		return true;

@@ -41,7 +41,8 @@ export class SettingComponent implements OnInit {
 	}
 
 	private async initialize() {
-		this.config = (await getLocalStorage(LOCALSTORAGE_CONFIG)) as Config;
+		// Rehidratar con el constructor: lo guardado puede ser de una versión con menos campos.
+		this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
 
 		this.tabs = [
 			{ label: this.chromeService.getMessage('label_quotations'), value: 0 },
@@ -68,40 +69,45 @@ export class SettingComponent implements OnInit {
 		this.onRefresh.emit(2);
 	}
 
-	onSelectChange() {
+	/** Repinta badge y tooltip con la lista que ya tiene el componente. */
+	private applyBadge(): void {
+		void this.backgroundHelper.setBadgeAndTooltip(this.exchangeRateList);
+	}
+
+	async onSelectChange() {
 		this.config.badgeExchangeRateType = this.badgeExchangeRateType.value;
-		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.backgroundHelper.setBadgeAndTooltip();
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		this.applyBadge();
 	}
 
-	onSelectChangeTooltip() {
+	async onSelectChangeTooltip() {
 		this.config.tooltipExchangeRateType = this.tooltipExchangeRateType.value;
-		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.backgroundHelper.setBadgeAndTooltip();
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		this.applyBadge();
 	}
 
-	onCheckSellOrBuy(e: any) {
+	async onCheckSellOrBuy(e: any) {
 		this.config.badgeExchangeRateAction = e.target?.checked ? 'sell' : 'buy';
-		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.backgroundHelper.setBadgeAndTooltip();
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		this.applyBadge();
 	}
 
-	setBackgroundColor(e: any) {
+	async setBackgroundColor(e: any) {
 		this.config.badgeBackgroundColor = e.target?.value;
-		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.backgroundHelper.setBadgeAndTooltip();
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		this.applyBadge();
 	}
 
-	hideQuickConversion(e: any) {
+	async hideQuickConversion(e: any) {
 		this.config.hiddenConversionSection = e.target?.checked;
-		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.backgroundHelper.setBadgeAndTooltip();
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		this.applyBadge();
 		this.refreshData();
 	}
 
-	onSelectTab(e: any) {
+	async onSelectTab(e: any) {
 		this.config.defaultTab = e.value;
-		setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 	}
 
 	getChromeMessage(key: string): string {

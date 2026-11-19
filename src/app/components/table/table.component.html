@@ -1,5 +1,5 @@
 <div class="rates-list">
-	<div class="rate-card" *ngFor="let rate of exchangeRates">
+	<div class="rate-card" *ngFor="let rate of exchangeRates; trackBy: trackByCasa">
 		<div class="rate-name">{{ rate.nombre }}</div>
 		<div class="rate-prices">
 			<button
