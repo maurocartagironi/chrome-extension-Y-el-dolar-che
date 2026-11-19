@@ -27,6 +27,6 @@
 	},
 	"default_locale": "es",
 	"background": {
-		"service_worker": "background_runtime.js"
+		"service_worker": "background.js"
 	}
 }

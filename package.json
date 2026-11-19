@@ -4,14 +4,15 @@
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
-		"build": "ng build --delete-output-path && npm run postbuild && npm run check",
+		"build": "ng build --delete-output-path && npm run build:background && npm run postbuild && npm run check",
 		"postbuild": "node scripts/prune-fonts.mjs",
 		"check": "node scripts/check-manifest.mjs",
 		"package": "npm run build && powershell -NoProfile -Command \"Compress-Archive -Path dist/* -DestinationPath dist.zip -Force\"",
 		"watch": "ng build --delete-output-path --watch --configuration development",
 		"test": "ng test",
 		"test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-		"lint": "ng lint"
+		"lint": "ng lint",
+		"build:background": "node scripts/build-background.mjs"
 	},
 	"private": true,
 	"dependencies": {
@@ -28,7 +29,6 @@
 		"zone.js": "~0.14.4"
 	},
 	"devDependencies": {
-		"@angular-builders/custom-webpack": "^17.0.2",
 		"@angular-devkit/build-angular": "^17.3.4",
 		"@angular-eslint/builder": "^17.0.0",
 		"@angular-eslint/eslint-plugin": "^17.0.0",

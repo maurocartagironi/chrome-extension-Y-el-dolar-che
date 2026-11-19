@@ -1,0 +1,9 @@
+/* El service worker se compila con esbuild, fuera del build de Angular. */
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./out-tsc/background",
+		"types": ["chrome"]
+	},
+	"files": ["src/background.ts"]
+}
