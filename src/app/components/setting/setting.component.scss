@@ -111,11 +111,14 @@
 	z-index: 2;
 	transition: opacity var(--transition);
 }
+/* El texto va siempre del lado libre del toggle: con el knob a la izquierda
+   arranca después de él, y con el knob a la derecha termina antes. Con
+   right: 8px el knob le pasaba por encima a "Venta". */
 .toggle-text-left {
 	left: 28px;
 }
 .toggle-text-right {
-	right: 8px;
+	right: 28px;
 	display: none;
 }
 
