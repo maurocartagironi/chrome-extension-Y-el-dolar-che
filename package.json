@@ -12,7 +12,9 @@
 		"test": "ng test",
 		"test:ci": "ng test --watch=false --browsers=ChromeHeadless",
 		"lint": "ng lint",
-		"build:background": "node scripts/build-background.mjs"
+		"build:background": "node scripts/build-background.mjs",
+		"preview": "node scripts/preview.mjs",
+		"preview:shot": "node scripts/preview.mjs --shot"
 	},
 	"private": true,
 	"dependencies": {

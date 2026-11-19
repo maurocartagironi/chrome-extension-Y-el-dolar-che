@@ -8,3 +8,6 @@ dist/
 .angular/
 
 dist.zip
+
+# Capturas del preview
+preview*.png

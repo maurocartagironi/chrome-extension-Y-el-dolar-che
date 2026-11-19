@@ -1,110 +1,133 @@
 #container {
-	width: 370px;
+	width: 420px;
 	min-height: 420px;
 	background-color: var(--bg-base);
 	color: var(--text-primary);
-	padding: 12px 14px 14px;
+	padding: 14px;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 12px;
 	position: relative;
-	transition: background-color var(--transition), color var(--transition);
+	transition:
+		background-color var(--transition),
+		color var(--transition);
 }
 
-/* ── Tab bar ───────────────────────────────────────────────── */
+/* ── Tabs ──────────────────────────────────────────────────────
+   Subrayadas, como la versión publicada: el activo en indigo con una
+   barra abajo, y una línea fina que cruza todo el ancho. */
 .tab-bar {
 	display: flex;
-	gap: 4px;
-	background: var(--bg-surface);
-	border: 1px solid var(--border);
-	border-radius: var(--radius);
-	padding: 3px;
+	align-items: stretch;
+	gap: 8px;
+	border-bottom: 1px solid var(--border);
 }
 
 .tab-btn {
-	flex: 1;
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	gap: 5px;
-	padding: 6px 8px;
-	border: none;
-	border-radius: var(--radius-sm);
+	gap: 7px;
+	padding: 10px 14px;
+	border: 0;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -1px;
 	background: transparent;
 	color: var(--text-secondary);
-	font-size: 12px;
-	font-weight: 500;
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
 	cursor: pointer;
-	transition: background var(--transition), color var(--transition);
 	white-space: nowrap;
+	transition:
+		color var(--transition),
+		border-color var(--transition);
 }
 
-.tab-btn i { font-size: 13px; }
+.tab-btn i {
+	font-size: 14px;
+}
 
 .tab-btn.active {
-	background: var(--bg-base);
 	color: var(--accent);
-	box-shadow: var(--shadow);
+	border-bottom-color: var(--accent);
 }
 
 .tab-btn:not(.active):hover {
-	background: var(--bg-surface-hover);
 	color: var(--text-primary);
 }
 
-/* ── Tab content ───────────────────────────────────────────── */
-.content { display: flex; flex-direction: column; gap: 10px; }
-.tab-panel { display: flex; flex-direction: column; gap: 8px; }
+.settings-tab {
+	padding-left: 12px;
+	padding-right: 12px;
+}
 
-/* ── Footer bar ────────────────────────────────────────────── */
+/* ── Contenido ─────────────────────────────────────────────── */
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.tab-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+/* ── Barra de última actualización ─────────────────────────── */
 .footer-bar {
 	display: flex;
 	align-items: center;
-	gap: 5px;
-	color: var(--text-muted);
-	font-size: 11px;
-	padding: 4px 2px 0;
+	gap: 8px;
+	background: var(--accent);
+	color: var(--accent-contrast);
+	border-radius: var(--radius-sm);
+	padding: 10px 14px;
+	font-size: 12px;
+	font-weight: 500;
 }
 
-.footer-bar i { font-size: 11px; }
+.footer-bar i {
+	font-size: 13px;
+}
 
-.legal-link {
-	margin-left: auto;
-	color: var(--text-muted);
+/* ── Términos y condiciones ────────────────────────────────── */
+.legal-terms {
+	text-align: right;
+}
+
+.legal-terms a {
+	color: var(--accent);
 	font-size: 10px;
-	font-weight: 500;
+	font-weight: 700;
 	cursor: pointer;
 	text-decoration: none;
 	transition: color var(--transition);
 }
-.legal-link:hover { color: var(--accent); }
 
-/* ── Skeleton loader ───────────────────────────────────────── */
+.legal-terms a:hover {
+	color: var(--accent-hover);
+}
+
+/* ── Skeleton ──────────────────────────────────────────────── */
 .skeleton-wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 12px;
 }
 
 .skeleton-tabs {
 	display: flex;
-	gap: 4px;
+	gap: 8px;
 }
 
 .tab-sk {
-	height: 32px;
+	height: 34px;
 	flex: 1;
-	border-radius: var(--radius-sm);
-}
-
-.skeleton-cards {
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
 }
 
 .card-sk {
-	height: 50px;
+	height: 330px;
 	border-radius: var(--radius);
 }
 
@@ -113,17 +136,20 @@
 	display: flex;
 	align-items: flex-start;
 	gap: 10px;
-	background: rgba(239, 68, 68, 0.08);
-	border: 1px solid rgba(239, 68, 68, 0.2);
-	border-radius: var(--radius);
+	background: var(--up-bg);
+	border-radius: var(--radius-sm);
 	padding: 12px 14px;
 	color: var(--up);
 	font-size: 12px;
 }
 
-.error-card i { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-.error-card p { margin: 0; }
-.error-card .error-text { white-space: pre-line; }
+.error-card i {
+	font-size: 15px;
+	flex-shrink: 0;
+	margin-top: 1px;
+}
 
-/* Los controles ahora son nativos y toman los tokens directo, así que no
-   hacen falta overrides por tema. */
+.error-card .error-text {
+	white-space: pre-line;
+	line-height: 1.5;
+}

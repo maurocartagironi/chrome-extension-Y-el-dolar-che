@@ -1,89 +1,93 @@
-.rates-list {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-}
-
-.rate-card {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 8px 12px;
-	background: var(--bg-card);
+.rates-table {
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
-	transition: background var(--transition);
+	overflow: hidden;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--bg-base);
+}
+
+thead th {
+	background: var(--table-head-bg);
+	color: var(--accent);
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	text-align: left;
+	padding: 12px 14px;
+	white-space: nowrap;
+}
+
+tbody td {
+	padding: 10px 14px;
+	border-top: 1px solid var(--border);
+	vertical-align: middle;
 }
 
 .rate-name {
-	font-size: 12px;
-	font-weight: 600;
 	color: var(--text-primary);
-	flex: 1;
+	font-weight: 500;
+	font-size: 12.5px;
+	line-height: 1.3;
 }
 
-.rate-prices {
-	display: flex;
-	gap: 5px;
-}
-
+/* ── Chip de precio ────────────────────────────────────────── */
+/* Es un botón porque al click copia el valor, pero se ve como la etiqueta
+   de siempre: sin borde, sin fondo de botón. */
 .price-chip {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	gap: 1px;
-	padding: 5px 8px;
-	border: 1px solid var(--border);
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 10px;
+	border: 0;
 	border-radius: var(--radius-sm);
-	background: var(--bg-surface);
-	color: var(--text-primary);
+	font-family: inherit;
+	font-size: 12.5px;
+	font-weight: 600;
+	line-height: 1.2;
+	white-space: nowrap;
 	cursor: pointer;
-	min-width: 82px;
-	text-align: right;
-	transition: background var(--transition), border-color var(--transition), transform 150ms ease;
-	position: relative;
+	transition:
+		filter var(--transition),
+		box-shadow var(--transition);
 }
 
 .price-chip:hover {
-	background: var(--bg-surface-hover);
-	border-color: var(--accent);
-	transform: translateY(-1px);
-}
-.price-chip:active { transform: translateY(0); }
-
-.price-label {
-	font-size: 9px;
-	font-weight: 500;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	color: var(--text-muted);
-	line-height: 1;
+	filter: brightness(0.97);
+	box-shadow: var(--shadow);
 }
 
-.price-value {
-	font-size: 12px;
-	font-weight: 600;
-	line-height: 1.2;
-}
-
-.trend-icon {
-	position: absolute;
-	top: 4px;
-	left: 5px;
-	font-size: 8px;
-}
-
-/* Trend states */
 .price-chip.up {
 	background: var(--up-bg);
-	border-color: rgba(239, 68, 68, 0.2);
+	color: var(--up);
 }
-.price-chip.up .price-value,
-.price-chip.up .trend-icon { color: var(--up); }
 
 .price-chip.down {
 	background: var(--down-bg);
-	border-color: rgba(16, 185, 129, 0.2);
+	color: var(--down);
 }
-.price-chip.down .price-value,
-.price-chip.down .trend-icon { color: var(--down); }
+
+.price-chip.neutral {
+	background: var(--neutral-bg);
+	color: var(--neutral);
+}
+
+/* Flecha de tendencia dibujada a mano: sube, y se espeja para la baja. */
+.trend-icon {
+	width: 13px;
+	height: 9px;
+	flex-shrink: 0;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.trend-icon.down {
+	transform: scaleY(-1);
+}

@@ -9,11 +9,7 @@
 				<div class="skeleton tab-sk"></div>
 				<div class="skeleton tab-sk"></div>
 			</div>
-			<div class="skeleton-cards">
-				@for (i of [1, 2, 3, 4, 5]; track i) {
-					<div class="skeleton card-sk"></div>
-				}
-			</div>
+			<div class="skeleton card-sk"></div>
 		</div>
 	}
 
@@ -34,6 +30,7 @@
 				<button
 					class="tab-btn settings-tab"
 					[class.active]="activeIndex === settingsTabIndex"
+					[title]="getChromeMessage('label_settings')"
 					(click)="activeIndex = settingsTabIndex; onTabChange(settingsTabIndex)"
 				>
 					<i class="pi pi-cog"></i>
@@ -50,9 +47,9 @@
 							<div class="footer-bar">
 								<i class="pi pi-clock"></i>
 								<span>{{ lastUpdated }}</span>
-								<a class="legal-link" (click)="legalTerms.openModal()">
-									{{ getChromeMessage("legal_terms_title") }}
-								</a>
+							</div>
+							<div class="legal-terms">
+								<a (click)="legalTerms.openModal()">{{ getChromeMessage("legal_terms_title") }}</a>
 							</div>
 						</div>
 					}
@@ -80,7 +77,7 @@
 	<!-- Error -->
 	@if (!loading && hasError) {
 		<div class="error-card">
-			<i class="pi pi-exclamation-circle"></i>
+			<i class="pi pi-exclamation-triangle"></i>
 			<div class="error-text">{{ errorMessage }}</div>
 		</div>
 	}

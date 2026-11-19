@@ -1,43 +1,42 @@
-<div class="rates-list">
-	@for (rate of exchangeRates; track rate.casa) {
-		<div class="rate-card">
-			<div class="rate-name">{{ rate.nombre }}</div>
-			<div class="rate-prices">
-				<button
-					class="price-chip"
-					[class.up]="rate.updatedCompra === 'arrow-trend-up'"
-					[class.down]="rate.updatedCompra === 'arrow-trend-down'"
-					(click)="copyPrice(rate.compra)"
-					title="Copiar precio de compra"
-				>
-					<span class="price-label">Compra</span>
-					<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
-					@if (rate.updatedCompra === "arrow-trend-up") {
-						<i class="pi pi-arrow-up trend-icon"></i>
-					}
-					@if (rate.updatedCompra === "arrow-trend-down") {
-						<i class="pi pi-arrow-down trend-icon"></i>
-					}
-				</button>
-				<button
-					class="price-chip"
-					[class.up]="rate.updatedVenta === 'arrow-trend-up'"
-					[class.down]="rate.updatedVenta === 'arrow-trend-down'"
-					(click)="copyPrice(rate.venta)"
-					title="Copiar precio de venta"
-				>
-					<span class="price-label">Venta</span>
-					<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
-					@if (rate.updatedVenta === "arrow-trend-up") {
-						<i class="pi pi-arrow-up trend-icon"></i>
-					}
-					@if (rate.updatedVenta === "arrow-trend-down") {
-						<i class="pi pi-arrow-down trend-icon"></i>
-					}
-				</button>
-			</div>
-		</div>
-	}
+<div class="rates-table">
+	<table>
+		<thead>
+			<tr>
+				<th>Moneda</th>
+				<th>Compra</th>
+				<th>Venta</th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (rate of exchangeRates; track rate.casa) {
+				<tr>
+					<td class="rate-name">{{ rate.nombre }}</td>
+					<td>
+						<button class="price-chip" [ngClass]="trendClass(rate.updatedCompra)" (click)="copyPrice(rate.compra)" title="Copiar precio de compra">
+							<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
+							@if (rate.updatedCompra) {
+								<svg class="trend-icon" [class.down]="rate.updatedCompra === 'arrow-trend-down'" viewBox="0 0 24 14" aria-hidden="true">
+									<path d="M1 12.5 L8 5.5 L12 9.5 L21 1.5" />
+									<path d="M15 1.5 L21.5 1.5 L21.5 8" />
+								</svg>
+							}
+						</button>
+					</td>
+					<td>
+						<button class="price-chip" [ngClass]="trendClass(rate.updatedVenta)" (click)="copyPrice(rate.venta)" title="Copiar precio de venta">
+							<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
+							@if (rate.updatedVenta) {
+								<svg class="trend-icon" [class.down]="rate.updatedVenta === 'arrow-trend-down'" viewBox="0 0 24 14" aria-hidden="true">
+									<path d="M1 12.5 L8 5.5 L12 9.5 L21 1.5" />
+									<path d="M15 1.5 L21.5 1.5 L21.5 8" />
+								</svg>
+							}
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>
 
 <div class="toast-notification" [class.show]="copiedText">{{ copiedText }}</div>

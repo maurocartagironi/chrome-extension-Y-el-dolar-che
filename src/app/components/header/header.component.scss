@@ -2,18 +2,17 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding-bottom: 8px;
-	border-bottom: 1px solid var(--border);
 }
 
 .logo img {
-	height: 24px;
-	width: auto;
+	width: 75px;
+	height: auto;
 	display: block;
 }
 
 .actions {
 	display: flex;
+	align-items: center;
 	gap: 2px;
 }
 
@@ -26,14 +25,18 @@
 	border: none;
 	border-radius: var(--radius-sm);
 	background: transparent;
-	color: var(--text-secondary);
+	color: var(--accent);
 	cursor: pointer;
-	transition: background var(--transition), color var(--transition);
+	transition:
+		background var(--transition),
+		color var(--transition);
 }
 
-.icon-btn i { font-size: 14px; }
+.icon-btn i {
+	font-size: 15px;
+}
 
 .icon-btn:hover {
-	background: var(--bg-surface-hover);
-	color: var(--text-primary);
+	background: var(--accent-light);
+	color: var(--accent-hover);
 }

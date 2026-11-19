@@ -30,6 +30,8 @@ Después, en `chrome://extensions/`: activar el modo de desarrollador, "Cargar d
 | `npm run build` | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest. |
 | `npm run watch` | Build de desarrollo en modo watch (el popup). |
 | `npm run build:background` | Compila solo el service worker con esbuild. |
+| `npm run preview` | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal. |
+| `npm run preview:shot` | Lo mismo pero saca una captura a `preview.png`. Acepta `--dark` y `--tab=1|2`. |
 | `npm test` | Tests unitarios en modo watch (Karma + Jasmine). |
 | `npm run test:ci` | Los mismos tests una sola vez, en Chrome headless. |
 | `npm run lint` | ESLint sobre `.ts` y templates. |
@@ -40,6 +42,7 @@ Puntos a tener en cuenta al tocar el código:
 - **El service worker tiene que quedar sin Angular.** `BackgroundHelper` y `DolarAPIService` no llevan `@Injectable` a propósito: ese decorador arrastra todo `@angular/core` al bundle del background y lo lleva de ~5 kB a ~140 kB. Si hacen falta en DI, se proveen a mano en el módulo que los use.
 - **El background se compila aparte**, con `scripts/build-background.mjs` (esbuild), no con el builder de Angular. Ojo: esbuild no aplica el `fileReplacements` de `angular.json`, así que el script hace el alias al `environment.prod.ts` a mano.
 - **La config se rehidrata con `new Config(guardado ?? {})`**, nunca con un cast. Así los campos que una versión anterior no guardó toman su valor por defecto en vez de quedar en `undefined`.
+- **Para ver un cambio visual no hace falta empaquetar la extensión.** `npm run preview` levanta el popup en un browser normal con chrome.* stubbeado y datos de ejemplo (con las tres tendencias, para ver los tres colores de chip). Con `--shot` saca la captura directo.
 - **No hay librería de componentes.** Los selects, el input de monto y los tooltips de ayuda son HTML nativo estilado con los design tokens de `styles.scss`. Lo único de terceros en la UI es la fuente de iconos (`primeicons`). Antes de sumar una librería por un componente, conviene medir: PrimeNG y ng-select costaban 1,3 MB empaquetados para tres widgets.
 - **El tema de los controles nativos sale de `color-scheme`.** `:root { color-scheme: light }` y `html.dark { color-scheme: dark }` hacen que el desplegable de los `<select>`, el input de color y las scrollbars sigan el modo oscuro sin CSS extra.
 - **Sin `baseUrl` en el tsconfig.** TypeScript 6 lo deprecó, así que los alias (`@shared/*`, `@containers/*`, `src/*`) están en `paths` con rutas relativas al tsconfig. Si agregás un alias nuevo, va ahí.

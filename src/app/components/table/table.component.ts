@@ -1,9 +1,10 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 
 @Component({
 	selector: 'app-table',
-	imports: [],
+	imports: [NgClass],
 	templateUrl: './table.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './table.component.scss',
@@ -14,6 +15,13 @@ export class TableComponent {
 	@Input() exchangeRates: ExchangeRate[] = [];
 	copiedText = '';
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
+
+	/** El color del chip: rojo si subió, verde si bajó, gris si no cambió. */
+	trendClass(trend: string): string {
+		if (trend === 'arrow-trend-up') return 'up';
+		if (trend === 'arrow-trend-down') return 'down';
+		return 'neutral';
+	}
 
 	toCurrencyPesos(value: number): string {
 		return new Intl.NumberFormat('es-AR', {
