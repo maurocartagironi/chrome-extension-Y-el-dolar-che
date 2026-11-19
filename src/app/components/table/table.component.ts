@@ -3,12 +3,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@a
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 
 @Component({
-	selector: 'app-table',
-	standalone: true,
-	imports: [CommonModule],
-	templateUrl: './table.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	styleUrl: './table.component.scss',
+    selector: 'app-table',
+    imports: [CommonModule],
+    templateUrl: './table.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './table.component.scss'
 })
 export class TableComponent {
 	@Input() exchangeRates: ExchangeRate[] = [];

@@ -14,12 +14,11 @@ interface Option<T> {
 }
 
 @Component({
-	selector: 'app-setting',
-	standalone: true,
-	imports: [CommonModule, FormsModule],
-	templateUrl: './setting.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	styleUrl: './setting.component.scss',
+    selector: 'app-setting',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './setting.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './setting.component.scss'
 })
 export class SettingComponent implements OnInit {
 	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}

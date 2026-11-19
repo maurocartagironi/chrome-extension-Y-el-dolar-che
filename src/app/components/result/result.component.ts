@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 
 @Component({
-	selector: 'app-result',
-	standalone: true,
-	imports: [CommonModule],
-	templateUrl: './result.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	styleUrl: './result.component.scss',
+    selector: 'app-result',
+    imports: [CommonModule],
+    templateUrl: './result.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './result.component.scss'
 })
 export class ResultComponent {
 	@Input() compra: string | undefined;

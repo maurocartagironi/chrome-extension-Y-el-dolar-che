@@ -1,20 +1,19 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
 
-@Injectable({
-	providedIn: 'root',
-})
-export class TargetGuard {
-	constructor(private router: Router) {}
+/**
+ * El popup y la página de opciones comparten el mismo index.html y se
+ * distinguen por el query param `target`.
+ */
+export const targetGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
+	const router = inject(Router);
+	const target = route.queryParams['target'];
 
-	canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		const target = route.queryParams['target'];
-		if (target === 'popup') {
-			document.body.classList.add(target);
-			this.router.navigate(['/popup']);
-			return false;
-		}
-		return true;
+	if (target === 'popup') {
+		document.body.classList.add(target);
+		router.navigate(['/popup']);
+		return false;
 	}
-}
+
+	return true;
+};

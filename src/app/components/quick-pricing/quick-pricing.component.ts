@@ -14,12 +14,11 @@ interface CurrencyOption {
 }
 
 @Component({
-	selector: 'app-quick-pricing',
-	standalone: true,
-	imports: [CommonModule, FormsModule, ResultComponent],
-	templateUrl: './quick-pricing.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	styleUrl: './quick-pricing.component.scss',
+    selector: 'app-quick-pricing',
+    imports: [CommonModule, FormsModule, ResultComponent],
+    templateUrl: './quick-pricing.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './quick-pricing.component.scss'
 })
 export class QuickPricingComponent implements OnInit {
 	@Input() exchangeRateList: ExchangeRate[] = [];

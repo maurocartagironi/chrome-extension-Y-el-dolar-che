@@ -6,12 +6,11 @@ import { evaluateDarkMode, getLocalStorage, setLocalStorage } from '@shared/util
 import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
-	selector: 'app-header',
-	standalone: true,
-	imports: [CommonModule],
-	templateUrl: './header.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	styleUrl: './header.component.scss',
+    selector: 'app-header',
+    imports: [CommonModule],
+    templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
 	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
