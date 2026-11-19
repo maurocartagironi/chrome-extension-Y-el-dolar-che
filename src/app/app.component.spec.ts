@@ -10,22 +10,14 @@ describe('AppComponent', () => {
 		}).compileComponents();
 	});
 
-	it('should create the app', () => {
+	it('se crea', () => {
 		const fixture = TestBed.createComponent(AppComponent);
-		const app = fixture.componentInstance;
-		expect(app).toBeTruthy();
+		expect(fixture.componentInstance).toBeTruthy();
 	});
 
-	it(`should have as title 'app'`, () => {
-		const fixture = TestBed.createComponent(AppComponent);
-		const app = fixture.componentInstance;
-		expect(app.title).toEqual('app');
-	});
-
-	it('should render title', () => {
+	it('renderiza el router-outlet', () => {
 		const fixture = TestBed.createComponent(AppComponent);
 		fixture.detectChanges();
-		const compiled = fixture.nativeElement as HTMLElement;
-		expect(compiled.querySelector('.content span')?.textContent).toContain('app app is running!');
+		expect((fixture.nativeElement as HTMLElement).querySelector('router-outlet')).not.toBeNull();
 	});
 });

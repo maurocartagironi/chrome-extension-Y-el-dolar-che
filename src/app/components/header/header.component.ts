@@ -15,7 +15,7 @@ import { ChromeService } from '@shared/utils/chrome.utils';
 export class HeaderComponent implements OnInit {
 	constructor(private chromeService: ChromeService) {}
 
-	@Output() onRefresh = new EventEmitter();
+	@Output() refresh = new EventEmitter();
 	currentMode: string = '';
 	isDarkMode: boolean = false;
 	hoveredIcon: string | null = null;
@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
 	}
 
 	refreshData() {
-		this.onRefresh.emit();
+		this.refresh.emit();
 	}
 
 	getChromeMessage(key: string): string {

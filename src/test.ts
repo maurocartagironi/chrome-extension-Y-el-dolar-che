@@ -6,3 +6,9 @@ import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@ang
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+
+// `chrome` no existe en el browser de Karma: se instala el doble antes de cada test.
+import { installChromeMock, uninstallChromeMock } from './testing/chrome-mock';
+
+beforeEach(() => installChromeMock());
+afterEach(() => uninstallChromeMock());

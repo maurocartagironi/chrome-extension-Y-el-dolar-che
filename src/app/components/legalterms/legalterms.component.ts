@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
-	selector: 'legal-terms',
+	selector: 'app-legal-terms',
 	templateUrl: './legalterms.component.html',
 	imports: [CommonModule],
 	styleUrls: ['./legalterms.component.scss'],

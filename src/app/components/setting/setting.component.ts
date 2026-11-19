@@ -34,7 +34,7 @@ export class SettingComponent implements OnInit {
 	public tabs: any[] = [];
 	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
 
-	@Output() onRefresh = new EventEmitter();
+	@Output() refresh = new EventEmitter();
 
 	ngOnInit() {
 		this.initialize();
@@ -66,7 +66,7 @@ export class SettingComponent implements OnInit {
 	}
 
 	refreshData() {
-		this.onRefresh.emit(2);
+		this.refresh.emit(2);
 	}
 
 	/** Repinta badge y tooltip con la lista que ya tiene el componente. */

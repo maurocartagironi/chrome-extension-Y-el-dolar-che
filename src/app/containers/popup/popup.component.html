@@ -1,6 +1,6 @@
 <div id="container" [class.dark]="isDarkMode">
 
-	<app-header (onRefresh)="refreshData(currentTab, true)"></app-header>
+	<app-header (refresh)="refreshData(currentTab, true)"></app-header>
 
 	<!-- Skeleton loader -->
 	<div class="skeleton-wrapper" *ngIf="loading">
@@ -73,7 +73,7 @@
 				<app-setting
 					*ngIf="exchangeRates.length > 0"
 					[exchangeRateList]="exchangeRates"
-					(onRefresh)="refreshData($event)"
+					(refresh)="refreshData($event)"
 				></app-setting>
 			</div>
 
@@ -86,5 +86,5 @@
 		<div class="error-text">{{ errorMessage }}</div>
 	</div>
 
-	<legal-terms #legalTerms></legal-terms>
+	<app-legal-terms #legalTerms></app-legal-terms>
 </div>
