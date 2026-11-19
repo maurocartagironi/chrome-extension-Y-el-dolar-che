@@ -23,10 +23,12 @@ export class BackgroundHelper {
 
 	public async init(): Promise<void> {
 		try {
-			chrome.alarms.create({
-				periodInMinutes: environment.defaultAlarmPeriodInMinutes,
-			});
-			this.exchangeRateList = await this.dolarApiService.getAll();
+			const existing = await chrome.alarms.get('dolar-refresh');
+			if (!existing) {
+				chrome.alarms.create('dolar-refresh', {
+					periodInMinutes: environment.defaultAlarmPeriodInMinutes,
+				});
+			}
 			await this.refreshData();
 		} catch (e: any) {
 			chrome.action.setTitle({
@@ -53,18 +55,25 @@ export class BackgroundHelper {
 		if (exchangeRates) {
 			this.exchangeRateList = exchangeRates;
 		}
-		this.badgeExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType)!;
-		this.tooltipExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.tooltipExchangeRateType)!;
 
-		chrome.action.setBadgeText({
-			text:
-				this.config.badgeExchangeRateAction === 'sell'
-					? this.badgeExchangeRate.venta.toString()
-					: this.badgeExchangeRate.compra.toString(),
-		});
-		chrome.action.setBadgeBackgroundColor({
-			color: this.config.badgeBackgroundColor.toString(),
-		});
+		const config = await getLocalStorage(LOCALSTORAGE_CONFIG);
+		if (config) {
+			this.config = config;
+		}
+
+		this.badgeExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType)
+			?? this.exchangeRateList[0];
+		this.tooltipExchangeRate = this.exchangeRateList.find((value) => value.casa === this.config.tooltipExchangeRateType)
+			?? this.exchangeRateList[0];
+
+		if (!this.badgeExchangeRate || !this.tooltipExchangeRate) return;
+
+		const badgeValue = this.config.badgeExchangeRateAction === 'sell'
+			? this.badgeExchangeRate.venta
+			: this.badgeExchangeRate.compra;
+
+		chrome.action.setBadgeText({ text: badgeValue.toString() });
+		chrome.action.setBadgeBackgroundColor({ color: this.config.badgeBackgroundColor.toString() });
 		const title = await this.generateTooltip();
 		chrome.action.setTitle({ title });
 	}

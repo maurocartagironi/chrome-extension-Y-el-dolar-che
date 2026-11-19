@@ -1,31 +1,28 @@
 <div class="header">
-	<div [className]="isDarkMode ? 'dark logo' : 'logo'">
-		<img *ngIf="!isDarkMode" src="/assets/img/logo.png" alt="" />
-		<img *ngIf="isDarkMode" src="/assets/img/logo-dark.png" alt="" />
+	<div class="logo">
+		<img *ngIf="!isDarkMode" src="/assets/img/logo.png" alt="Y el dólar che" />
+		<img *ngIf="isDarkMode"  src="/assets/img/logo-dark.png" alt="Y el dólar che" />
 	</div>
-	<div class="buttons">
-		<p-button
-			[text]="true"
-			pTooltip="{{
-				currentMode === 'auto'
-					? getChromeMessage('label_darkmode')
-					: currentMode === 'dark'
-					? getChromeMessage('label_lightmode')
-					: getChromeMessage('label_automode')
-			}}"
-			tooltipPosition="left"
-			[icon]="hoveredIcon || getIcon()"
+	<div class="actions">
+		<button
+			class="icon-btn"
+			[title]="currentMode === 'auto'
+				? getChromeMessage('label_darkmode')
+				: currentMode === 'dark'
+				? getChromeMessage('label_lightmode')
+				: getChromeMessage('label_automode')"
 			(click)="toggleDarkMode()"
 			(mouseenter)="onMouseEnter()"
 			(mouseleave)="onMouseLeave()"
-		></p-button>
-
-		<p-button
-			[text]="true"
-			pTooltip="{{ getChromeMessage('label_refresh') }}"
-			tooltipPosition="left"
-			icon="pi pi-refresh"
+		>
+			<i [class]="hoveredIcon || getIcon()"></i>
+		</button>
+		<button
+			class="icon-btn"
+			[title]="getChromeMessage('label_refresh')"
 			(click)="refreshData()"
-		></p-button>
+		>
+			<i class="pi pi-refresh"></i>
+		</button>
 	</div>
 </div>

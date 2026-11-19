@@ -40,11 +40,8 @@ export class BinanceP2PService {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
-			const data = await response.json();
-			console.log('data', data);
-			return data;
+			return await response.json();
 		} catch (error: any) {
-			console.error(error);
 			throw new Error('Error en la solicitud a Binance');
 		}
 	}

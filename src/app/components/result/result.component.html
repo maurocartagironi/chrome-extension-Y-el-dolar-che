@@ -1,58 +1,14 @@
-<div>
-	<div class="result-content">
-		<p-panel [toggleable]="false">
-			<ng-template pTemplate="header">
-				<div class="flex align-items-center gap-2">
-					<i class="pi pi-info-circle"></i>
-					<span class="font-bold">Compra</span>
-				</div>
-			</ng-template>
-			<div class="panel-content">
-				<span class="m-0 bold">
-					{{ compra }}
-				</span>
-				<div class="flex flex-wrap align-items-center justify-content-between gap-3">
-					<div class="flex align-items-center gap-2">
-						<p-button
-							icon="pi pi-clipboard"
-							severity="secondary"
-							pTooltip="Copiar al portapapeles"
-							tooltipPosition="left"
-							[outlined]="true"
-							[size]="'small'"
-							(click)="copyToClipboard('compra')"
-						/>
-					</div>
-				</div>
-			</div>
-		</p-panel>
-		<p-panel [toggleable]="false">
-			<p-toast key="myKey" position="bottom-center" />
-			<ng-template pTemplate="header">
-				<div class="flex align-items-center gap-2">
-					<i class="pi pi-info-circle"></i>
-					<span class="font-bold">Venta</span>
-				</div>
-			</ng-template>
-			<div class="panel-content">
-				<span class="m-0 bold">
-					{{ venta }}
-				</span>
-				<div class="flex flex-wrap align-items-center justify-content-between gap-3">
-					<div class="flex align-items-center gap-2">
-						<p-button
-							pRipple
-							icon="pi pi-clipboard"
-							severity="secondary"
-							pTooltip="Copiar al portapapeles"
-							tooltipPosition="left"
-							[outlined]="true"
-							[size]="'small'"
-							(click)="copyToClipboard('venta')"
-						/>
-					</div>
-				</div>
-			</div>
-		</p-panel>
-	</div>
+<div class="result-grid">
+	<button class="result-card" (click)="copyToClipboard('compra')">
+		<span class="result-label">Compra</span>
+		<span class="result-value">{{ compra }}</span>
+		<i class="pi pi-copy copy-icon"></i>
+	</button>
+	<button class="result-card" (click)="copyToClipboard('venta')">
+		<span class="result-label">Venta</span>
+		<span class="result-value">{{ venta }}</span>
+		<i class="pi pi-copy copy-icon"></i>
+	</button>
 </div>
+
+<div class="toast-notification" [class.show]="toastVisible">¡Copiado!</div>

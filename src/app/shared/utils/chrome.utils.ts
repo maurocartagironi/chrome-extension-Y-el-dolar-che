@@ -6,7 +6,7 @@ declare const chrome: any;
 	providedIn: 'root',
 })
 export class ChromeService {
-	getMessage(key: string): string {
-		return chrome.i18n.getMessage(key);
+	getMessage(key: string, substitutions?: string | string[]): string {
+		return chrome.i18n.getMessage(key, substitutions);
 	}
 }

@@ -25,10 +25,5 @@
 	"background": {
 		"service_worker": "background_runtime.js"
 	},
-	"content_scripts": [
-		{
-			"matches": ["https://dolarapi.com/*"],
-			"js": ["runtime.js"]
-		}
-	]
+	"content_scripts": []
 }

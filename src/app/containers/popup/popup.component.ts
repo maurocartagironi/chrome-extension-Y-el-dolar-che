@@ -16,7 +16,7 @@ import { LegalTermsComponent } from 'src/app/components/legalterms/legalterms.co
 	styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
-	@ViewChild('legal-terms') legalTerms!: LegalTermsComponent;
+	@ViewChild('legalTerms') legalTerms!: LegalTermsComponent;
 
 	public exchangeRates: ExchangeRate[] = [];
 	public lastUpdated: string = '';
@@ -31,27 +31,30 @@ export class PopupComponent implements OnInit {
 
 	constructor(public dolarApiService: DolarAPIService, public backgroundHelper: BackgroundHelper, public chromeService: ChromeService) {}
 
-	async ngOnInit() {
+	ngOnInit() {
 		this.getData();
 	}
 
-	async getData() {
+	async getData(forceRefresh = false) {
 		try {
 			if (!this.tab) {
 				this.loading = true;
 			}
-			this.config = await getLocalStorage(LOCALSTORAGE_CONFIG);
+			const savedConfig = await getLocalStorage(LOCALSTORAGE_CONFIG);
+			if (savedConfig) {
+				this.config = savedConfig;
+			}
 
 			evaluateDarkMode(this.config.darkMode);
 
-			const servicesExchangeRates = await this.dolarApiService.getAll();
-			const OldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
+			const oldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
+			const servicesExchangeRates = await this.dolarApiService.getAll(forceRefresh);
 
-			this.updateExchangeRates(OldExchangeRates, servicesExchangeRates);
+			await this.updateExchangeRates(oldExchangeRates, servicesExchangeRates);
 
-			await this.backgroundHelper.refreshData();
+			await this.backgroundHelper.setBadgeAndTooltip(this.exchangeRates);
 			const lastUpdated = calculateTimeDifference(this.exchangeRates[0].fechaActualizacion);
-			this.lastUpdated = chrome.i18n.getMessage('footer', lastUpdated);
+			this.lastUpdated = this.chromeService.getMessage('footer', lastUpdated);
 			this.realLastUpdated = new Date();
 			this.loading = false;
 			this.hasError = false;
@@ -63,14 +66,18 @@ export class PopupComponent implements OnInit {
 		}
 	}
 
+	get settingsTabIndex(): number {
+		return this.config.hiddenConversionSection ? 1 : 2;
+	}
+
 	onTabChange(event: any) {
 		this.currentTab = event;
 	}
 
-	refreshData(tab?: any) {
+	refreshData(tab?: any, forceRefresh = false) {
 		this.tab = tab;
-		this.getData();
-		this.activeIndex = tab ? tab : 0;
+		this.getData(forceRefresh);
+		this.activeIndex = tab ?? 0;
 	}
 
 	getChromeMessage(key: string): string {
@@ -89,6 +96,7 @@ export class PopupComponent implements OnInit {
 		if (exchangeRatesOld === undefined) {
 			this.exchangeRates = exchangeRatesNew;
 			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);
+			return;
 		}
 
 		let exchangeRatesUpdated: ExchangeRate[] = exchangeRatesNew.map((exchangeRate) => {

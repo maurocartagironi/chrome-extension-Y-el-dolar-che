@@ -1,49 +1,139 @@
-@import "~@fortawesome/fontawesome-free/css/all.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+/* ── Design tokens ─────────────────────────────────────────── */
 :root {
-	--primary-color: #3949ab;
-	--primary-dark-color: #a4aff4;
-	--secondary-color: #6b7280;
-	--secondary-dark-color: #e3e6f7;
-	--third-dark-color: #c5c5c5;
-	--background-color: #e3e6f7;
-	--background-primary-color: #fff;
-	--background-dark-color: #212121;
-	--table-background-dark-color: #444;
-	--label-dark-color: #ccc;
-	--label-dark-background: #3f3f3f;
-}
+	/* surfaces */
+	--bg-base:          #ffffff;
+	--bg-surface:       rgba(0, 0, 0, 0.03);
+	--bg-surface-hover: rgba(0, 0, 0, 0.06);
+	--bg-card:          #f8fafc;
+	--border:           rgba(0, 0, 0, 0.08);
 
-* {
-	font-size: 12px;
-}
+	/* text */
+	--text-primary:   #0f172a;
+	--text-secondary: #64748b;
+	--text-muted:     #94a3b8;
 
-legal-terms p b {
-	font-size: 10px;
-}
+	/* brand */
+	--accent:       #3b82f6;
+	--accent-light: rgba(59, 130, 246, 0.12);
+	--accent-hover: #2563eb;
 
-body {
-	margin: 0;
-	border: 0;
-}
+	/* semantic */
+	--up:         #ef4444;
+	--up-bg:      rgba(239, 68, 68, 0.1);
+	--down:       #10b981;
+	--down-bg:    rgba(16, 185, 129, 0.1);
+	--neutral-bg: rgba(100, 116, 139, 0.1);
 
-html {
-	background-color: var(--background-primary-color);
+	/* misc */
+	--radius:     10px;
+	--radius-sm:  6px;
+	--shadow:     0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+	--transition: 200ms ease;
 }
 
 html.dark {
-	background-color: var(--background-dark-color);
+	--bg-base:          #0f1117;
+	--bg-surface:       rgba(255, 255, 255, 0.05);
+	--bg-surface-hover: rgba(255, 255, 255, 0.09);
+	--bg-card:          rgba(255, 255, 255, 0.06);
+	--border:           rgba(255, 255, 255, 0.09);
+
+	--text-primary:   #f1f5f9;
+	--text-secondary: #94a3b8;
+	--text-muted:     #64748b;
+
+	--accent:       #3b82f6;
+	--accent-light: rgba(59, 130, 246, 0.15);
+	--accent-hover: #60a5fa;
+
+	--up-bg:      rgba(239, 68, 68, 0.15);
+	--down-bg:    rgba(16, 185, 129, 0.15);
+	--neutral-bg: rgba(100, 116, 139, 0.12);
+
+	--shadow: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
 }
 
-button:focus {
-	border-color: inherit;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-}
-.p-message.p-message-error p {
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
 	margin: 0;
+	font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+	font-size: 13px;
+	background-color: var(--bg-base);
+	color: var(--text-primary);
+	-webkit-font-smoothing: antialiased;
+}
+
+html {
+	background-color: var(--bg-base);
+}
+
+/* ── Skeleton animation ─────────────────────────────────────── */
+@keyframes shimmer {
+	0%   { background-position: -400px 0; }
+	100% { background-position: 400px 0; }
+}
+
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		var(--bg-surface) 25%,
+		var(--bg-surface-hover) 50%,
+		var(--bg-surface) 75%
+	);
+	background-size: 800px 100%;
+	animation: shimmer 1.4s infinite;
+	border-radius: var(--radius-sm);
+}
+
+/* ── Toast ──────────────────────────────────────────────────── */
+.toast-notification {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%) translateY(10px);
+	background: var(--text-primary);
+	color: var(--bg-base);
+	padding: 8px 16px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 500;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--transition), transform var(--transition);
+	z-index: 9999;
+	white-space: nowrap;
+}
+.toast-notification.show {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+}
+
+/* ── PrimeNG overrides ──────────────────────────────────────── */
+.p-message.p-message-error p { margin: 0; }
+button:focus { outline: none; box-shadow: none; }
+
+/* ng-select dark mode */
+html.dark .ng-select .ng-select-container {
+	background: var(--bg-card);
+	border-color: var(--border);
+	color: var(--text-primary);
+}
+html.dark .ng-dropdown-panel {
+	background: #1e2230;
+	border-color: var(--border);
+}
+html.dark .ng-dropdown-panel .ng-option {
+	background: #1e2230;
+	color: var(--text-primary);
+}
+html.dark .ng-dropdown-panel .ng-option.ng-option-selected,
+html.dark .ng-dropdown-panel .ng-option:hover {
+	background: var(--bg-surface-hover);
 }

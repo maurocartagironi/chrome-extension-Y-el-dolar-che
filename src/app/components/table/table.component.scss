@@ -1,36 +1,89 @@
-::ng-deep td {
-	padding: 10px;
-}
-::ng-deep tr:last-child td {
-	border-bottom: 0;
-}
-::ng-deep thead {
-	text-transform: uppercase;
-}
-.icon {
-	padding-right: 3px;
-}
-.arrow-trend-up,
-::ng-deep .p-tag-up > span {
-	color: #e97070;
-	background: #ffebee !important;
-}
-.arrow-trend-down,
-::ng-deep .p-tag-down > span {
-	color: #6fb598;
-	background: #e8f5e9 !important;
-}
-::ng-deep .p-tag-default > span {
-	color: #888;
-	background: #ebebeb !important;
+.rates-list {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
 }
 
-// Colors
-::ng-deep .p-datatable .p-datatable-thead > tr > th {
-	background-color: var(--background-color);
-	color: var(--primary-color);
+.rate-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	transition: background var(--transition);
 }
-::ng-deep tr td:first-child {
-	color: rgb(88, 88, 88);
+
+.rate-name {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--text-primary);
+	flex: 1;
+}
+
+.rate-prices {
+	display: flex;
+	gap: 5px;
+}
+
+.price-chip {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 1px;
+	padding: 5px 8px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	background: var(--bg-surface);
+	color: var(--text-primary);
+	cursor: pointer;
+	min-width: 82px;
+	text-align: right;
+	transition: background var(--transition), border-color var(--transition), transform 150ms ease;
+	position: relative;
+}
+
+.price-chip:hover {
+	background: var(--bg-surface-hover);
+	border-color: var(--accent);
+	transform: translateY(-1px);
+}
+.price-chip:active { transform: translateY(0); }
+
+.price-label {
+	font-size: 9px;
 	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--text-muted);
+	line-height: 1;
 }
+
+.price-value {
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.trend-icon {
+	position: absolute;
+	top: 4px;
+	left: 5px;
+	font-size: 8px;
+}
+
+/* Trend states */
+.price-chip.up {
+	background: var(--up-bg);
+	border-color: rgba(239, 68, 68, 0.2);
+}
+.price-chip.up .price-value,
+.price-chip.up .trend-icon { color: var(--up); }
+
+.price-chip.down {
+	background: var(--down-bg);
+	border-color: rgba(16, 185, 129, 0.2);
+}
+.price-chip.down .price-value,
+.price-chip.down .trend-icon { color: var(--down); }

@@ -4,7 +4,11 @@ import { BackgroundHelper } from '@shared/helpers/background.helper';
 chrome.runtime.onInstalled.addListener(initializeExtension);
 
 // Cada {periodInMinutes} minutos se ejecuta este método para que actualice los datos
-chrome.alarms.onAlarm.addListener(refreshData);
+chrome.alarms.onAlarm.addListener((alarm) => {
+	if (alarm.name === 'dolar-refresh') {
+		refreshData();
+	}
+});
 
 // Función de inicialización de la extensión
 function initializeExtension(): void {

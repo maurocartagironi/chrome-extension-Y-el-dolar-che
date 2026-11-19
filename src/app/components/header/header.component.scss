@@ -1,23 +1,39 @@
-.logo img {
-	width: 75px;
-	background-color: #ffff;
-}
-.logo.dark img {
-	background-color: var(--background-dark-color);
-}
-
 .header {
 	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--border);
 }
 
-.buttons {
-	gap: 5px;
+.logo img {
+	height: 24px;
+	width: auto;
+	display: block;
+}
+
+.actions {
+	display: flex;
+	gap: 2px;
+}
+
+.icon-btn {
 	display: flex;
 	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border: none;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--text-secondary);
+	cursor: pointer;
+	transition: background var(--transition), color var(--transition);
 }
-::ng-deep button {
-	padding: 5px;
+
+.icon-btn i { font-size: 14px; }
+
+.icon-btn:hover {
+	background: var(--bg-surface-hover);
+	color: var(--text-primary);
 }

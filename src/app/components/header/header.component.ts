@@ -5,14 +5,10 @@ import { Config } from '@shared/models/Config';
 import { evaluateDarkMode, getLocalStorage, setLocalStorage } from '@shared/utils';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
-import { ButtonModule } from 'primeng/button';
-import { ButtonGroupModule } from 'primeng/buttongroup';
-import { TooltipModule } from 'primeng/tooltip';
-
 @Component({
 	selector: 'app-header',
 	standalone: true,
-	imports: [ButtonModule, ButtonGroupModule, TooltipModule, CommonModule],
+	imports: [CommonModule],
 	templateUrl: './header.component.html',
 	styleUrl: './header.component.scss',
 })
@@ -44,13 +40,7 @@ export class HeaderComponent {
 	}
 
 	onMouseEnter() {
-		if (this.currentMode === 'auto') {
-			this.hoveredIcon = 'pi pi-moon';
-		} else if (this.currentMode === 'dark') {
-			this.hoveredIcon = 'pi pi-sun';
-		} else {
-			this.hoveredIcon = 'pi pi-globe';
-		}
+		this.hoveredIcon = this.currentMode === 'auto' ? 'pi pi-moon' : this.currentMode === 'dark' ? 'pi pi-sun' : 'pi pi-globe';
 	}
 
 	onMouseLeave() {

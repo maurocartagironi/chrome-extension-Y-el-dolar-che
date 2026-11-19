@@ -1,20 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
-import { PanelModule } from 'primeng/panel';
-import { ButtonModule } from 'primeng/button';
-import { MenuModule } from 'primeng/menu';
-import { TooltipModule } from 'primeng/tooltip';
-
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
-import { RippleModule } from 'primeng/ripple';
-
 @Component({
 	selector: 'app-result',
 	standalone: true,
-	imports: [CommonModule, PanelModule, ButtonModule, MenuModule, TooltipModule, ToastModule, RippleModule],
-	providers: [MessageService],
+	imports: [CommonModule],
 	templateUrl: './result.component.html',
 	styleUrl: './result.component.scss',
 })
@@ -22,23 +12,20 @@ export class ResultComponent {
 	@Input() compra: string | undefined;
 	@Input() venta: string | undefined;
 
-	constructor(private messageService: MessageService) {}
+	toastVisible = false;
+	private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
-	copyToClipboard(currencyType: string) {
-		let text = currencyType === 'compra' ? this.compra : this.venta;
-		let cleanedStr = text?.replace(/[^0-9,]/g, '');
-		cleanedStr = cleanedStr?.replace(',', '.');
-		let number = cleanedStr ? parseFloat(cleanedStr) : 0;
-		let formattedNumber = number.toLocaleString('es-ES', {
-			useGrouping: false,
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 2,
-		});
-		navigator.clipboard.writeText(formattedNumber?.toString() || '');
-		this.messageService.add({
-			key: 'myKey',
-			severity: 'success',
-			detail: currencyType === 'compra' ? 'Se ha copiado el valor de compra' : 'Se ha copiado el valor de venta',
-		});
+	copyToClipboard(type: 'compra' | 'venta') {
+		const raw = type === 'compra' ? this.compra : this.venta;
+		const cleaned = raw?.replace(/[^0-9,]/g, '').replace(',', '.') ?? '';
+		const number = Number.parseFloat(cleaned);
+		if (!Number.isNaN(number)) {
+			navigator.clipboard.writeText(
+				number.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+			);
+		}
+		this.toastVisible = true;
+		if (this.toastTimer) clearTimeout(this.toastTimer);
+		this.toastTimer = setTimeout(() => (this.toastVisible = false), 2000);
 	}
 }
