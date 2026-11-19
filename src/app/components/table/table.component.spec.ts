@@ -40,10 +40,6 @@ describe('TableComponent', () => {
 		expect(segunda.querySelector('.pi-arrow-down')).toBeNull();
 	});
 
-	it('identifica las filas por casa para no redibujar la lista entera', () => {
-		expect(component.trackByCasa(0, RATES[0])).toBe('blue');
-	});
-
 	// Con OnPush, el setTimeout que apaga el toast no repinta solo. Se hace el
 	// click real sobre el chip, que es el camino que usa la extensión.
 	it('muestra el toast al copiar y lo apaga a los 2 segundos', fakeAsync(() => {

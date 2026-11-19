@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 
 @Component({
 	selector: 'app-table',
-	imports: [CommonModule],
+	imports: [],
 	templateUrl: './table.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './table.component.scss',
@@ -15,10 +14,6 @@ export class TableComponent {
 	@Input() exchangeRates: ExchangeRate[] = [];
 	copiedText = '';
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
-
-	trackByCasa(_index: number, rate: ExchangeRate): string {
-		return rate.casa;
-	}
 
 	toCurrencyPesos(value: number): string {
 		return new Intl.NumberFormat('es-AR', {

@@ -1,90 +1,89 @@
 <div id="container" [class.dark]="isDarkMode">
-
 	<app-header (refresh)="refreshData(currentTab, true)"></app-header>
 
 	<!-- Skeleton loader -->
-	<div class="skeleton-wrapper" *ngIf="loading">
-		<div class="skeleton-tabs">
-			<div class="skeleton tab-sk"></div>
-			<div class="skeleton tab-sk"></div>
-			<div class="skeleton tab-sk"></div>
+	@if (loading) {
+		<div class="skeleton-wrapper">
+			<div class="skeleton-tabs">
+				<div class="skeleton tab-sk"></div>
+				<div class="skeleton tab-sk"></div>
+				<div class="skeleton tab-sk"></div>
+			</div>
+			<div class="skeleton-cards">
+				@for (i of [1, 2, 3, 4, 5]; track i) {
+					<div class="skeleton card-sk"></div>
+				}
+			</div>
 		</div>
-		<div class="skeleton-cards">
-			<div class="skeleton card-sk" *ngFor="let i of [1,2,3,4,5]"></div>
-		</div>
-	</div>
+	}
 
 	<!-- Contenido principal -->
-	<div class="content" *ngIf="!loading && !hasError">
-		<div class="tab-bar">
-			<button
-				class="tab-btn"
-				[class.active]="activeIndex === 0"
-				(click)="activeIndex = 0; onTabChange(0)"
-			>
-				<i class="pi pi-chart-line"></i>
-				<span>{{ getChromeMessage('label_quotations') }}</span>
-			</button>
-			<button
-				class="tab-btn"
-				*ngIf="!config.hiddenConversionSection"
-				[class.active]="activeIndex === 1"
-				(click)="activeIndex = 1; onTabChange(1)"
-			>
-				<i class="pi pi-calculator"></i>
-				<span>{{ getChromeMessage('label_quick_pricing') }}</span>
-			</button>
-			<button
-				class="tab-btn settings-tab"
-				[class.active]="activeIndex === settingsTabIndex"
-				(click)="activeIndex = settingsTabIndex; onTabChange(settingsTabIndex)"
-			>
-				<i class="pi pi-cog"></i>
-			</button>
+	@if (!loading && !hasError) {
+		<div class="content">
+			<div class="tab-bar">
+				<button class="tab-btn" [class.active]="activeIndex === 0" (click)="activeIndex = 0; onTabChange(0)">
+					<i class="pi pi-chart-line"></i>
+					<span>{{ getChromeMessage("label_quotations") }}</span>
+				</button>
+				@if (!config.hiddenConversionSection) {
+					<button class="tab-btn" [class.active]="activeIndex === 1" (click)="activeIndex = 1; onTabChange(1)">
+						<i class="pi pi-calculator"></i>
+						<span>{{ getChromeMessage("label_quick_pricing") }}</span>
+					</button>
+				}
+				<button
+					class="tab-btn settings-tab"
+					[class.active]="activeIndex === settingsTabIndex"
+					(click)="activeIndex = settingsTabIndex; onTabChange(settingsTabIndex)"
+				>
+					<i class="pi pi-cog"></i>
+				</button>
+			</div>
+			<div class="tab-content">
+				@switch (activeIndex) {
+					<!-- Tab Cotizaciones -->
+					@case (0) {
+						<div class="tab-panel">
+							@if (exchangeRates.length > 0) {
+								<app-table [exchangeRates]="exchangeRates"></app-table>
+							}
+							<div class="footer-bar">
+								<i class="pi pi-clock"></i>
+								<span>{{ lastUpdated }}</span>
+								<a class="legal-link" (click)="legalTerms.openModal()">
+									{{ getChromeMessage("legal_terms_title") }}
+								</a>
+							</div>
+						</div>
+					}
+					<!-- Tab Calculadora -->
+					@case (1) {
+						<div class="tab-panel">
+							@if (exchangeRates.length > 0) {
+								<app-quick-pricing [exchangeRateList]="exchangeRates"></app-quick-pricing>
+							}
+						</div>
+					}
+					<!-- Tab Settings -->
+					@case (settingsTabIndex) {
+						<div class="tab-panel">
+							@if (exchangeRates.length > 0) {
+								<app-setting [exchangeRateList]="exchangeRates" (refresh)="refreshData($event)"></app-setting>
+							}
+						</div>
+					}
+				}
+			</div>
 		</div>
-
-		<div class="tab-content" [ngSwitch]="activeIndex">
-
-			<!-- Tab Cotizaciones -->
-			<div *ngSwitchCase="0" class="tab-panel">
-				<app-table
-					*ngIf="exchangeRates.length > 0"
-					[exchangeRates]="exchangeRates"
-				></app-table>
-				<div class="footer-bar">
-					<i class="pi pi-clock"></i>
-					<span>{{ lastUpdated }}</span>
-					<a class="legal-link" (click)="legalTerms.openModal()">
-						{{ getChromeMessage('legal_terms_title') }}
-					</a>
-				</div>
-			</div>
-
-			<!-- Tab Calculadora -->
-			<div *ngSwitchCase="1" class="tab-panel">
-				<app-quick-pricing
-					*ngIf="exchangeRates.length > 0"
-					[exchangeRateList]="exchangeRates"
-				></app-quick-pricing>
-			</div>
-
-			<!-- Tab Settings -->
-			<div *ngSwitchCase="settingsTabIndex" class="tab-panel">
-				<app-setting
-					*ngIf="exchangeRates.length > 0"
-					[exchangeRateList]="exchangeRates"
-					(refresh)="refreshData($event)"
-				></app-setting>
-			</div>
-
-		</div>
-	</div>
+	}
 
 	<!-- Error -->
-	<div class="error-card" *ngIf="!loading && hasError">
-		<i class="pi pi-exclamation-circle"></i>
-		<div class="error-text">{{ errorMessage }}</div>
-	</div>
+	@if (!loading && hasError) {
+		<div class="error-card">
+			<i class="pi pi-exclamation-circle"></i>
+			<div class="error-text">{{ errorMessage }}</div>
+		</div>
+	}
 
 	<app-legal-terms #legalTerms></app-legal-terms>
 </div>

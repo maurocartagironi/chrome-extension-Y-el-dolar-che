@@ -10,7 +10,7 @@ import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeService } from '@shared/utils/chrome.utils';
 import { LegalTermsComponent } from 'src/app/components/legalterms/legalterms.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { NgIf, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
+
 import { TableComponent } from '../../components/table/table.component';
 import { QuickPricingComponent } from '../../components/quick-pricing/quick-pricing.component';
 import { SettingComponent } from '../../components/setting/setting.component';
@@ -21,17 +21,7 @@ import { SettingComponent } from '../../components/setting/setting.component';
 	providers: [DolarAPIService],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./popup.component.scss'],
-	imports: [
-		NgIf,
-		NgFor,
-		NgSwitch,
-		NgSwitchCase,
-		HeaderComponent,
-		TableComponent,
-		QuickPricingComponent,
-		SettingComponent,
-		LegalTermsComponent,
-	],
+	imports: [HeaderComponent, TableComponent, QuickPricingComponent, SettingComponent, LegalTermsComponent],
 })
 export class PopupComponent implements OnInit {
 	dolarApiService = inject(DolarAPIService);

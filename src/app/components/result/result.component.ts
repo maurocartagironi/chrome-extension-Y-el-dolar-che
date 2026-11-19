@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 
 @Component({
 	selector: 'app-result',
-	imports: [CommonModule],
+	imports: [],
 	templateUrl: './result.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './result.component.scss',

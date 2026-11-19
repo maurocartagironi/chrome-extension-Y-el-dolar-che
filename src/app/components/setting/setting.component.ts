@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
@@ -15,7 +15,7 @@ interface Option<T> {
 
 @Component({
 	selector: 'app-setting',
-	imports: [CommonModule, FormsModule],
+	imports: [FormsModule],
 	templateUrl: './setting.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './setting.component.scss',
@@ -119,9 +119,5 @@ export class SettingComponent implements OnInit {
 
 	getChromeMessage(key: string): string {
 		return this.chromeService.getMessage(key);
-	}
-
-	trackByValue(_index: number, option: Option<string | number>): string | number {
-		return option.value;
 	}
 }

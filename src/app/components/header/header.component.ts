@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
@@ -7,7 +6,7 @@ import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
 	selector: 'app-header',
-	imports: [CommonModule],
+	imports: [],
 	templateUrl: './header.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './header.component.scss',

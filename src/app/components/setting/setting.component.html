@@ -11,17 +11,20 @@
 					{{ getChromeMessage("label_badge_exchange_rate_opt") }}
 					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_exchange_rate_desc')">ℹ️</span>
 				</label>
-				<select
-					*ngIf="picklistCurrency.length > 0"
-					id="badgeExchangeRateType"
-					class="select-currency"
-					[ngModel]="badgeExchangeRateType"
-					(ngModelChange)="onSelectChange($event)"
-				>
-					<option *ngFor="let option of picklistCurrency; trackBy: trackByValue" [ngValue]="option">
-						{{ option.label }}
-					</option>
-				</select>
+				@if (picklistCurrency.length > 0) {
+					<select
+						id="badgeExchangeRateType"
+						class="select-currency"
+						[ngModel]="badgeExchangeRateType"
+						(ngModelChange)="onSelectChange($event)"
+					>
+						@for (option of picklistCurrency; track option.value) {
+							<option [ngValue]="option">
+								{{ option.label }}
+							</option>
+						}
+					</select>
+				}
 			</div>
 
 			<!-- Badge Buy/Sell -->
@@ -71,17 +74,20 @@
 						{{ getChromeMessage("label_tooltip_exchange_rate_opt") }}
 						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_tooltip_exchange_rate_desc')">ℹ️</span>
 					</label>
-					<select
-						*ngIf="picklistCurrency.length > 0"
-						id="tooltipExchangeRateType"
-						class="select-currency"
-						[ngModel]="tooltipExchangeRateType"
-						(ngModelChange)="onSelectChangeTooltip($event)"
-					>
-						<option *ngFor="let option of picklistCurrency; trackBy: trackByValue" [ngValue]="option">
-							{{ option.label }}
-						</option>
-					</select>
+					@if (picklistCurrency.length > 0) {
+						<select
+							id="tooltipExchangeRateType"
+							class="select-currency"
+							[ngModel]="tooltipExchangeRateType"
+							(ngModelChange)="onSelectChangeTooltip($event)"
+						>
+							@for (option of picklistCurrency; track option.value) {
+								<option [ngValue]="option">
+									{{ option.label }}
+								</option>
+							}
+						</select>
+					}
 				</div>
 			</div>
 
@@ -118,17 +124,15 @@
 						{{ getChromeMessage("label_default_tab_opt") }}
 						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_default_tab_desc')">ℹ️</span>
 					</label>
-					<select
-						*ngIf="tabs.length > 0"
-						id="defaultTab"
-						class="select-tab"
-						[ngModel]="defaultTab"
-						(ngModelChange)="onSelectTab($event)"
-					>
-						<option *ngFor="let option of tabs; trackBy: trackByValue" [ngValue]="option">
-							{{ option.label }}
-						</option>
-					</select>
+					@if (tabs.length > 0) {
+						<select id="defaultTab" class="select-tab" [ngModel]="defaultTab" (ngModelChange)="onSelectTab($event)">
+							@for (option of tabs; track option.value) {
+								<option [ngValue]="option">
+									{{ option.label }}
+								</option>
+							}
+						</select>
+					}
 				</div>
 			</div>
 

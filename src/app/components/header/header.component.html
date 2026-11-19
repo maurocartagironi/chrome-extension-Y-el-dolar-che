@@ -1,27 +1,29 @@
 <div class="header">
 	<div class="logo">
-		<img *ngIf="!isDarkMode" src="/assets/img/logo.png" alt="Y el dólar che" />
-		<img *ngIf="isDarkMode"  src="/assets/img/logo-dark.png" alt="Y el dólar che" />
+		@if (!isDarkMode) {
+			<img src="/assets/img/logo.png" alt="Y el dólar che" />
+		}
+		@if (isDarkMode) {
+			<img src="/assets/img/logo-dark.png" alt="Y el dólar che" />
+		}
 	</div>
 	<div class="actions">
 		<button
 			class="icon-btn"
-			[title]="currentMode === 'auto'
-				? getChromeMessage('label_darkmode')
-				: currentMode === 'dark'
-				? getChromeMessage('label_lightmode')
-				: getChromeMessage('label_automode')"
+			[title]="
+				currentMode === 'auto'
+					? getChromeMessage('label_darkmode')
+					: currentMode === 'dark'
+						? getChromeMessage('label_lightmode')
+						: getChromeMessage('label_automode')
+			"
 			(click)="toggleDarkMode()"
 			(mouseenter)="onMouseEnter()"
 			(mouseleave)="onMouseLeave()"
 		>
 			<i [class]="hoveredIcon || getIcon()"></i>
 		</button>
-		<button
-			class="icon-btn"
-			[title]="getChromeMessage('label_refresh')"
-			(click)="refreshData()"
-		>
+		<button class="icon-btn" [title]="getChromeMessage('label_refresh')" (click)="refreshData()">
 			<i class="pi pi-refresh"></i>
 		</button>
 	</div>

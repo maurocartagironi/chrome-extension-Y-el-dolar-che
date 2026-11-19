@@ -12,25 +12,30 @@
 		/>
 
 		<div class="currency-select-row">
-			<select
-				*ngIf="picklistCurrency.length > 0"
-				class="currency-select flex-1"
-				aria-label="Convertir..."
-				[ngModel]="currencyConversor"
-				(ngModelChange)="onSelectChange($event)"
-			>
-				<option *ngFor="let option of picklistCurrency; trackBy: trackByValue" [ngValue]="option">
-					{{ option.label }}
-				</option>
-			</select>
+			@if (picklistCurrency.length > 0) {
+				<select
+					class="currency-select flex-1"
+					aria-label="Convertir..."
+					[ngModel]="currencyConversor"
+					(ngModelChange)="onSelectChange($event)"
+				>
+					@for (option of picklistCurrency; track option.value) {
+						<option [ngValue]="option">
+							{{ option.label }}
+						</option>
+					}
+				</select>
+			}
 			<button class="icon-btn swap-btn" title="Invertir moneda" (click)="onCurrencyToggle()">
 				<i class="pi pi-arrow-right-arrow-left"></i>
 			</button>
 		</div>
 	</div>
 
-	<div class="result-section" *ngIf="currencyConversor && config.valueConversor">
-		<div class="result-label">{{ showTitleResult() }}</div>
-		<app-result [compra]="result.get('compra')" [venta]="result.get('venta')"></app-result>
-	</div>
+	@if (currencyConversor && config.valueConversor) {
+		<div class="result-section">
+			<div class="result-label">{{ showTitleResult() }}</div>
+			<app-result [compra]="result.get('compra')" [venta]="result.get('venta')"></app-result>
+		</div>
+	}
 </div>

@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
 	selector: 'app-legal-terms',
 	templateUrl: './legalterms.component.html',
-	imports: [CommonModule],
+	imports: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./legalterms.component.scss'],
 })

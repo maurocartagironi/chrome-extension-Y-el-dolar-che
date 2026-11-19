@@ -1,33 +1,43 @@
 <div class="rates-list">
-	<div class="rate-card" *ngFor="let rate of exchangeRates; trackBy: trackByCasa">
-		<div class="rate-name">{{ rate.nombre }}</div>
-		<div class="rate-prices">
-			<button
-				class="price-chip"
-				[class.up]="rate.updatedCompra === 'arrow-trend-up'"
-				[class.down]="rate.updatedCompra === 'arrow-trend-down'"
-				(click)="copyPrice(rate.compra)"
-				title="Copiar precio de compra"
-			>
-				<span class="price-label">Compra</span>
-				<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
-				<i *ngIf="rate.updatedCompra === 'arrow-trend-up'"   class="pi pi-arrow-up trend-icon"></i>
-				<i *ngIf="rate.updatedCompra === 'arrow-trend-down'" class="pi pi-arrow-down trend-icon"></i>
-			</button>
-			<button
-				class="price-chip"
-				[class.up]="rate.updatedVenta === 'arrow-trend-up'"
-				[class.down]="rate.updatedVenta === 'arrow-trend-down'"
-				(click)="copyPrice(rate.venta)"
-				title="Copiar precio de venta"
-			>
-				<span class="price-label">Venta</span>
-				<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
-				<i *ngIf="rate.updatedVenta === 'arrow-trend-up'"   class="pi pi-arrow-up trend-icon"></i>
-				<i *ngIf="rate.updatedVenta === 'arrow-trend-down'" class="pi pi-arrow-down trend-icon"></i>
-			</button>
+	@for (rate of exchangeRates; track rate.casa) {
+		<div class="rate-card">
+			<div class="rate-name">{{ rate.nombre }}</div>
+			<div class="rate-prices">
+				<button
+					class="price-chip"
+					[class.up]="rate.updatedCompra === 'arrow-trend-up'"
+					[class.down]="rate.updatedCompra === 'arrow-trend-down'"
+					(click)="copyPrice(rate.compra)"
+					title="Copiar precio de compra"
+				>
+					<span class="price-label">Compra</span>
+					<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
+					@if (rate.updatedCompra === "arrow-trend-up") {
+						<i class="pi pi-arrow-up trend-icon"></i>
+					}
+					@if (rate.updatedCompra === "arrow-trend-down") {
+						<i class="pi pi-arrow-down trend-icon"></i>
+					}
+				</button>
+				<button
+					class="price-chip"
+					[class.up]="rate.updatedVenta === 'arrow-trend-up'"
+					[class.down]="rate.updatedVenta === 'arrow-trend-down'"
+					(click)="copyPrice(rate.venta)"
+					title="Copiar precio de venta"
+				>
+					<span class="price-label">Venta</span>
+					<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
+					@if (rate.updatedVenta === "arrow-trend-up") {
+						<i class="pi pi-arrow-up trend-icon"></i>
+					}
+					@if (rate.updatedVenta === "arrow-trend-down") {
+						<i class="pi pi-arrow-down trend-icon"></i>
+					}
+				</button>
+			</div>
 		</div>
-	</div>
+	}
 </div>
 
 <div class="toast-notification" [class.show]="copiedText">{{ copiedText }}</div>

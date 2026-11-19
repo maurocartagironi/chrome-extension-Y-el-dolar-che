@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
@@ -15,7 +14,7 @@ interface CurrencyOption {
 
 @Component({
 	selector: 'app-quick-pricing',
-	imports: [CommonModule, FormsModule, ResultComponent],
+	imports: [FormsModule, ResultComponent],
 	templateUrl: './quick-pricing.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './quick-pricing.component.scss',
@@ -143,9 +142,5 @@ export class QuickPricingComponent implements OnInit {
 			return 'Pesos argentinos a ' + (this.exchangeRateList.find((e) => e.casa === currencies[1])?.nombre.toLowerCase() ?? '') + ':';
 		}
 		return (this.exchangeRateList.find((e) => e.casa === currencies?.[0])?.nombre.toLowerCase() ?? '') + ' a pesos argentinos:';
-	}
-
-	trackByValue(_index: number, option: CurrencyOption): string {
-		return option.value;
 	}
 }
