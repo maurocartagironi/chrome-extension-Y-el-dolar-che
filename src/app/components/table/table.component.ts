@@ -1,20 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 
 @Component({
-    selector: 'app-table',
-    imports: [CommonModule],
-    templateUrl: './table.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './table.component.scss'
+	selector: 'app-table',
+	imports: [CommonModule],
+	templateUrl: './table.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrl: './table.component.scss',
 })
 export class TableComponent {
+	private changeDetector = inject(ChangeDetectorRef);
+
 	@Input() exchangeRates: ExchangeRate[] = [];
 	copiedText = '';
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
-
-	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	trackByCasa(_index: number, rate: ExchangeRate): string {
 		return rate.casa;

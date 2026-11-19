@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
@@ -14,13 +14,15 @@ interface CurrencyOption {
 }
 
 @Component({
-    selector: 'app-quick-pricing',
-    imports: [CommonModule, FormsModule, ResultComponent],
-    templateUrl: './quick-pricing.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './quick-pricing.component.scss'
+	selector: 'app-quick-pricing',
+	imports: [CommonModule, FormsModule, ResultComponent],
+	templateUrl: './quick-pricing.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrl: './quick-pricing.component.scss',
 })
 export class QuickPricingComponent implements OnInit {
+	private changeDetector = inject(ChangeDetectorRef);
+
 	@Input() exchangeRateList: ExchangeRate[] = [];
 	public picklistCurrency: CurrencyOption[] = [];
 	public result: Map<string, string | undefined> = new Map<string, string>();
@@ -35,8 +37,6 @@ export class QuickPricingComponent implements OnInit {
 		minimumFractionDigits: 2,
 		currency: 'ARS',
 	});
-
-	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	ngOnInit() {
 		this.initialize();

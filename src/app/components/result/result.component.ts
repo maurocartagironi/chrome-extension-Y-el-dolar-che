@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 
 @Component({
-    selector: 'app-result',
-    imports: [CommonModule],
-    templateUrl: './result.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './result.component.scss'
+	selector: 'app-result',
+	imports: [CommonModule],
+	templateUrl: './result.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrl: './result.component.scss',
 })
 export class ResultComponent {
+	private changeDetector = inject(ChangeDetectorRef);
+
 	@Input() compra: string | undefined;
 	@Input() venta: string | undefined;
 
 	toastVisible = false;
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
-
-	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	copyToClipboard(type: 'compra' | 'venta') {
 		const raw = type === 'compra' ? this.compra : this.venta;

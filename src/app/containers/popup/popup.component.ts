@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 
 import { LOCALSTORAGE_CONFIG, LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
@@ -34,6 +34,10 @@ import { SettingComponent } from '../../components/setting/setting.component';
 	],
 })
 export class PopupComponent implements OnInit {
+	dolarApiService = inject(DolarAPIService);
+	chromeService = inject(ChromeService);
+	private changeDetector = inject(ChangeDetectorRef);
+
 	@ViewChild('legalTerms') legalTerms!: LegalTermsComponent;
 
 	public exchangeRates: ExchangeRate[] = [];
@@ -49,12 +53,6 @@ export class PopupComponent implements OnInit {
 	public currentTab = this.config.defaultTab;
 
 	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
-
-	constructor(
-		public dolarApiService: DolarAPIService,
-		public chromeService: ChromeService,
-		private changeDetector: ChangeDetectorRef
-	) {}
 
 	ngOnInit() {
 		this.getData();

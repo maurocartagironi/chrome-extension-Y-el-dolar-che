@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
@@ -14,14 +14,15 @@ interface Option<T> {
 }
 
 @Component({
-    selector: 'app-setting',
-    imports: [CommonModule, FormsModule],
-    templateUrl: './setting.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './setting.component.scss'
+	selector: 'app-setting',
+	imports: [CommonModule, FormsModule],
+	templateUrl: './setting.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrl: './setting.component.scss',
 })
 export class SettingComponent implements OnInit {
-	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
+	private chromeService = inject(ChromeService);
+	private changeDetector = inject(ChangeDetectorRef);
 
 	@Input() exchangeRateList: ExchangeRate[] = [];
 	public picklistCurrency: Option<string>[] = [];

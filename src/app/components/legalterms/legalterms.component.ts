@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
-    selector: 'app-legal-terms',
-    templateUrl: './legalterms.component.html',
-    imports: [CommonModule],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./legalterms.component.scss']
+	selector: 'app-legal-terms',
+	templateUrl: './legalterms.component.html',
+	imports: [CommonModule],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrls: ['./legalterms.component.scss'],
 })
 export class LegalTermsComponent {
-	constructor(public chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
+	chromeService = inject(ChromeService);
+	private changeDetector = inject(ChangeDetectorRef);
 
 	isOpen = false;
 

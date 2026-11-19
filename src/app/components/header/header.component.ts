@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { evaluateDarkMode, getLocalStorage, setLocalStorage } from '@shared/utils';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
-    selector: 'app-header',
-    imports: [CommonModule],
-    templateUrl: './header.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './header.component.scss'
+	selector: 'app-header',
+	imports: [CommonModule],
+	templateUrl: './header.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
+	private chromeService = inject(ChromeService);
+	private changeDetector = inject(ChangeDetectorRef);
 
 	@Output() refresh = new EventEmitter();
 	currentMode: string = '';
