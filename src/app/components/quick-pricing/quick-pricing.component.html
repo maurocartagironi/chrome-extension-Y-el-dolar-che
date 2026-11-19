@@ -1,29 +1,28 @@
 <div class="quick-pricing">
 	<div class="calc-row">
-		<p-inputNumber
+		<input
 			class="amount-input"
-			inputId="currency-ar"
-			mode="currency"
-			currency="ARS"
-			locale="es-AR"
-			[(ngModel)]="config.valueConversor"
-			(keyup)="onChange()"
+			id="currency-ar"
+			type="text"
+			inputmode="decimal"
+			autocomplete="off"
 			placeholder="Monto en ARS"
-		></p-inputNumber>
+			[value]="amountText"
+			(input)="onAmountInput($any($event.target).value)"
+		/>
 
 		<div class="currency-select-row">
-			<ng-select
+			<select
 				*ngIf="picklistCurrency.length > 0"
-				[searchable]="false"
-				[placeholder]="'Convertir...'"
-				[clearable]="false"
-				[items]="picklistCurrency"
-				optionLabel="label"
-				optionValue="value"
-				[(ngModel)]="currencyConversor"
-				(change)="onSelectChange($event)"
-				class="flex-1"
-			></ng-select>
+				class="currency-select flex-1"
+				aria-label="Convertir..."
+				[ngModel]="currencyConversor"
+				(ngModelChange)="onSelectChange($event)"
+			>
+				<option *ngFor="let option of picklistCurrency; trackBy: trackByValue" [ngValue]="option">
+					{{ option.label }}
+				</option>
+			</select>
 			<button class="icon-btn swap-btn" title="Invertir moneda" (click)="onCurrencyToggle()">
 				<i class="pi pi-arrow-right-arrow-left"></i>
 			</button>

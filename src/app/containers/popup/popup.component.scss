@@ -125,17 +125,5 @@
 .error-card p { margin: 0; }
 .error-card .error-text { white-space: pre-line; }
 
-/* ── Dark overrides ─────────────────────────────────────────── */
-#container.dark ::ng-deep .p-badge {
-	background: transparent;
-	color: var(--text-muted);
-}
-#container.dark ::ng-deep .p-inputnumber-input {
-	background: var(--bg-card);
-	border-color: var(--border);
-	color: var(--text-primary);
-}
-#container.dark ::ng-deep .p-inputnumber-input:focus {
-	border-color: var(--accent);
-	box-shadow: 0 0 0 3px var(--accent-light);
-}
+/* Los controles ahora son nativos y toman los tokens directo, así que no
+   hacen falta overrides por tema. */

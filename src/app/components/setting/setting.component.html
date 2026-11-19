@@ -9,32 +9,26 @@
 			<div class="option-item">
 				<label for="badgeExchangeRateType">
 					{{ getChromeMessage("label_badge_exchange_rate_opt") }}
-					<p-badge
-						value="ℹ️"
-						pTooltip="{{ getChromeMessage('label_badge_exchange_rate_desc') }}"
-						tooltipPosition="bottom"
-					></p-badge>
+					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_exchange_rate_desc')">ℹ️</span>
 				</label>
-				<ng-select
+				<select
 					*ngIf="picklistCurrency.length > 0"
-					labelForId="badgeExchangeRateType"
-					[searchable]="false"
-					[placeholder]="'Seleccionar una moneda'"
-					[clearable]="false"
-					[items]="picklistCurrency"
-					optionLabel="label"
-					optionValue="value"
-					[(ngModel)]="badgeExchangeRateType"
-					(change)="onSelectChange()"
+					id="badgeExchangeRateType"
 					class="select-currency"
-				></ng-select>
+					[ngModel]="badgeExchangeRateType"
+					(ngModelChange)="onSelectChange($event)"
+				>
+					<option *ngFor="let option of picklistCurrency; trackBy: trackByValue" [ngValue]="option">
+						{{ option.label }}
+					</option>
+				</select>
 			</div>
 
 			<!-- Badge Buy/Sell -->
 			<div class="option-item">
 				<label for="toggle">
 					{{ getChromeMessage("label_badge_buy_sell_opt") }}
-					<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_badge_buy_sell_desc') }}" tooltipPosition="bottom"></p-badge>
+					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_buy_sell_desc')">ℹ️</span>
 				</label>
 				<div class="toggle-container">
 					<input
@@ -55,7 +49,7 @@
 			<div class="option-item">
 				<label for="badgeColor">
 					{{ getChromeMessage("label_badge_color_opt") }}
-					<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_badge_color_desc') }}" tooltipPosition="bottom"></p-badge>
+					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_color_desc')">ℹ️</span>
 				</label>
 				<input
 					type="color"
@@ -75,25 +69,19 @@
 				<div class="option-item">
 					<label for="tooltipExchangeRateType">
 						{{ getChromeMessage("label_tooltip_exchange_rate_opt") }}
-						<p-badge
-							value="ℹ️"
-							pTooltip="{{ getChromeMessage('label_tooltip_exchange_rate_desc') }}"
-							tooltipPosition="bottom"
-						></p-badge>
+						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_tooltip_exchange_rate_desc')">ℹ️</span>
 					</label>
-					<ng-select
-						*ngIf="picklistCurrencyTooltip.length > 0"
-						labelForId="tooltipExchangeRateType"
-						[searchable]="false"
-						[placeholder]="'Seleccionar una moneda'"
-						[clearable]="false"
-						[items]="picklistCurrencyTooltip"
-						optionLabel="label"
-						optionValue="value"
-						[(ngModel)]="tooltipExchangeRateType"
-						(change)="onSelectChangeTooltip()"
+					<select
+						*ngIf="picklistCurrency.length > 0"
+						id="tooltipExchangeRateType"
 						class="select-currency"
-					></ng-select>
+						[ngModel]="tooltipExchangeRateType"
+						(ngModelChange)="onSelectChangeTooltip($event)"
+					>
+						<option *ngFor="let option of picklistCurrency; trackBy: trackByValue" [ngValue]="option">
+							{{ option.label }}
+						</option>
+					</select>
 				</div>
 			</div>
 
@@ -105,11 +93,7 @@
 				<div class="option-item">
 					<label for="toggleHideConversor">
 						{{ getChromeMessage("label_hide_conversor_opt") }}
-						<p-badge
-							value="ℹ️"
-							pTooltip="{{ getChromeMessage('label_hide_conversor_desc') }}"
-							tooltipPosition="bottom"
-						></p-badge>
+						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_hide_conversor_desc')">ℹ️</span>
 					</label>
 					<div class="toggle-container-hide-conversor">
 						<input
@@ -124,7 +108,7 @@
 				</div>
 			</div>
 
-			<!-- Conversion Settings -->
+			<!-- Tab Settings -->
 			<div class="settings-group">
 				<h3 class="group-label">
 					{{ getChromeMessage("label_group_tab") }}
@@ -132,21 +116,19 @@
 				<div class="option-item">
 					<label for="defaultTab">
 						{{ getChromeMessage("label_default_tab_opt") }}
-						<p-badge value="ℹ️" pTooltip="{{ getChromeMessage('label_default_tab_desc') }}" tooltipPosition="bottom"></p-badge>
+						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_default_tab_desc')">ℹ️</span>
 					</label>
-					<ng-select
+					<select
 						*ngIf="tabs.length > 0"
-						labelForId="defaultTab"
-						[searchable]="false"
-						[placeholder]="'Seleccionar una tab'"
-						[clearable]="false"
-						[items]="tabs"
-						optionLabel="label"
-						optionValue="value"
-						[(ngModel)]="defaultTab"
-						(change)="onSelectTab($event)"
+						id="defaultTab"
 						class="select-tab"
-					></ng-select>
+						[ngModel]="defaultTab"
+						(ngModelChange)="onSelectTab($event)"
+					>
+						<option *ngFor="let option of tabs; trackBy: trackByValue" [ngValue]="option">
+							{{ option.label }}
+						</option>
+					</select>
 				</div>
 			</div>
 

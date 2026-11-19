@@ -11,26 +11,27 @@
 	gap: 8px;
 }
 
+/* Mismos valores que tenía el ::ng-deep sobre .p-inputtext de PrimeNG,
+   ahora aplicados al input nativo. */
 .amount-input {
-	width: 100%;
-}
-
-::ng-deep .amount-input .p-inputtext {
 	width: 100%;
 	padding: 9px 12px;
 	border: 1px solid var(--border);
 	border-radius: var(--radius-sm);
 	background: var(--bg-card);
 	color: var(--text-primary);
+	font-family: inherit;
 	font-size: 13px;
 	transition: border-color var(--transition);
 }
 
-::ng-deep .amount-input .p-inputtext:focus {
+.amount-input:focus {
 	outline: none;
 	border-color: var(--accent);
 	box-shadow: 0 0 0 3px var(--accent-light);
 }
+
+.amount-input::placeholder { color: var(--text-muted); }
 
 .currency-select-row {
 	display: flex;

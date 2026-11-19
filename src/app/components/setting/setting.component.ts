@@ -5,16 +5,18 @@ import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { getLocalStorage, setLocalStorage } from '@shared/utils';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { ChromeService } from '@shared/utils/chrome.utils';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
-import { BadgeModule } from 'primeng/badge';
-import { TooltipModule } from 'primeng/tooltip';
+
+interface Option<T> {
+	label: string;
+	value: T;
+}
 
 @Component({
 	selector: 'app-setting',
 	standalone: true,
-	imports: [CommonModule, FormsModule, NgSelectModule, BadgeModule, TooltipModule],
+	imports: [CommonModule, FormsModule],
 	templateUrl: './setting.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './setting.component.scss',
@@ -23,16 +25,15 @@ export class SettingComponent implements OnInit {
 	constructor(private chromeService: ChromeService, private changeDetector: ChangeDetectorRef) {}
 
 	@Input() exchangeRateList: ExchangeRate[] = [];
-	public picklistCurrency: any[] = [];
-	public picklistCurrencyTooltip: any[] = [];
+	public picklistCurrency: Option<string>[] = [];
 	public config: Config = new Config();
-	public badgeExchangeRateType: any;
-	public tooltipExchangeRateType: any;
+	public badgeExchangeRateType: Option<string> | undefined;
+	public tooltipExchangeRateType: Option<string> | undefined;
 	public badgeIsSell: boolean = false;
 	public quickConversionIsHidden: boolean = false;
 	public badgeBackgroundColor: string = '';
-	public defaultTab: any;
-	public tabs: any[] = [];
+	public defaultTab: Option<number> | undefined;
+	public tabs: Option<number>[] = [];
 	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
 
 	@Output() refresh = new EventEmitter();
@@ -51,15 +52,12 @@ export class SettingComponent implements OnInit {
 			{ label: this.chromeService.getMessage('label_settings') || 'Configuración', value: 2 },
 		];
 
-		this.exchangeRateList.forEach((e) => {
-			this.picklistCurrency.push({ label: e.nombre, value: e.casa });
-			this.picklistCurrencyTooltip.push({ label: e.nombre, value: e.casa });
-		});
-		this.picklistCurrency.sort((a, b) => a.label.localeCompare(b.label));
-		this.picklistCurrencyTooltip.sort((a, b) => a.label.localeCompare(b.label));
+		this.picklistCurrency = this.exchangeRateList
+			.map((e) => ({ label: e.nombre, value: e.casa }))
+			.sort((a, b) => a.label.localeCompare(b.label));
 
 		this.badgeExchangeRateType = this.picklistCurrency.find((e) => e.value === this.config.badgeExchangeRateType);
-		this.tooltipExchangeRateType = this.picklistCurrencyTooltip.find((e) => e.value === this.config.tooltipExchangeRateType);
+		this.tooltipExchangeRateType = this.picklistCurrency.find((e) => e.value === this.config.tooltipExchangeRateType);
 		this.badgeIsSell = this.config.badgeExchangeRateAction === 'sell';
 		this.quickConversionIsHidden = this.config.hiddenConversionSection;
 		this.badgeBackgroundColor = this.config.badgeBackgroundColor;
@@ -73,47 +71,57 @@ export class SettingComponent implements OnInit {
 	}
 
 	/** Repinta badge y tooltip con la lista que ya tiene el componente. */
-	private applyBadge(): void {
-		void this.backgroundHelper.setBadgeAndTooltip(this.exchangeRateList);
+	private applyBadge(): Promise<void> {
+		return this.backgroundHelper.setBadgeAndTooltip(this.exchangeRateList);
 	}
 
-	async onSelectChange() {
-		this.config.badgeExchangeRateType = this.badgeExchangeRateType.value;
+	async onSelectChange(option: Option<string> | undefined) {
+		if (!option) return;
+		this.badgeExchangeRateType = option;
+		this.config.badgeExchangeRateType = option.value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.applyBadge();
+		await this.applyBadge();
 	}
 
-	async onSelectChangeTooltip() {
-		this.config.tooltipExchangeRateType = this.tooltipExchangeRateType.value;
+	async onSelectChangeTooltip(option: Option<string> | undefined) {
+		if (!option) return;
+		this.tooltipExchangeRateType = option;
+		this.config.tooltipExchangeRateType = option.value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.applyBadge();
+		await this.applyBadge();
 	}
 
 	async onCheckSellOrBuy(e: any) {
 		this.config.badgeExchangeRateAction = e.target?.checked ? 'sell' : 'buy';
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.applyBadge();
+		await this.applyBadge();
 	}
 
 	async setBackgroundColor(e: any) {
 		this.config.badgeBackgroundColor = e.target?.value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.applyBadge();
+		await this.applyBadge();
 	}
 
 	async hideQuickConversion(e: any) {
 		this.config.hiddenConversionSection = e.target?.checked;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
-		this.applyBadge();
+		await this.applyBadge();
 		this.refreshData();
 	}
 
-	async onSelectTab(e: any) {
-		this.config.defaultTab = e.value;
+	async onSelectTab(option: Option<number> | undefined) {
+		if (!option) return;
+		this.defaultTab = option;
+		this.config.defaultTab = option.value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 	}
 
 	getChromeMessage(key: string): string {
 		return this.chromeService.getMessage(key);
+	}
+
+	trackByValue(_index: number, option: Option<string | number>): string | number {
+		return option.value;
 	}
 }

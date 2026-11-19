@@ -1,7 +1,4 @@
-// Los temas de terceros los inyecta angular.json, en este orden:
-//   ng-select -> PrimeNG theme -> PrimeNG core -> este archivo.
-// Importarlos acá además duplicaba ~170 kB de CSS, y el orden importa:
-// ng-select tiene que ir ANTES de PrimeNG para que la cascada no cambie.
+// Lo único de terceros que queda es la fuente de iconos.
 @import "primeicons/primeicons.css";
 
 /* ── Design tokens ─────────────────────────────────────────── */
@@ -30,6 +27,8 @@
 	--down-bg:    rgba(16, 185, 129, 0.1);
 	--neutral-bg: rgba(100, 116, 139, 0.1);
 
+	color-scheme: light;
+
 	/* misc */
 	--radius:     10px;
 	--radius-sm:  6px;
@@ -38,6 +37,8 @@
 }
 
 html.dark {
+	color-scheme: dark;
+
 	--bg-base:          #0f1117;
 	--bg-surface:       rgba(255, 255, 255, 0.05);
 	--bg-surface-hover: rgba(255, 255, 255, 0.09);
@@ -116,25 +117,85 @@ html {
 	transform: translateX(-50%) translateY(0);
 }
 
-/* ── PrimeNG overrides ──────────────────────────────────────── */
-.p-message.p-message-error p { margin: 0; }
 button:focus { outline: none; box-shadow: none; }
 
-/* ng-select dark mode */
-html.dark .ng-select .ng-select-container {
+/* ── Selects nativos ───────────────────────────────────────── */
+/* Reemplazan a ng-select: misma altura y ancho que tenía el control,
+   con los tokens del resto del popup. El desplegable lo dibuja el browser,
+   y sigue el tema por el color-scheme de arriba. */
+select {
+	height: 36px;
+	padding: 0 8px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
 	background: var(--bg-card);
-	border-color: var(--border);
 	color: var(--text-primary);
+	font-family: inherit;
+	font-size: 13px;
+	cursor: pointer;
+	transition: border-color var(--transition);
 }
-html.dark .ng-dropdown-panel {
-	background: #1e2230;
-	border-color: var(--border);
+
+select:hover { border-color: var(--accent); }
+
+select:focus-visible {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-light);
 }
-html.dark .ng-dropdown-panel .ng-option {
-	background: #1e2230;
-	color: var(--text-primary);
+
+/* ── Tooltip de ayuda ──────────────────────────────────────── */
+/* Reemplaza al p-badge + pTooltip de PrimeNG, con los mismos colores que
+   usaba su tema. Se muestra también con foco de teclado. */
+.info-tip {
+	position: relative;
+	font-size: 11px;
+	line-height: 1;
+	color: var(--text-muted);
+	cursor: help;
 }
-html.dark .ng-dropdown-panel .ng-option.ng-option-selected,
-html.dark .ng-dropdown-panel .ng-option:hover {
-	background: var(--bg-surface-hover);
+
+.info-tip::after {
+	content: attr(data-tip);
+	position: absolute;
+	top: calc(100% + 7px);
+	left: -4px;
+	z-index: 50;
+	width: 230px;
+	padding: 8px 10px;
+	border-radius: 6px;
+	background: #4b5563;
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.45;
+	text-align: left;
+	text-transform: none;
+	letter-spacing: normal;
+	white-space: normal;
+	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity var(--transition);
+}
+
+.info-tip::before {
+	content: "";
+	position: absolute;
+	top: calc(100% + 1px);
+	left: 2px;
+	z-index: 51;
+	border: 4px solid transparent;
+	border-bottom-color: #4b5563;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity var(--transition);
+}
+
+.info-tip:hover::after,
+.info-tip:hover::before,
+.info-tip:focus-visible::after,
+.info-tip:focus-visible::before {
+	opacity: 1;
+	visibility: visible;
 }

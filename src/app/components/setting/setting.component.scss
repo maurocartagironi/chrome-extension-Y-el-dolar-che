@@ -135,17 +135,6 @@
 	background: var(--accent);
 }
 
-/* Badge info */
-::ng-deep p-badge .p-badge {
-	background: transparent;
-	color: var(--text-muted);
-	font-size: 11px;
-	min-width: auto;
-	height: auto;
-	line-height: 1;
-	padding: 0;
-}
-
 /* Buy me a coffee */
 .link-container { text-align: center; margin-top: 16px; }
 

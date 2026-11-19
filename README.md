@@ -27,7 +27,7 @@ Después, en `chrome://extensions/`: activar el modo de desarrollador, "Cargar d
 
 | Comando | Qué hace |
 | --- | --- |
-| `npm run build` | Build de producción en `dist/`, con prune de fuentes no usadas y validación del manifest. |
+| `npm run build` | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest. |
 | `npm run watch` | Build de desarrollo en modo watch. |
 | `npm test` | Tests unitarios en modo watch (Karma + Jasmine). |
 | `npm run test:ci` | Los mismos tests una sola vez, en Chrome headless. |
@@ -38,7 +38,8 @@ Puntos a tener en cuenta al tocar el código:
 
 - **El service worker tiene que quedar sin Angular.** `BackgroundHelper` y `DolarAPIService` no llevan `@Injectable` a propósito: ese decorador arrastra todo `@angular/core` al bundle del background y lo lleva de ~7 kB a ~140 kB. Si hacen falta en DI, se proveen a mano en el módulo que los use.
 - **La config se rehidrata con `new Config(guardado ?? {})`**, nunca con un cast. Así los campos que una versión anterior no guardó toman su valor por defecto en vez de quedar en `undefined`.
-- **El tema de PrimeNG se inyecta desde `angular.json`**, no desde `styles.scss`: importarlo en los dos lugares duplica el CSS del bundle.
+- **No hay librería de componentes.** Los selects, el input de monto y los tooltips de ayuda son HTML nativo estilado con los design tokens de `styles.scss`. Lo único de terceros en la UI es la fuente de iconos (`primeicons`). Antes de sumar una librería por un componente, conviene medir: PrimeNG y ng-select costaban 1,3 MB empaquetados para tres widgets.
+- **El tema de los controles nativos sale de `color-scheme`.** `:root { color-scheme: light }` y `html.dark { color-scheme: dark }` hacen que el desplegable de los `<select>`, el input de color y las scrollbars sigan el modo oscuro sin CSS extra.
 - `scripts/check-manifest.mjs` corre en cada build y falla si la versión del manifest no coincide con la del `package.json`, si el manifest apunta a un archivo que no existe, o si los `host_permissions` no se corresponden con los endpoints del código.
 
 ## Estructura

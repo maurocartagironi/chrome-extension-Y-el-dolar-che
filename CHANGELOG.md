@@ -22,7 +22,8 @@
 
 -   Se eliminó un pedido a Binance cuyo resultado se descartaba, y con él el permiso de acceso a `p2p.binance.com`.
 -   Se eliminó la página de opciones, que era un stub vacío.
--   El paquete pasó de 2,7 MB a 1,8 MB y el service worker de 141 kB a 7 kB.
+-   Se reemplazaron PrimeNG y ng-select por HTML nativo estilado con los mismos tokens: el paquete pasó de 2,7 MB a 527 kB y el service worker de 141 kB a 7 kB.
+-   Todos los componentes usan OnPush, así que la extensión deja de revisar el árbol entero en cada evento.
 -   Se validan los datos que devuelve la API antes de usarlos.
 -   Lint y tests volvieron a funcionar, con 56 tests sobre la lógica de cotizaciones, caché, conversión y configuración.
 
