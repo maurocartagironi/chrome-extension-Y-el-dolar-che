@@ -33,6 +33,8 @@ const CHROME_CANDIDATES = [
 ].filter(Boolean);
 
 const dark = process.argv.includes('--dark');
+/** Simula la configuración con el conversor oculto. */
+const hidden = process.argv.includes('--hidden');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
 /** Selector a clickear antes de la captura, para ver estados interactivos. */
 const click = (process.argv.find((a) => a.startsWith('--click=')) ?? '--click=').split('=').slice(1).join('=');
@@ -69,7 +71,7 @@ window.chrome = {
 	runtime: { lastError: undefined, onInstalled: { addListener() {} }, onStartup: { addListener() {} } },
 	storage: { local: (() => {
 		const store = new Map(Object.entries({
-			config: ${JSON.stringify({ darkMode: dark ? 'dark' : 'light', defaultTab: tab, valueConversor: 1000, currencyConversor: 'blue-ars' })},
+			config: ${JSON.stringify({ darkMode: dark ? 'dark' : 'light', defaultTab: tab, hiddenConversionSection: hidden, valueConversor: 1000, currencyConversor: 'blue-ars' })},
 			exchangerates: ${JSON.stringify(
 				RATES.map((r, i) => ({
 					...r,
@@ -157,7 +159,9 @@ server.listen(PORT, async () => {
 		return;
 	}
 
-	const out = resolve(`preview${tab ? '-tab' + tab : ''}${click ? '-click' : ''}${dark ? '-dark' : ''}.png`);
+	const out = resolve(
+		`preview${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${click ? '-click' : ''}${dark ? '-dark' : ''}.png`,
+	);
 	await rm(out, { force: true });
 	const chrome = spawn(chromeBin, [
 		'--headless=new',

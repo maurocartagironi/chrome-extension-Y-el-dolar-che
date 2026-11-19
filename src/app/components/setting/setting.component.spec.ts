@@ -113,6 +113,33 @@ describe('SettingComponent', () => {
 		expect(avisos).toEqual([2]);
 	});
 
+	// La tab del conversor no existe cuando está oculto: ofrecerla como tab por
+	// defecto dejaba al popup abriendo en una tab que no se puede mostrar.
+	it('no ofrece el conversor como tab por defecto si está oculto', async () => {
+		expect(component.tabs.map((t) => t.value)).toEqual([0, 1, 2]);
+
+		await component.hideQuickConversion(checkEvent(true));
+
+		expect(component.tabs.map((t) => t.value)).toEqual([0, 2]);
+	});
+
+	it('si la tab por defecto era el conversor, al ocultarlo vuelve a cotizaciones', async () => {
+		component.config.defaultTab = 1;
+
+		await component.hideQuickConversion(checkEvent(true));
+
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.defaultTab).toBe(0);
+		expect(component.defaultTab?.value).toBe(0);
+	});
+
+	it('vuelve a ofrecer el conversor si se lo muestra de nuevo', async () => {
+		await component.hideQuickConversion(checkEvent(true));
+
+		await component.hideQuickConversion(checkEvent(false));
+
+		expect(component.tabs.map((t) => t.value)).toEqual([0, 1, 2]);
+	});
+
 	it('ignora un cambio sin opción', async () => {
 		await component.onSelectChange(undefined);
 

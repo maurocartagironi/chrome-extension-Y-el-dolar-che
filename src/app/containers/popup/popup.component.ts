@@ -42,6 +42,16 @@ export class PopupComponent implements OnInit {
 	public tab: number | undefined;
 	public currentTab = this.config.defaultTab;
 
+	/**
+	 * Índices de las tabs. Son fijos a propósito: cuando el de configuración
+	 * se corría a 1 al ocultar el conversor, chocaba con el case del conversor
+	 * en el @switch del template y ganaba el primero que matcheaba, así que la
+	 * tab de configuración mostraba el conversor.
+	 */
+	readonly TAB_RATES = 0;
+	readonly TAB_CONVERTER = 1;
+	readonly TAB_SETTINGS = 2;
+
 	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
 
 	ngOnInit() {
@@ -69,7 +79,9 @@ export class PopupComponent implements OnInit {
 			this.realLastUpdated = new Date();
 			this.loading = false;
 			this.hasError = false;
-			this.activeIndex = !this.tab ? this.config.defaultTab : this.tab;
+			// `this.tab ?? ...` y no `!this.tab`: estando en Cotizaciones (0), un
+			// refresh saltaba a la tab por defecto en vez de quedarse donde estaba.
+			this.activeIndex = this.resolveTab(this.tab ?? this.config.defaultTab);
 			// Con OnPush hay que marcar la vista: esto corre después de un await.
 			this.changeDetector.markForCheck();
 		} catch (error: unknown) {
@@ -83,8 +95,9 @@ export class PopupComponent implements OnInit {
 		}
 	}
 
-	get settingsTabIndex(): number {
-		return this.config.hiddenConversionSection ? 1 : 2;
+	selectTab(index: number) {
+		this.activeIndex = this.resolveTab(index);
+		this.currentTab = this.activeIndex;
 	}
 
 	onTabChange(index: number) {
@@ -94,7 +107,15 @@ export class PopupComponent implements OnInit {
 	refreshData(tab?: number, forceRefresh = false) {
 		this.tab = tab;
 		this.getData(forceRefresh);
-		this.activeIndex = tab ?? 0;
+		this.activeIndex = this.resolveTab(tab ?? this.TAB_RATES);
+	}
+
+	/** Si el conversor está oculto su tab no existe, así que se cae a Cotizaciones. */
+	private resolveTab(index: number): number {
+		if (index === this.TAB_CONVERTER && this.config.hiddenConversionSection) {
+			return this.TAB_RATES;
+		}
+		return index;
 	}
 
 	getChromeMessage(key: string): string {

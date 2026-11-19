@@ -17,21 +17,21 @@
 	@if (!loading && !hasError) {
 		<div class="content">
 			<div class="tab-bar">
-				<button class="tab-btn" [class.active]="activeIndex === 0" (click)="activeIndex = 0; onTabChange(0)">
+				<button class="tab-btn" [class.active]="activeIndex === TAB_RATES" (click)="selectTab(TAB_RATES)">
 					<i class="pi pi-chart-line"></i>
 					<span>{{ getChromeMessage('label_quotations') }}</span>
 				</button>
 				@if (!config.hiddenConversionSection) {
-					<button class="tab-btn" [class.active]="activeIndex === 1" (click)="activeIndex = 1; onTabChange(1)">
+					<button class="tab-btn" [class.active]="activeIndex === TAB_CONVERTER" (click)="selectTab(TAB_CONVERTER)">
 						<i class="pi pi-calculator"></i>
 						<span>{{ getChromeMessage('label_quick_pricing') }}</span>
 					</button>
 				}
 				<button
 					class="tab-btn settings-tab"
-					[class.active]="activeIndex === settingsTabIndex"
+					[class.active]="activeIndex === TAB_SETTINGS"
 					[title]="getChromeMessage('label_settings')"
-					(click)="activeIndex = settingsTabIndex; onTabChange(settingsTabIndex)"
+					(click)="selectTab(TAB_SETTINGS)"
 				>
 					<i class="pi pi-cog"></i>
 				</button>
@@ -39,7 +39,7 @@
 			<div class="tab-content">
 				@switch (activeIndex) {
 					<!-- Tab Cotizaciones -->
-					@case (0) {
+					@case (TAB_RATES) {
 						<div class="tab-panel">
 							@if (exchangeRates.length > 0) {
 								<app-table [exchangeRates]="exchangeRates"></app-table>
@@ -54,7 +54,7 @@
 						</div>
 					}
 					<!-- Tab Calculadora -->
-					@case (1) {
+					@case (TAB_CONVERTER) {
 						<div class="tab-panel">
 							@if (exchangeRates.length > 0) {
 								<app-quick-pricing [exchangeRateList]="exchangeRates"></app-quick-pricing>
@@ -62,7 +62,7 @@
 						</div>
 					}
 					<!-- Tab Settings -->
-					@case (settingsTabIndex) {
+					@case (TAB_SETTINGS) {
 						<div class="tab-panel">
 							@if (exchangeRates.length > 0) {
 								<app-setting [exchangeRateList]="exchangeRates" (refresh)="refreshData($event)"></app-setting>

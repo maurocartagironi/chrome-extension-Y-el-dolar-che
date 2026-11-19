@@ -46,11 +46,7 @@ export class SettingComponent implements OnInit {
 		// Rehidratar con el constructor: lo guardado puede ser de una versión con menos campos.
 		this.config = new Config((await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG)) ?? {});
 
-		this.tabs = [
-			{ label: this.chromeService.getMessage('label_quotations'), value: 0 },
-			{ label: this.chromeService.getMessage('label_quick_pricing'), value: 1 },
-			{ label: this.chromeService.getMessage('label_settings') || 'Configuración', value: 2 },
-		];
+		this.buildTabs();
 
 		this.picklistCurrency = this.exchangeRateList
 			.map((e) => ({ label: e.nombre, value: e.casa }))
@@ -61,9 +57,23 @@ export class SettingComponent implements OnInit {
 		this.badgeIsSell = this.config.badgeExchangeRateAction === 'sell';
 		this.quickConversionIsHidden = this.config.hiddenConversionSection;
 		this.badgeBackgroundColor = this.config.badgeBackgroundColor;
-		this.defaultTab = this.tabs[this.config.defaultTab];
 		// Con OnPush hay que marcar la vista: esto corre después de un await.
 		this.changeDetector.markForCheck();
+	}
+
+	/**
+	 * Las opciones de "tab por defecto". Si el conversor está oculto su tab no
+	 * existe, así que tampoco se ofrece acá.
+	 */
+	private buildTabs(): void {
+		const todas: Option<number>[] = [
+			{ label: this.chromeService.getMessage('label_quotations'), value: 0 },
+			{ label: this.chromeService.getMessage('label_quick_pricing'), value: 1 },
+			{ label: this.chromeService.getMessage('label_settings') || 'Configuración', value: 2 },
+		];
+
+		this.tabs = todas.filter((tab) => tab.value !== 1 || !this.config.hiddenConversionSection);
+		this.defaultTab = this.tabs.find((tab) => tab.value === this.config.defaultTab) ?? this.tabs[0];
 	}
 
 	refreshData() {
@@ -105,8 +115,15 @@ export class SettingComponent implements OnInit {
 
 	async hideQuickConversion(e: Event) {
 		this.config.hiddenConversionSection = (e.target as HTMLInputElement).checked;
+		// Si la tab por defecto era el conversor y se acaba de ocultar, deja de
+		// existir: se vuelve a cotizaciones.
+		if (this.config.hiddenConversionSection && this.config.defaultTab === 1) {
+			this.config.defaultTab = 0;
+		}
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		this.buildTabs();
 		await this.applyBadge();
+		this.changeDetector.markForCheck();
 		this.refreshData();
 	}
 
