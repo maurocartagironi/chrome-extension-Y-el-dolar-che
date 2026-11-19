@@ -1,5 +1,6 @@
 import { LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { getLocalStorage, lastUpdatedKey, setLocalStorage } from '@shared/utils/storage.util';
+import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from './dolar-api.service';
 
 const PAYLOAD = [
@@ -31,7 +32,7 @@ describe('DolarAPIService', () => {
 		expect(rates.length).toBe(2);
 		expect(rates[0].casa).toBe('blue');
 		expect(rates[0].compra).toBe(1400);
-		expect((await getLocalStorage(LOCALSTORAGE_EXCHANGERATES)).length).toBe(2);
+		expect((await getLocalStorage<ExchangeRate[]>(LOCALSTORAGE_EXCHANGERATES))!.length).toBe(2);
 	});
 
 	it('usa el caché si tiene menos de 5 minutos', async () => {

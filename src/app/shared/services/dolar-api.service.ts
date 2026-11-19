@@ -33,13 +33,14 @@ export class DolarAPIService {
 			const rates = this.parseRates(await response.json());
 			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, rates);
 			return rates;
-		} catch (error: any) {
-			if (error?.name === 'AbortError') {
+		} catch (error: unknown) {
+			if (error instanceof Error && error.name === 'AbortError') {
 				throw error;
 			}
-			const fallback = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
+			const fallback = await getLocalStorage<ExchangeRate[]>(LOCALSTORAGE_EXCHANGERATES);
 			if (fallback?.length) return fallback;
-			throw new Error(`No se pudo obtener la cotización.\n${error?.message ?? error}`);
+			const message = error instanceof Error ? error.message : String(error);
+			throw new Error(`No se pudo obtener la cotización.\n${message}`, { cause: error });
 		} finally {
 			clearTimeout(timeout);
 			if (this.abortController === controller) {
@@ -54,24 +55,16 @@ export class DolarAPIService {
 			throw new Error('La respuesta de la API no tiene el formato esperado.');
 		}
 
-		const rates = payload
-			.filter(
-				(item: any) =>
-					!!item &&
-					typeof item.casa === 'string' &&
-					Number.isFinite(Number(item.compra)) &&
-					Number.isFinite(Number(item.venta))
-			)
-			.map(
-				(item: any) =>
-					new ExchangeRate(
-						item.casa,
-						typeof item.nombre === 'string' ? item.nombre : item.casa,
-						Number(item.compra),
-						Number(item.venta),
-						item.fechaActualizacion
-					)
-			);
+		const rates = payload.filter(isRatePayload).map(
+			(item) =>
+				new ExchangeRate(
+					item.casa,
+					typeof item.nombre === 'string' ? item.nombre : item.casa,
+					Number(item.compra),
+					Number(item.venta),
+					typeof item.fechaActualizacion === 'string' ? item.fechaActualizacion : undefined
+				)
+		);
 
 		if (!rates.length) {
 			throw new Error('La respuesta de la API no trajo cotizaciones válidas.');
@@ -84,7 +77,26 @@ export class DolarAPIService {
 		const lastUpdated = await getLastUpdated(LOCALSTORAGE_EXCHANGERATES);
 		if (!lastUpdated) return null;
 		if (Date.now() - lastUpdated > CACHE_TTL_MS) return null;
-		const cached = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
+		const cached = await getLocalStorage<ExchangeRate[]>(LOCALSTORAGE_EXCHANGERATES);
 		return cached?.length ? cached : null;
 	}
+}
+
+/** Forma mínima que tiene que tener cada entrada de la API para ser usable. */
+interface RatePayload {
+	casa: string;
+	nombre?: unknown;
+	compra: unknown;
+	venta: unknown;
+	fechaActualizacion?: unknown;
+}
+
+function isRatePayload(item: unknown): item is RatePayload {
+	if (!item || typeof item !== 'object') return false;
+	const candidate = item as Record<string, unknown>;
+	return (
+		typeof candidate['casa'] === 'string' &&
+		Number.isFinite(Number(candidate['compra'])) &&
+		Number.isFinite(Number(candidate['venta']))
+	);
 }

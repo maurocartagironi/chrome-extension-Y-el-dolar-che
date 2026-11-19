@@ -12,6 +12,10 @@ const RATES = [
 	new ExchangeRate('blue', 'Dólar libre', 1400, 1450, '2026-11-19T12:00:00.000Z'),
 ];
 
+/** Eventos mínimos: los handlers solo leen target.checked o target.value. */
+const checkEvent = (checked: boolean) => ({ target: { checked } }) as unknown as Event;
+const valueEvent = (value: string) => ({ target: { value } }) as unknown as Event;
+
 describe('SettingComponent', () => {
 	let component: SettingComponent;
 	let fixture: ComponentFixture<SettingComponent>;
@@ -68,44 +72,44 @@ describe('SettingComponent', () => {
 	it('al cambiar el tipo de cambio guarda y repinta el badge', async () => {
 		await component.onSelectChange({ label: 'Oficial', value: 'oficial' });
 
-		expect((await getLocalStorage(LOCALSTORAGE_CONFIG)).badgeExchangeRateType).toBe('oficial');
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.badgeExchangeRateType).toBe('oficial');
 		expect(mock.badge.text).toBe('1000');
 	});
 
 	it('al cambiar el tooltip guarda y lo repinta', async () => {
 		await component.onSelectChangeTooltip({ label: 'Dólar libre', value: 'blue' });
 
-		expect((await getLocalStorage(LOCALSTORAGE_CONFIG)).tooltipExchangeRateType).toBe('blue');
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.tooltipExchangeRateType).toBe('blue');
 		expect(mock.badge.title).toContain('Dólar libre');
 	});
 
 	it('alterna compra y venta en el indicador', async () => {
-		await component.onCheckSellOrBuy({ target: { checked: true } });
+		await component.onCheckSellOrBuy(checkEvent(true));
 
-		expect((await getLocalStorage(LOCALSTORAGE_CONFIG)).badgeExchangeRateAction).toBe('sell');
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.badgeExchangeRateAction).toBe('sell');
 		expect(mock.badge.text).toBe('1450');
 	});
 
 	it('guarda el color del indicador', async () => {
-		await component.setBackgroundColor({ target: { value: '#ff0000' } });
+		await component.setBackgroundColor(valueEvent('#ff0000'));
 
-		expect((await getLocalStorage(LOCALSTORAGE_CONFIG)).badgeBackgroundColor).toBe('#ff0000');
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.badgeBackgroundColor).toBe('#ff0000');
 		expect(mock.badge.color).toBe('#ff0000');
 	});
 
 	it('guarda la tab por defecto', async () => {
 		await component.onSelectTab({ label: 'Conversión rápida', value: 1 });
 
-		expect((await getLocalStorage(LOCALSTORAGE_CONFIG)).defaultTab).toBe(1);
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.defaultTab).toBe(1);
 	});
 
 	it('al ocultar el conversor avisa al popup para que se reordene', async () => {
 		const avisos: unknown[] = [];
 		component.refresh.subscribe((value) => avisos.push(value));
 
-		await component.hideQuickConversion({ target: { checked: true } });
+		await component.hideQuickConversion(checkEvent(true));
 
-		expect((await getLocalStorage(LOCALSTORAGE_CONFIG)).hiddenConversionSection).toBeTrue();
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.hiddenConversionSection).toBeTrue();
 		expect(avisos).toEqual([2]);
 	});
 

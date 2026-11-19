@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
-import { Config } from '@shared/models/Config';
+import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { getLocalStorage, setLocalStorage } from '@shared/utils';
 
@@ -42,7 +42,7 @@ export class QuickPricingComponent implements OnInit {
 	}
 
 	private async initialize() {
-		this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
+		this.config = new Config((await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG)) ?? {});
 		this.picklistCurrency = this.exchangeRateList
 			.flatMap((e) => [
 				{ label: e.nombre + ' a pesos', value: e.casa + '-ars' },

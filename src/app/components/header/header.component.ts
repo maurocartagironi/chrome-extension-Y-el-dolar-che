@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
-import { Config } from '@shared/models/Config';
+import { Config, ConfigOptions } from '@shared/models/Config';
 import { evaluateDarkMode, getLocalStorage, setLocalStorage } from '@shared/utils';
 import { ChromeService } from '@shared/utils/chrome.utils';
 
@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
 	config: Config = new Config();
 
 	async ngOnInit(): Promise<void> {
-		this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
+		this.config = new Config((await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG)) ?? {});
 		this.currentMode = this.config.darkMode;
 		this.isDarkMode = evaluateDarkMode(this.currentMode);
 		// Con OnPush hay que marcar la vista: esto corre después de un await.

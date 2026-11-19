@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChil
 
 import { LOCALSTORAGE_CONFIG, LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
-import { Config } from '@shared/models/Config';
+import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
 import { calculateTimeDifference, evaluateDarkMode, getLocalStorage } from '@shared/utils';
@@ -39,7 +39,7 @@ export class PopupComponent implements OnInit {
 	public errorMessage: string = '';
 	public isDarkMode: boolean = false;
 	public activeIndex: number = 0;
-	public tab: any;
+	public tab: number | undefined;
 	public currentTab = this.config.defaultTab;
 
 	public backgroundHelper: BackgroundHelper = new BackgroundHelper();
@@ -54,11 +54,11 @@ export class PopupComponent implements OnInit {
 				this.loading = true;
 			}
 			// Rehidratar con el constructor: lo guardado puede ser de una versión con menos campos.
-			this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
+			this.config = new Config((await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG)) ?? {});
 
 			this.isDarkMode = evaluateDarkMode(this.config.darkMode);
 
-			const oldExchangeRates = await getLocalStorage(LOCALSTORAGE_EXCHANGERATES);
+			const oldExchangeRates = await getLocalStorage<ExchangeRate[]>(LOCALSTORAGE_EXCHANGERATES);
 			const servicesExchangeRates = await this.dolarApiService.getAll(forceRefresh);
 
 			await this.updateExchangeRates(oldExchangeRates, servicesExchangeRates);
@@ -72,12 +72,12 @@ export class PopupComponent implements OnInit {
 			this.activeIndex = !this.tab ? this.config.defaultTab : this.tab;
 			// Con OnPush hay que marcar la vista: esto corre después de un await.
 			this.changeDetector.markForCheck();
-		} catch (error: any) {
+		} catch (error: unknown) {
 			// Un AbortError significa que ya salió un pedido más nuevo: ese actualiza la vista.
-			if (error?.name === 'AbortError') return;
+			if (error instanceof Error && error.name === 'AbortError') return;
 			this.loading = false;
 			this.hasError = true;
-			this.errorMessage = error?.message ?? this.chromeService.getMessage('error_general_title');
+			this.errorMessage = error instanceof Error ? error.message : this.chromeService.getMessage('error_general_title');
 			// Con OnPush hay que marcar la vista: esto corre después de un await.
 			this.changeDetector.markForCheck();
 		}
@@ -87,11 +87,11 @@ export class PopupComponent implements OnInit {
 		return this.config.hiddenConversionSection ? 1 : 2;
 	}
 
-	onTabChange(event: any) {
-		this.currentTab = event;
+	onTabChange(index: number) {
+		this.currentTab = index;
 	}
 
-	refreshData(tab?: any, forceRefresh = false) {
+	refreshData(tab?: number, forceRefresh = false) {
 		this.tab = tab;
 		this.getData(forceRefresh);
 		this.activeIndex = tab ?? 0;
@@ -101,7 +101,7 @@ export class PopupComponent implements OnInit {
 		return this.chromeService.getMessage(key);
 	}
 
-	async updateExchangeRates(exchangeRatesOld: ExchangeRate[], exchangeRatesNew: ExchangeRate[]) {
+	async updateExchangeRates(exchangeRatesOld: ExchangeRate[] | undefined, exchangeRatesNew: ExchangeRate[]) {
 		if (!exchangeRatesOld?.length) {
 			this.exchangeRates = exchangeRatesNew;
 			await setLocalStorage(LOCALSTORAGE_EXCHANGERATES, this.exchangeRates);

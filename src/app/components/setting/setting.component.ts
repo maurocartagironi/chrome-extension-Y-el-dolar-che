@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 
 import { FormsModule } from '@angular/forms';
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
-import { Config } from '@shared/models/Config';
+import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { getLocalStorage, setLocalStorage } from '@shared/utils';
 import { ChromeService } from '@shared/utils/chrome.utils';
@@ -44,7 +44,7 @@ export class SettingComponent implements OnInit {
 
 	private async initialize() {
 		// Rehidratar con el constructor: lo guardado puede ser de una versión con menos campos.
-		this.config = new Config((await getLocalStorage(LOCALSTORAGE_CONFIG)) ?? {});
+		this.config = new Config((await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG)) ?? {});
 
 		this.tabs = [
 			{ label: this.chromeService.getMessage('label_quotations'), value: 0 },
@@ -91,20 +91,20 @@ export class SettingComponent implements OnInit {
 		await this.applyBadge();
 	}
 
-	async onCheckSellOrBuy(e: any) {
-		this.config.badgeExchangeRateAction = e.target?.checked ? 'sell' : 'buy';
+	async onCheckSellOrBuy(e: Event) {
+		this.config.badgeExchangeRateAction = (e.target as HTMLInputElement).checked ? 'sell' : 'buy';
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		await this.applyBadge();
 	}
 
-	async setBackgroundColor(e: any) {
-		this.config.badgeBackgroundColor = e.target?.value;
+	async setBackgroundColor(e: Event) {
+		this.config.badgeBackgroundColor = (e.target as HTMLInputElement).value;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		await this.applyBadge();
 	}
 
-	async hideQuickConversion(e: any) {
-		this.config.hiddenConversionSection = e.target?.checked;
+	async hideQuickConversion(e: Event) {
+		this.config.hiddenConversionSection = (e.target as HTMLInputElement).checked;
 		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		await this.applyBadge();
 		this.refreshData();

@@ -1,5 +1,5 @@
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
-import { Config } from '@shared/models/Config';
+import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
 import { calculateTimeDifference, formatCurrency } from '@shared/utils/general.utils';
@@ -69,7 +69,7 @@ export class BackgroundHelper {
 	}
 
 	private async loadConfig(): Promise<void> {
-		const saved = await getLocalStorage(LOCALSTORAGE_CONFIG);
+		const saved = await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG);
 		// Rehidratar con el constructor rellena los campos que una versión previa no guardó.
 		this.config = new Config(saved ?? {});
 		if (!saved) {

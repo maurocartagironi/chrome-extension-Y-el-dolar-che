@@ -42,7 +42,13 @@ Puntos a tener en cuenta al tocar el código:
 - **La config se rehidrata con `new Config(guardado ?? {})`**, nunca con un cast. Así los campos que una versión anterior no guardó toman su valor por defecto en vez de quedar en `undefined`.
 - **No hay librería de componentes.** Los selects, el input de monto y los tooltips de ayuda son HTML nativo estilado con los design tokens de `styles.scss`. Lo único de terceros en la UI es la fuente de iconos (`primeicons`). Antes de sumar una librería por un componente, conviene medir: PrimeNG y ng-select costaban 1,3 MB empaquetados para tres widgets.
 - **El tema de los controles nativos sale de `color-scheme`.** `:root { color-scheme: light }` y `html.dark { color-scheme: dark }` hacen que el desplegable de los `<select>`, el input de color y las scrollbars sigan el modo oscuro sin CSS extra.
+- **Sin `baseUrl` en el tsconfig.** TypeScript 6 lo deprecó, así que los alias (`@shared/*`, `@containers/*`, `src/*`) están en `paths` con rutas relativas al tsconfig. Si agregás un alias nuevo, va ahí.
+- **ESLint usa flat config** (`eslint.config.js`), que es lo único que soporta ESLint 10. El `any` está permitido solo en los specs y en `src/testing/`, donde se imitan APIs del browser.
 - `scripts/check-manifest.mjs` corre en cada build y falla si la versión del manifest no coincide con la del `package.json`, si el manifest apunta a un archivo que no existe, o si los `host_permissions` no se corresponden con los endpoints del código.
+
+## Stack
+
+Angular 22 (standalone, sin NgModules, con control flow `@if`/`@for` y `OnPush` en todos los componentes), builder `@angular/build:application` para el popup y esbuild para el service worker. Sin librerías de componentes.
 
 ## Estructura
 

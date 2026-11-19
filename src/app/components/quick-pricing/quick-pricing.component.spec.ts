@@ -10,7 +10,7 @@ import { QuickPricingComponent } from './quick-pricing.component';
 const RATES = [new ExchangeRate('blue', 'Dólar libre', 1000, 1250, '2026-11-19T12:00:00.000Z')];
 
 /** Intl mete espacios duros: se normalizan para que las comparaciones se lean. */
-const texto = (value: string | undefined) => (value ?? '').replace(/ /g, ' ');
+const texto = (value: string | undefined) => (value ?? '').replace(/\u00a0/g, ' ');
 
 describe('QuickPricingComponent', () => {
 	let component: QuickPricingComponent;

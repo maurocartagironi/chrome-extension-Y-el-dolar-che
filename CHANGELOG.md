@@ -25,6 +25,7 @@
 -   Se reemplazaron PrimeNG y ng-select por HTML nativo estilado con los mismos tokens: el paquete pasó de 2,7 MB a 527 kB y el service worker de 141 kB a 7 kB.
 -   Todos los componentes usan OnPush, así que la extensión deja de revisar el árbol entero en cada evento.
 -   Se validan los datos que devuelve la API antes de usarlos.
+-   Se subió Angular de 17 a 22 (cinco versiones mayores) y con eso `npm audit` quedó en cero: antes tenía 94 hallazgos, incluidos ocho de XSS en el propio Angular sin parche disponible para la línea 17.
 -   Lint y tests volvieron a funcionar, con 56 tests sobre la lógica de cotizaciones, caché, conversión y configuración.
 
 ## [v3.0.1] - 07-03-2025

@@ -5,10 +5,10 @@
  */
 export const lastUpdatedKey = (param: string): string => `${param}:lastUpdated`;
 
-export function getLocalStorage(param: string): Promise<any> {
-	return new Promise((resolve, reject) => {
+export function getLocalStorage<T = unknown>(param: string): Promise<T | undefined> {
+	return new Promise<T | undefined>((resolve, reject) => {
 		try {
-			chrome.storage.local.get(param, (result) => {
+			chrome.storage.local.get(param, (result: Record<string, T>) => {
 				if (chrome.runtime.lastError) {
 					reject(chrome.runtime.lastError);
 				} else {
@@ -21,7 +21,7 @@ export function getLocalStorage(param: string): Promise<any> {
 	});
 }
 
-export async function setLocalStorage(param: string, value: any): Promise<void> {
+export async function setLocalStorage(param: string, value: unknown): Promise<void> {
 	await chrome.storage.local.set({
 		[param]: value,
 		[lastUpdatedKey(param)]: Date.now(),

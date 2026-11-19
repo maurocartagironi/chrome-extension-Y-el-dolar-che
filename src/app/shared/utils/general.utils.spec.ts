@@ -3,8 +3,8 @@ import { calculateTimeDifference, formatCurrency } from './general.utils';
 
 describe('formatCurrency', () => {
 	it('formatea números y strings en pesos', () => {
-		expect(formatCurrency(1480.5).replace(/ /g, ' ')).toContain('1.480,50');
-		expect(formatCurrency('1480.5').replace(/ /g, ' ')).toContain('1.480,50');
+		expect(formatCurrency(1480.5).replace(/\u00a0/g, ' ')).toContain('1.480,50');
+		expect(formatCurrency('1480.5').replace(/\u00a0/g, ' ')).toContain('1.480,50');
 	});
 
 	it('devuelve vacío para valores que no sirven', () => {

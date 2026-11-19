@@ -2,7 +2,6 @@
 {
 	"compileOnSave": false,
 	"compilerOptions": {
-		"baseUrl": "./",
 		"outDir": "./dist/out-tsc",
 		"noUnusedLocals": true,
 		"esModuleInterop": true,
@@ -21,8 +20,9 @@
 		"target": "ES2022",
 		"module": "es2020",
 		"paths": {
-			"@containers/*": ["src/app/containers/*"],
-			"@shared/*": ["src/app/shared/*"]
+			"@containers/*": ["./src/app/containers/*"],
+			"@shared/*": ["./src/app/shared/*"],
+			"src/*": ["./src/*"]
 		},
 		"useDefineForClassFields": false
 	},

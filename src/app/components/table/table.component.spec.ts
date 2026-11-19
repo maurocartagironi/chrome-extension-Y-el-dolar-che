@@ -30,7 +30,7 @@ describe('TableComponent', () => {
 	});
 
 	it('formatea los precios en pesos', () => {
-		expect(component.toCurrencyPesos(1400).replace(/ /g, ' ')).toContain('1.400,00');
+		expect(component.toCurrencyPesos(1400).replace(/\u00a0/g, ' ')).toContain('1.400,00');
 	});
 
 	it('muestra la flecha de tendencia cuando corresponde', () => {
