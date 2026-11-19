@@ -1,0 +1,12 @@
+# Normaliza los finales de línea: sin esto, con core.autocrlf=true en Windows
+# git marca como modificados archivos que no se tocaron.
+* text=auto eol=lf
+
+# Binarios: que git no intente convertir nada.
+*.png binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
