@@ -6,6 +6,7 @@ import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { getLocalStorage, setLocalStorage } from '@shared/utils';
 import { ChromeService } from '@shared/utils/chrome.utils';
+import { InfoTipComponent } from '../info-tip/info-tip.component';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
 
 interface Option<T> {
@@ -15,7 +16,7 @@ interface Option<T> {
 
 @Component({
 	selector: 'app-setting',
-	imports: [FormsModule],
+	imports: [FormsModule, InfoTipComponent],
 	templateUrl: './setting.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrl: './setting.component.scss',

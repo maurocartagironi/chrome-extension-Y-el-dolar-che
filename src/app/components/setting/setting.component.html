@@ -9,7 +9,7 @@
 			<div class="option-item">
 				<label for="badgeExchangeRateType">
 					{{ getChromeMessage('label_badge_exchange_rate_opt') }}
-					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_exchange_rate_desc')">ℹ️</span>
+					<app-info-tip [text]="getChromeMessage('label_badge_exchange_rate_desc')" />
 				</label>
 				@if (picklistCurrency.length > 0) {
 					<select
@@ -31,7 +31,7 @@
 			<div class="option-item">
 				<label for="toggle">
 					{{ getChromeMessage('label_badge_buy_sell_opt') }}
-					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_buy_sell_desc')">ℹ️</span>
+					<app-info-tip [text]="getChromeMessage('label_badge_buy_sell_desc')" />
 				</label>
 				<div class="toggle-container">
 					<input
@@ -52,7 +52,7 @@
 			<div class="option-item">
 				<label for="badgeColor">
 					{{ getChromeMessage('label_badge_color_opt') }}
-					<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_badge_color_desc')">ℹ️</span>
+					<app-info-tip [text]="getChromeMessage('label_badge_color_desc')" />
 				</label>
 				<input
 					type="color"
@@ -72,7 +72,7 @@
 				<div class="option-item">
 					<label for="tooltipExchangeRateType">
 						{{ getChromeMessage('label_tooltip_exchange_rate_opt') }}
-						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_tooltip_exchange_rate_desc')">ℹ️</span>
+						<app-info-tip [text]="getChromeMessage('label_tooltip_exchange_rate_desc')" />
 					</label>
 					@if (picklistCurrency.length > 0) {
 						<select
@@ -99,7 +99,7 @@
 				<div class="option-item">
 					<label for="toggleHideConversor">
 						{{ getChromeMessage('label_hide_conversor_opt') }}
-						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_hide_conversor_desc')">ℹ️</span>
+						<app-info-tip [text]="getChromeMessage('label_hide_conversor_desc')" />
 					</label>
 					<div class="toggle-container-hide-conversor">
 						<input
@@ -122,7 +122,7 @@
 				<div class="option-item">
 					<label for="defaultTab">
 						{{ getChromeMessage('label_default_tab_opt') }}
-						<span class="info-tip" tabindex="0" [attr.data-tip]="getChromeMessage('label_default_tab_desc')">ℹ️</span>
+						<app-info-tip [text]="getChromeMessage('label_default_tab_desc')" />
 					</label>
 					@if (tabs.length > 0) {
 						<select id="defaultTab" class="select-tab" [ngModel]="defaultTab" (ngModelChange)="onSelectTab($event)">

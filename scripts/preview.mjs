@@ -36,6 +36,8 @@ const dark = process.argv.includes('--dark');
 /** Simula la configuración con el conversor oculto. */
 const hidden = process.argv.includes('--hidden');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
+/** Selector a enfocar antes de la captura, para ver tooltips y foco. */
+const focus = (process.argv.find((a) => a.startsWith('--focus=')) ?? '--focus=').split('=').slice(1).join('=');
 /** Selector a clickear antes de la captura, para ver estados interactivos. */
 const click = (process.argv.find((a) => a.startsWith('--click=')) ?? '--click=').split('=').slice(1).join('=');
 const shot = process.argv.includes('--shot');
@@ -102,6 +104,15 @@ window.chrome = {
 	action: { setBadgeText: async () => {}, setBadgeBackgroundColor: async () => {}, setTitle: async () => {} },
 	alarms: { get: async () => undefined, create: async () => {} },
 };
+// Permite capturar estados que requieren foco (tooltips, focus-visible).
+if (${JSON.stringify(Boolean(focus))}) {
+	setTimeout(() => {
+		const target = document.querySelector(${JSON.stringify(focus)});
+		if (target) target.focus();
+		else console.warn('preview: no encontré', ${JSON.stringify(focus)});
+	}, ${CLICK_AT_MS});
+}
+
 // Permite capturar estados que requieren interacción (clicks).
 if (${JSON.stringify(Boolean(click))}) {
 	setTimeout(() => {
@@ -160,7 +171,7 @@ server.listen(PORT, async () => {
 	}
 
 	const out = resolve(
-		`preview${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${click ? '-click' : ''}${dark ? '-dark' : ''}.png`,
+		`preview${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
 	);
 	await rm(out, { force: true });
 	const chrome = spawn(chromeBin, [
