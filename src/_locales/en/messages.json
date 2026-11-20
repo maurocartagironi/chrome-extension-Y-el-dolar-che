@@ -265,5 +265,36 @@
 				"content": "$3"
 			}
 		}
+	},
+	"command_open_popup": {
+		"message": "Open the exchange rates"
+	},
+	"context_menu_to_ars": {
+		"message": "Convert \"%s\" to pesos"
+	},
+	"context_menu_from_ars": {
+		"message": "Convert \"%s\" from pesos"
+	},
+	"context_result": {
+		"message": "$var1$ → buy $var2$ · sell $var3$",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			}
+		}
+	},
+	"context_error": {
+		"message": "No number found in \"$var$\".",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
 	}
 }

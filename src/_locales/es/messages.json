@@ -265,5 +265,36 @@
 				"content": "$3"
 			}
 		}
+	},
+	"command_open_popup": {
+		"message": "Abrir la cotización"
+	},
+	"context_menu_to_ars": {
+		"message": "Convertir «%s» a pesos"
+	},
+	"context_menu_from_ars": {
+		"message": "Convertir «%s» desde pesos"
+	},
+	"context_result": {
+		"message": "$var1$ → compra $var2$ · venta $var3$",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			}
+		}
+	},
+	"context_error": {
+		"message": "No encontré un número en «$var$».",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
 	}
 }

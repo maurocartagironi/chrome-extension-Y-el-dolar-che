@@ -2,10 +2,18 @@ import { LOCALSTORAGE_ALERT_FIRED, LOCALSTORAGE_CONFIG } from '@shared/constants
 import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
+import { parseAmount } from '@shared/utils/amount.util';
 import { calculateTimeDifference, formatCurrency } from '@shared/utils/general.utils';
 import { getLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
 
 export const ALARM_NAME = 'dolar-refresh';
+
+/** Ítems del menú del click derecho sobre una selección. */
+export const MENU_TO_ARS = 'convertir-a-pesos';
+export const MENU_FROM_ARS = 'convertir-desde-pesos';
+
+/** Fuera de pesos, el resultado se muestra sin símbolo para no mentir la moneda. */
+const plainFormatter = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /**
  * Lógica que corre en el service worker. A propósito sin `@Injectable`:
@@ -28,7 +36,60 @@ export class BackgroundHelper {
 			});
 		}
 
+		await this.setupContextMenus();
 		await this.refreshData();
+	}
+
+	/**
+	 * Los dos ítems del click derecho. Se rearman en cada init porque el título
+	 * sale de los mensajes y puede cambiar de idioma.
+	 */
+	public async setupContextMenus(): Promise<void> {
+		await chrome.contextMenus.removeAll();
+
+		chrome.contextMenus.create({
+			id: MENU_TO_ARS,
+			title: chrome.i18n.getMessage('context_menu_to_ars'),
+			contexts: ['selection'],
+		});
+		chrome.contextMenus.create({
+			id: MENU_FROM_ARS,
+			title: chrome.i18n.getMessage('context_menu_from_ars'),
+			contexts: ['selection'],
+		});
+	}
+
+	/**
+	 * Convierte lo que el usuario haya seleccionado en la página y muestra el
+	 * resultado en una notificación. Usa el tipo de cambio del indicador.
+	 */
+	public async convertSelection(menuItemId: string, selectionText: string): Promise<void> {
+		if (menuItemId !== MENU_TO_ARS && menuItemId !== MENU_FROM_ARS) return;
+
+		await this.loadConfig();
+
+		const amount = parseAmount(selectionText);
+		if (amount === null) {
+			await this.notify(chrome.i18n.getMessage('context_error', selectionText.trim().slice(0, 40)));
+			return;
+		}
+
+		if (!this.exchangeRateList.length) {
+			this.exchangeRateList = await this.dolarApiService.getAll(false, this.config.showOtherCurrencies);
+		}
+
+		const rate = this.exchangeRateList.find((value) => value.casa === this.config.badgeExchangeRateType) ?? this.exchangeRateList[0];
+		if (!rate) return;
+
+		const haciaPesos = menuItemId === MENU_TO_ARS;
+		const compra = haciaPesos ? amount * rate.compra : amount / rate.compra;
+		const venta = haciaPesos ? amount * rate.venta : amount / rate.venta;
+		const formatear = (value: number) => (haciaPesos ? formatCurrency(value) : plainFormatter.format(value));
+
+		await this.notify(
+			chrome.i18n.getMessage('context_result', [plainFormatter.format(amount), formatear(compra), formatear(venta)]),
+			rate.nombre,
+		);
 	}
 
 	/** Desde la alarma o el arranque del browser: siempre pide datos nuevos. */
@@ -89,11 +150,15 @@ export class BackgroundHelper {
 	private async notifyAlert(rate: ExchangeRate): Promise<void> {
 		const clave = this.config.alertDirection === 'below' ? 'alert_message_below' : 'alert_message_above';
 
+		await this.notify(chrome.i18n.getMessage(clave, [rate.nombre, formatCurrency(rate.venta), formatCurrency(this.config.alertValue)]));
+	}
+
+	private async notify(message: string, title?: string): Promise<void> {
 		await chrome.notifications.create(`${ALARM_NAME}-${Date.now()}`, {
 			type: 'basic',
 			iconUrl: 'assets/img/icon.png',
-			title: chrome.i18n.getMessage('alert_title'),
-			message: chrome.i18n.getMessage(clave, [rate.nombre, formatCurrency(rate.venta), formatCurrency(this.config.alertValue)]),
+			title: title ?? chrome.i18n.getMessage('alert_title'),
+			message,
 		});
 	}
 

@@ -13,6 +13,11 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 	}
 });
 
+// Click derecho sobre una selección: convierte el número seleccionado.
+chrome.contextMenus.onClicked.addListener((info) => {
+	void run((helper) => helper.convertSelection(String(info.menuItemId), info.selectionText ?? ''));
+});
+
 /**
  * Corre una tarea del background atrapando los errores: una promise rechazada
  * acá mata la actualización del badge y queda como unhandled rejection.

@@ -3,7 +3,7 @@ import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeMock, installChromeMock } from 'src/testing/chrome-mock';
-import { BackgroundHelper } from './background.helper';
+import { BackgroundHelper, MENU_FROM_ARS, MENU_TO_ARS } from './background.helper';
 
 const RATES = [
 	new ExchangeRate('blue', 'Dólar libre', 1400.6, 1450.2, '2026-11-19T12:00:00.000Z'),
@@ -144,6 +144,61 @@ describe('BackgroundHelper', () => {
 			await prepare({ alertExchangeRateType: 'inexistente', alertDirection: 'above', alertValue: 1 });
 
 			expect(mock.notifications.sent.length).toBe(0);
+		});
+	});
+
+	describe('conversión desde el menú del click derecho', () => {
+		beforeEach(async () => {
+			await setLocalStorage(LOCALSTORAGE_CONFIG, new Config({ badgeExchangeRateType: 'blue' }));
+			helper.exchangeRateList = RATES;
+		});
+
+		it('arma los dos ítems del menú', async () => {
+			await helper.setupContextMenus();
+
+			expect(mock.contextMenus.items.map((item) => item.id)).toEqual([MENU_TO_ARS, MENU_FROM_ARS]);
+		});
+
+		// 250 dólares al blue: 250 × 1400,6 de compra y 250 × 1450,2 de venta.
+		it('convierte la selección a pesos', async () => {
+			await helper.convertSelection(MENU_TO_ARS, 'USD 250');
+
+			const mensaje = mock.notifications.sent[0].options.message.replace(/\u00a0/g, ' ');
+			expect(mock.notifications.sent[0].options.title).toBe('Dólar libre');
+			expect(mensaje).toContain('350.150,00');
+			expect(mensaje).toContain('362.550,00');
+		});
+
+		it('convierte la selección desde pesos', async () => {
+			await helper.convertSelection(MENU_FROM_ARS, '$ 1.450,20');
+
+			const mensaje = mock.notifications.sent[0].options.message.replace(/\u00a0/g, ' ');
+			expect(mensaje).toContain('1,00');
+		});
+
+		it('avisa cuando la selección no tiene un número', async () => {
+			await helper.convertSelection(MENU_TO_ARS, 'dos mil');
+
+			expect(mock.notifications.sent.length).toBe(1);
+			expect(mock.notifications.sent[0].options.message).toContain('dos mil');
+		});
+
+		it('ignora cualquier otro ítem de menú', async () => {
+			await helper.convertSelection('otra-cosa', '250');
+
+			expect(mock.notifications.sent.length).toBe(0);
+		});
+
+		// El service worker se despierta sin estado: si no tiene la lista en
+		// memoria, la pide.
+		it('pide las cotizaciones si no las tiene en memoria', async () => {
+			helper.exchangeRateList = [];
+			const getAll = spyOn(helper.dolarApiService, 'getAll').and.resolveTo(RATES);
+
+			await helper.convertSelection(MENU_TO_ARS, '250');
+
+			expect(getAll).toHaveBeenCalled();
+			expect(mock.notifications.sent.length).toBe(1);
 		});
 	});
 });

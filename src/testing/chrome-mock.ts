@@ -34,6 +34,7 @@ export interface ChromeMock {
 	badge: { text?: string; color?: string; title?: string };
 	alarms: { created: { name: string; info: any }[] };
 	notifications: { sent: { id: string; options: any }[] };
+	contextMenus: { items: { id: string; title: string }[] };
 }
 
 export function installChromeMock(): ChromeMock {
@@ -42,6 +43,7 @@ export function installChromeMock(): ChromeMock {
 	const badge: ChromeMock['badge'] = {};
 	const created: { name: string; info: any }[] = [];
 	const sent: { id: string; options: any }[] = [];
+	let menus: { id: string; title: string }[] = [];
 
 	const chromeStub = {
 		runtime: { lastError: undefined as unknown },
@@ -88,6 +90,11 @@ export function installChromeMock(): ChromeMock {
 				return id;
 			},
 		},
+		contextMenus: {
+			removeAll: async () => void (menus = []),
+			create: (item: { id: string; title: string }) => void menus.push(item),
+			onClicked: { addListener() {} },
+		},
 	};
 
 	(globalThis as any).chrome = chromeStub;
@@ -102,6 +109,11 @@ export function installChromeMock(): ChromeMock {
 		badge,
 		alarms: { created },
 		notifications: { sent },
+		contextMenus: {
+			get items() {
+				return menus;
+			},
+		},
 	};
 }
 
