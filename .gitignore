@@ -11,3 +11,6 @@ dist.zip
 
 # Capturas del preview
 preview*.png
+
+# Reporte de cobertura
+/coverage

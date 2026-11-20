@@ -1,5 +1,31 @@
 # Changelog
 
+## [v3.2.0] - 19-11-2026
+
+### Novedades
+
+- **Variación del día:** cada cotización muestra cuánto se movió contra el cierre de ayer, con un sparkline de los últimos treinta cierres. Antes la flecha comparaba contra el sondeo anterior, que podía ser de diez minutos atrás.
+- **Aviso por valor:** una notificación cuando el precio de venta supera, o baja de, el valor que marques. Avisa una sola vez por cruce.
+- **Otras monedas:** euro, real brasileño, peso chileno y peso uruguayo, detrás de un toggle en configuración. Aparecen también en el indicador, el tooltip y el conversor.
+- **Convertir desde el click derecho:** seleccionás un número en cualquier página y la extensión te dice cuánto es, en los dos sentidos.
+- **Atajo de teclado:** `Alt+Shift+D` abre la extensión.
+- **La extensión habla inglés.** Quedaban doce textos escritos en castellano dentro del código; ahora todo sale de `_locales`, con el idioma inglés completo.
+- **La configuración sincroniza** entre las máquinas donde tengas la sesión de Chrome.
+- **Botón de reintento** en la tarjeta de error: antes había que cerrar y abrir el popup.
+
+### Correcciones
+
+- El error mostraba el mensaje técnico en inglés ("Failed to fetch") pegado al texto en castellano.
+- Si se ocultaba el conversor y era la tab por defecto, el popup abría en una tab que ya no existía.
+
+### Mejoras internas
+
+- El icono pasó a ser un SVG: los cuatro tamaños (16, 32, 48 y **128**, el que pide la tienda) se generan con `npm run icons` en vez de estirar un raster de 48.
+- `check-manifest` chequea además que los idiomas tengan las mismas claves y que cada icono mida lo que dice medir.
+- `npm run shots:store` genera las capturas de 1280×800 de la ficha de la tienda.
+- Piso de cobertura en los tests, que hoy están en 94 % de sentencias y 96 % de líneas.
+- 155 tests.
+
 ## [v3.1.0] - 19-11-2026
 
 ### Novedades

@@ -15,6 +15,16 @@ module.exports = function (config) {
 			dir: require('path').join(__dirname, './coverage/app'),
 			subdir: '.',
 			reporters: [{ type: 'html' }, { type: 'text-summary' }],
+			// Piso de cobertura: unos puntos por debajo de lo que hay hoy, para
+			// que una caída real falle y un refactor chico no moleste.
+			check: {
+				global: {
+					statements: 92,
+					branches: 83,
+					functions: 90,
+					lines: 94,
+				},
+			},
 		},
 		reporters: ['progress', 'kjhtml'],
 		port: 9876,

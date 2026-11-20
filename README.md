@@ -1,8 +1,8 @@
 # ¿Y el dólar, che? — Extensión de Chrome
 
-Muestra la cotización del dólar en Argentina (oficial, libre, MEP, CCL, mayorista, cripto y tarjeta) en el icono del navegador y en un popup, con un conversor rápido de pesos a dólares y viceversa.
+Muestra la cotización del dólar en Argentina (oficial, libre, MEP, CCL, mayorista, cripto y tarjeta) en el icono del navegador y en un popup, con la variación del día, un conversor rápido y avisos cuando el precio cruza un valor. Opcionalmente suma euro, real, peso chileno y peso uruguayo.
 
-Los datos vienen de [dolarapi.com](https://dolarapi.com). Nada sale del navegador: la extensión no recopila ni envía información del usuario.
+Los datos vienen de [dolarapi.com](https://dolarapi.com) y la serie histórica de [argentinadatos.com](https://argentinadatos.com). Nada sale del navegador: la extensión no recopila ni envía información del usuario.
 
 ## Instalación
 
@@ -19,23 +19,27 @@ Después, en `chrome://extensions/`: activar el modo de desarrollador, "Cargar d
 
 ## Uso
 
-- El **icono** muestra el valor del tipo de cambio que elijas (compra o venta), y al pasar el cursor aparece el detalle con la última actualización.
-- El **popup** tiene tres pestañas: cotizaciones (click en un precio para copiarlo), conversión rápida y configuración.
+- El **icono** muestra el valor del tipo de cambio que elijas (compra o venta), y al pasar el cursor aparece el detalle con la última actualización. `Alt+Shift+D` abre el popup.
+- El **popup** tiene tres pestañas: cotizaciones (click en un precio para copiarlo, con la variación del día y el sparkline de los últimos treinta cierres), conversión rápida y configuración.
+- El **click derecho** sobre un número seleccionado en cualquier página lo convierte, en los dos sentidos.
+- En configuración se puede pedir un **aviso** cuando el precio de venta cruza un valor, y sumar **otras monedas** (euro, real, peso chileno y uruguayo) a la tabla.
 - Los datos se refrescan solos cada 10 minutos, y el botón de refresh del popup fuerza una actualización.
 
 ## Desarrollo
 
-| Comando                    | Qué hace                                                                                                              |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `npm run build`            | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest.                   |
-| `npm run watch`            | Build de desarrollo en modo watch (el popup).                                                                         |
-| `npm run build:background` | Compila solo el service worker con esbuild.                                                                           |
-| `npm run preview`          | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal. |
-| `npm run preview:shot`     | Lo mismo pero saca una captura a `preview.png`. Acepta `--dark` y `--tab=1                                            | 2`. |
-| `npm test`                 | Tests unitarios en modo watch (Karma + Jasmine).                                                                      |
-| `npm run test:ci`          | Los mismos tests una sola vez, en Chrome headless.                                                                    |
-| `npm run lint`             | ESLint sobre `.ts` y templates.                                                                                       |
-| `npm run package`          | Build + `dist.zip` listo para subir a la store (Windows).                                                             |
+| Comando                    | Qué hace                                                                                                                           |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build`            | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest.                                |
+| `npm run watch`            | Build de desarrollo en modo watch (el popup).                                                                                      |
+| `npm run build:background` | Compila solo el service worker con esbuild.                                                                                        |
+| `npm run preview`          | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal.              |
+| `npm run preview:shot`     | Lo mismo pero saca una captura. Acepta `--dark`, `--tab=N`, `--monedas`, `--error`, `--hidden`, `--click=<sel>` y `--focus=<sel>`. |
+| `npm run shots:store`      | Las cinco capturas de 1280×800 para la ficha de la tienda.                                                                         |
+| `npm run icons`            | Genera `icon-16/32/48/128.png` desde `assets/img/icon.svg`.                                                                        |
+| `npm test`                 | Tests unitarios en modo watch (Karma + Jasmine).                                                                                   |
+| `npm run test:ci`          | Los mismos tests una sola vez, en Chrome headless.                                                                                 |
+| `npm run lint`             | ESLint sobre `.ts` y templates.                                                                                                    |
+| `npm run package`          | Build + `dist.zip` listo para subir a la store (Windows).                                                                          |
 
 Puntos a tener en cuenta al tocar el código:
 
@@ -45,11 +49,14 @@ Puntos a tener en cuenta al tocar el código:
 - **Para ver un cambio visual no hace falta empaquetar la extensión.** `npm run preview` levanta el popup en un browser normal con chrome.* stubbeado y datos de ejemplo (con las tres tendencias, para ver los tres colores de chip). Con `--shot` saca la captura directo.
 - **No hay librería de componentes.** La tabla, los selects, el input de monto y los tooltips de ayuda son HTML nativo estilado con los tokens de `styles.scss`. Antes de sumar una librería por un componente, conviene medir: PrimeNG y ng-select costaban 1,3 MB empaquetados para cuatro widgets.
 - **Los valores por defecto de la configuración viven en `shared/constants/defaults.constant.ts`,** no en `environments/`. Ahí quedó solo el flag `production`: cuando los defaults estaban duplicados en dos archivos de environment, uno quedó desactualizado y el build publicado salió con `production: false`.
-- **El icono (`assets/img/icon.png`) es de 48×48.** El manifest declara 16, 32 y 48 porque es lo que ese archivo puede cubrir sin verse borroso. Para la ficha de la store conviene exportar un 128×128 desde el diseño original y agregarlo al manifest.
+- **El icono es `assets/img/icon.svg`;** los PNG se generan con `npm run icons`. Es un redibujo del original de 48×48, que quedó en el repo como `icon.png`. Si aparece el arte original en vector, reemplazar el SVG y volver a generar.
+- **El histórico es información de apoyo.** Se pide aparte de las cotizaciones y sin bloquear la tabla, y si falla los chips caen a la comparación contra el sondeo anterior. Nunca tiene que romper el popup.
+- **La configuración vive en `chrome.storage.sync`** y el resto en `local`. Sync tiene cuota de 8 kB por item y límite de escrituras por minuto, así que las cotizaciones y el histórico, que son caché, no van ahí.
 - **El tema de los controles nativos sale de `color-scheme`.** `:root { color-scheme: light }` y `html.dark { color-scheme: dark }` hacen que el desplegable de los `<select>`, el input de color y las scrollbars sigan el modo oscuro sin CSS extra.
 - **Sin `baseUrl` en el tsconfig.** TypeScript 6 lo deprecó, así que los alias (`@shared/*`, `@containers/*`, `src/*`) están en `paths` con rutas relativas al tsconfig. Si agregás un alias nuevo, va ahí.
 - **ESLint usa flat config** (`eslint.config.js`), que es lo único que soporta ESLint 10. El `any` está permitido solo en los specs y en `src/testing/`, donde se imitan APIs del browser.
-- `scripts/check-manifest.mjs` corre en cada build y falla si la versión del manifest no coincide con la del `package.json`, si el manifest apunta a un archivo que no existe, o si los `host_permissions` no se corresponden con los endpoints del código.
+- `scripts/check-manifest.mjs` corre en cada build y falla si la versión del manifest no coincide con la del `package.json`, si el manifest apunta a un archivo que no existe, si los `host_permissions` no se corresponden con los endpoints del código, si un icono no mide lo que declara, o si a un idioma le falta una clave que el idioma por defecto sí tiene.
+- **Los tests tienen piso de cobertura** (`karma.conf.js`). El doble de `chrome.i18n` sirve los mensajes reales de `_locales/es`, así que un texto que falte se ve en los tests.
 
 ## Stack
 
@@ -62,15 +69,15 @@ src/
 ├── background.ts                 # entry del service worker (alarma, onInstalled, onStartup)
 │                                 # se compila con esbuild, no con Angular
 ├── manifest.json
-├── _locales/es/                  # textos (chrome.i18n)
+├── _locales/{es,en}/             # textos (chrome.i18n)
 └── app/
     ├── containers/popup/         # el popup
     ├── components/               # header, tabla, conversor, settings, resultado, legales
     └── shared/
-        ├── services/             # dolarapi.com
+        ├── services/             # dolarapi.com y la serie histórica
         ├── helpers/              # badge, tooltip y refresco (corre en el SW)
         ├── models/               # Config, ExchangeRate
-        └── utils/                # storage, i18n, formato
+        └── utils/                # storage, i18n, formato, variación, parseo de montos
 ```
 
 ## Contribuciones

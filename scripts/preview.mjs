@@ -10,6 +10,7 @@
  *   node scripts/preview.mjs --shot --dark # la captura en modo oscuro
  *   node scripts/preview.mjs --shot --monedas # con las otras monedas activadas
  *   node scripts/preview.mjs --shot --error   # la tarjeta de error
+ *   node scripts/preview.mjs --shot --store   # 1280x800 para la ficha de la tienda
  */
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -41,6 +42,10 @@ const hidden = process.argv.includes('--hidden');
 const monedas = process.argv.includes('--monedas');
 /** Simula la API caída y sin nada cacheado, para ver la tarjeta de error. */
 const error = process.argv.includes('--error');
+/** Captura de 1280x800 para la ficha de la tienda, con el popup montado. */
+const store = process.argv.includes('--store');
+const titulo = (process.argv.find((a) => a.startsWith('--titulo=')) ?? '--titulo=').split('=').slice(1).join('=');
+const bajada = (process.argv.find((a) => a.startsWith('--bajada=')) ?? '--bajada=').split('=').slice(1).join('=');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
 /** Selector a enfocar antes de la captura, para ver tooltips y foco. */
 const focus = (process.argv.find((a) => a.startsWith('--focus=')) ?? '--focus=').split('=').slice(1).join('=');
@@ -191,6 +196,38 @@ window.fetch = async (url) => {
 };
 `;
 
+/** La ficha de la tienda pide 1280x800: el popup va montado sobre un fondo. */
+const storeHtml = `<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><style>
+	html, body { margin: 0; padding: 0; width: 1280px; height: 800px; overflow: hidden; }
+	body {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 72px;
+		background: ${dark ? 'linear-gradient(135deg, #1b1b2c 0%, #2b2b3f 100%)' : 'linear-gradient(135deg, #eef0f9 0%, #dfe3f6 100%)'};
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		color: ${dark ? '#e3e6f7' : '#2a2a3a'};
+	}
+	.texto { width: 440px; }
+	h1 { font-size: 44px; line-height: 1.15; margin: 0 0 18px; color: ${dark ? '#a4aff4' : '#3949ab'}; }
+	p { font-size: 20px; line-height: 1.5; margin: 0; opacity: .85; }
+	.marco {
+		border-radius: 14px;
+		overflow: hidden;
+		box-shadow: 0 24px 60px rgba(0,0,0,${dark ? '.55' : '.18'});
+		background: ${dark ? '#212121' : '#ffffff'};
+	}
+	iframe { display: block; width: 420px; height: 640px; border: 0; }
+</style></head>
+<body>
+	<div class="texto">
+		<h1>${titulo || 'El dólar, siempre a mano'}</h1>
+		<p>${bajada || 'Todas las cotizaciones, la variación del día y un conversor, sin salir del navegador.'}</p>
+	</div>
+	<div class="marco"><iframe src="/?target=popup"></iframe></div>
+</body></html>`;
+
 const server = createServer(async (req, res) => {
 	const url = new URL(req.url, `http://localhost:${PORT}`);
 	let path = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -200,6 +237,12 @@ const server = createServer(async (req, res) => {
 	if (path === '/preview-stub.js') {
 		res.writeHead(200, { 'Content-Type': TYPES['.js'] });
 		res.end(stub);
+		return;
+	}
+
+	if (path === '/store.html') {
+		res.writeHead(200, { 'Content-Type': TYPES['.html'] });
+		res.end(storeHtml);
 		return;
 	}
 
@@ -221,7 +264,7 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, async () => {
-	const target = `http://localhost:${PORT}/?target=popup`;
+	const target = store ? `http://localhost:${PORT}/store.html` : `http://localhost:${PORT}/?target=popup`;
 	console.log(`preview: ${target}`);
 
 	if (!shot) return;
@@ -235,15 +278,16 @@ server.listen(PORT, async () => {
 	}
 
 	const out = resolve(
-		`preview${error ? '-error' : ''}${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
+		`preview${store ? '-store' : ''}${error ? '-error' : ''}${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
 	);
 	await rm(out, { force: true });
 	const chrome = spawn(chromeBin, [
 		'--headless=new',
 		'--disable-gpu',
 		'--hide-scrollbars',
-		'--force-device-scale-factor=2',
-		'--window-size=460,760',
+		// La ficha de la tienda pide 1280x800 exactos, así que ahí no se duplica.
+		`--force-device-scale-factor=${store ? 1 : 2}`,
+		`--window-size=${store ? '1280,800' : '460,760'}`,
 		`--virtual-time-budget=${VIRTUAL_TIME_MS}`,
 		`--screenshot=${out}`,
 		target,

@@ -1,6 +1,6 @@
 {
 	"name": "y-el-dolar-che",
-	"version": "3.1.0",
+	"version": "3.2.0",
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
@@ -11,13 +11,14 @@
 		"package": "npm run build && powershell -NoProfile -Command \"Compress-Archive -Path dist/* -DestinationPath dist.zip -Force\"",
 		"watch": "ng build --delete-output-path --watch --configuration development",
 		"test": "ng test",
-		"test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+		"test:ci": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
 		"lint": "ng lint",
 		"format": "prettier --write \"src/**/*.{ts,html,scss}\" \"scripts/*.mjs\" \"*.{json,md}\"",
 		"format:check": "prettier --check \"src/**/*.{ts,html,scss}\" \"scripts/*.mjs\" \"*.{json,md}\"",
 		"build:background": "node scripts/build-background.mjs",
 		"preview": "node scripts/preview.mjs",
-		"preview:shot": "node scripts/preview.mjs --shot"
+		"preview:shot": "node scripts/preview.mjs --shot",
+		"shots:store": "node scripts/store-shots.mjs"
 	},
 	"private": true,
 	"dependencies": {
