@@ -64,7 +64,7 @@ describe('BackgroundHelper', () => {
 
 		await helper.refreshData();
 
-		expect(getAll).toHaveBeenCalledWith(true);
+		expect(getAll).toHaveBeenCalledWith(true, false);
 		expect(mock.badge.text).toBeDefined();
 	});
 

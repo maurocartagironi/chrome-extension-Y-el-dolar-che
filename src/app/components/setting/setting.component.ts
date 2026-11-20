@@ -32,6 +32,7 @@ export class SettingComponent implements OnInit {
 	public tooltipExchangeRateType: Option<string> | undefined;
 	public badgeIsSell: boolean = false;
 	public quickConversionIsHidden: boolean = false;
+	public otherCurrenciesAreShown: boolean = false;
 	public badgeBackgroundColor: string = '';
 	public defaultTab: Option<number> | undefined;
 	public tabs: Option<number>[] = [];
@@ -57,6 +58,7 @@ export class SettingComponent implements OnInit {
 		this.tooltipExchangeRateType = this.picklistCurrency.find((e) => e.value === this.config.tooltipExchangeRateType);
 		this.badgeIsSell = this.config.badgeExchangeRateAction === 'sell';
 		this.quickConversionIsHidden = this.config.hiddenConversionSection;
+		this.otherCurrenciesAreShown = this.config.showOtherCurrencies;
 		this.badgeBackgroundColor = this.config.badgeBackgroundColor;
 		// Con OnPush hay que marcar la vista: esto corre después de un await.
 		this.changeDetector.markForCheck();
@@ -125,6 +127,16 @@ export class SettingComponent implements OnInit {
 		this.buildTabs();
 		await this.applyBadge();
 		this.changeDetector.markForCheck();
+		this.refreshData();
+	}
+
+	/**
+	 * Al prender o apagar las otras monedas hay que volver a pedir los datos:
+	 * la tabla, el indicador y el conversor salen todos de la misma lista.
+	 */
+	async toggleOtherCurrencies(e: Event) {
+		this.config.showOtherCurrencies = (e.target as HTMLInputElement).checked;
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
 		this.refreshData();
 	}
 

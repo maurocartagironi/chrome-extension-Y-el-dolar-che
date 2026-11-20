@@ -74,7 +74,7 @@ export class PopupComponent implements OnInit {
 			this.isDarkMode = evaluateDarkMode(this.config.darkMode);
 
 			const oldExchangeRates = await getLocalStorage<ExchangeRate[]>(LOCALSTORAGE_EXCHANGERATES);
-			const servicesExchangeRates = await this.dolarApiService.getAll(forceRefresh);
+			const servicesExchangeRates = await this.dolarApiService.getAll(forceRefresh, this.config.showOtherCurrencies);
 
 			await this.updateExchangeRates(oldExchangeRates, servicesExchangeRates);
 

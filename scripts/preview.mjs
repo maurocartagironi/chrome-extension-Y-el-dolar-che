@@ -8,6 +8,7 @@
  *   node scripts/preview.mjs               # sirve en http://localhost:4210
  *   node scripts/preview.mjs --shot        # además guarda preview.png
  *   node scripts/preview.mjs --shot --dark # la captura en modo oscuro
+ *   node scripts/preview.mjs --shot --monedas # con las otras monedas activadas
  */
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -35,6 +36,8 @@ const CHROME_CANDIDATES = [
 const dark = process.argv.includes('--dark');
 /** Simula la configuración con el conversor oculto. */
 const hidden = process.argv.includes('--hidden');
+/** Simula la configuración con las otras monedas activadas. */
+const monedas = process.argv.includes('--monedas');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
 /** Selector a enfocar antes de la captura, para ver tooltips y foco. */
 const focus = (process.argv.find((a) => a.startsWith('--focus=')) ?? '--focus=').split('=').slice(1).join('=');
@@ -54,8 +57,17 @@ const TYPES = {
 
 const messages = JSON.parse(await readFile(join(DIST, '_locales/es/messages.json'), 'utf8'));
 
+/** Euro, real, peso chileno y peso uruguayo, como los devuelve /cotizaciones. */
+const OTHER = [
+	{ moneda: 'USD', nombre: 'Dólar', compra: 1535, venta: 1585 },
+	{ moneda: 'EUR', nombre: 'Euro', compra: 1706.47, venta: 1720.25 },
+	{ moneda: 'BRL', nombre: 'Real Brasileño', compra: 283.4, venta: 287.1 },
+	{ moneda: 'CLP', nombre: 'Peso Chileno', compra: 1.58, venta: 1.62 },
+	{ moneda: 'UYU', nombre: 'Peso Uruguayo', compra: 38.9, venta: 39.4 },
+];
+
 /** Cotizaciones de ejemplo, con tendencias mezcladas para ver los tres chips. */
-const RATES = [
+const DOLARES = [
 	{ casa: 'oficial', nombre: 'Oficial', compra: 1535, venta: 1585 },
 	{ casa: 'blue', nombre: 'Dólar libre', compra: 1620, venta: 1640 },
 	{ casa: 'bolsa', nombre: 'Bolsa', compra: 1631.9, venta: 1649.8 },
@@ -64,6 +76,11 @@ const RATES = [
 	{ casa: 'cripto', nombre: 'Cripto', compra: 1733.21, venta: 1739.06 },
 	{ casa: 'tarjeta', nombre: 'Tarjeta', compra: 1995.5, venta: 2060.5 },
 ];
+
+/** Lo que termina en la tabla, según se hayan pedido las otras monedas. */
+const RATES = monedas
+	? [...DOLARES, ...OTHER.filter((m) => m.moneda !== 'USD').map((m) => ({ casa: m.moneda.toLowerCase(), ...m }))]
+	: DOLARES;
 
 /**
  * Treinta cierres diarios por casa, con una forma determinista para que la
@@ -102,7 +119,14 @@ window.chrome = {
 	runtime: { lastError: undefined, onInstalled: { addListener() {} }, onStartup: { addListener() {} } },
 	storage: { local: (() => {
 		const store = new Map(Object.entries({
-			config: ${JSON.stringify({ darkMode: dark ? 'dark' : 'light', defaultTab: tab, hiddenConversionSection: hidden, valueConversor: 1000, currencyConversor: 'blue-ars' })},
+			config: ${JSON.stringify({
+				darkMode: dark ? 'dark' : 'light',
+				defaultTab: tab,
+				hiddenConversionSection: hidden,
+				showOtherCurrencies: monedas,
+				valueConversor: 1000,
+				currencyConversor: 'blue-ars',
+			})},
 			exchangerates: ${JSON.stringify(
 				RATES.map((r, i) => ({
 					...r,
@@ -153,9 +177,11 @@ if (${JSON.stringify(Boolean(click))}) {
 const HISTORY = ${JSON.stringify(HISTORY)};
 window.fetch = async (url) => {
 	const direccion = String(url);
-	const cuerpo = direccion.includes('argentinadatos') ? HISTORY[direccion.split('/').pop()] ?? [] : ${JSON.stringify(
-		RATES.map((r) => ({ ...r, fechaActualizacion: hace3horas })),
-	)};
+	const cuerpo = direccion.includes('argentinadatos')
+		? HISTORY[direccion.split('/').pop()] ?? []
+		: direccion.endsWith('/v1/cotizaciones')
+			? ${JSON.stringify(OTHER.map((m) => ({ ...m, casa: 'oficial', fechaActualizacion: hace3horas })))}
+			: ${JSON.stringify(DOLARES.map((r) => ({ ...r, fechaActualizacion: hace3horas })))};
 	return { ok: true, status: 200, statusText: 'OK', json: async () => cuerpo };
 };
 `;
@@ -204,7 +230,7 @@ server.listen(PORT, async () => {
 	}
 
 	const out = resolve(
-		`preview${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
+		`preview${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
 	);
 	await rm(out, { force: true });
 	const chrome = spawn(chromeBin, [

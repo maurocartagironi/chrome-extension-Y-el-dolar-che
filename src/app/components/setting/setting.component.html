@@ -91,6 +91,29 @@
 				</div>
 			</div>
 
+			<!-- Monedas -->
+			<div class="settings-group">
+				<h3 class="group-label">
+					{{ getChromeMessage('label_group_currencies') }}
+				</h3>
+				<div class="option-item">
+					<label for="toggleOtherCurrencies">
+						{{ getChromeMessage('label_other_currencies_opt') }}
+						<app-info-tip [text]="getChromeMessage('label_other_currencies_desc')" />
+					</label>
+					<div class="toggle-container-hide-conversor">
+						<input
+							type="checkbox"
+							id="toggleOtherCurrencies"
+							class="toggle-checkbox"
+							(change)="toggleOtherCurrencies($event)"
+							[(ngModel)]="otherCurrenciesAreShown"
+						/>
+						<label for="toggleOtherCurrencies" class="toggle-label"></label>
+					</div>
+				</div>
+			</div>
+
 			<!-- Conversion Settings -->
 			<div class="settings-group">
 				<h3 class="group-label">

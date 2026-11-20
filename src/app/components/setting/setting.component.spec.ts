@@ -64,8 +64,27 @@ describe('SettingComponent', () => {
 
 	it('cada opción tiene su tooltip de ayuda', () => {
 		const tips = fixture.nativeElement.querySelectorAll('.info-tip');
-		expect(tips.length).toBe(6);
+		expect(tips.length).toBe(7);
 		expect(tips[0].getAttribute('data-tip')).toBe('Elegí el tipo de cambio del indicador.');
+	});
+
+	// La tabla, el indicador y el conversor salen todos de la misma lista: al
+	// prender las otras monedas hay que volver a pedirla.
+	it('guarda el alta de otras monedas y pide los datos de nuevo', async () => {
+		const refresh = spyOn(component.refresh, 'emit');
+
+		await component.toggleOtherCurrencies(checkEvent(true));
+
+		expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.showOtherCurrencies).toBeTrue();
+		expect(refresh).toHaveBeenCalled();
+	});
+
+	it('refleja en el toggle lo que estaba guardado', async () => {
+		await setLocalStorage(LOCALSTORAGE_CONFIG, new Config({ showOtherCurrencies: true }));
+
+		await component.ngOnInit();
+
+		expect(component.otherCurrenciesAreShown).toBeTrue();
 	});
 
 	// Este era el bug: cambiar el tipo de cambio no repintaba el badge.

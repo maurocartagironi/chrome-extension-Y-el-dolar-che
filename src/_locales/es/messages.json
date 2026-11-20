@@ -198,5 +198,14 @@
 	},
 	"table_variation_title": {
 		"message": "Variación respecto del cierre de ayer"
+	},
+	"label_group_currencies": {
+		"message": "Monedas"
+	},
+	"label_other_currencies_opt": {
+		"message": "Mostrar otras monedas"
+	},
+	"label_other_currencies_desc": {
+		"message": "Suma a la tabla el euro, el real brasileño, el peso chileno y el peso uruguayo, para poder consultarlos y convertirlos igual que el dólar."
 	}
 }

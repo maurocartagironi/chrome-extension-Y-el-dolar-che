@@ -8,6 +8,7 @@ export interface ConfigOptions {
 	alarmPeriodInMinutes?: number;
 	badgeBackgroundColor?: string;
 	hiddenConversionSection?: boolean;
+	showOtherCurrencies?: boolean;
 	darkMode?: string;
 	valueConversor?: number;
 	defaultTab?: number;
@@ -22,6 +23,7 @@ export class Config {
 	public alarmPeriodInMinutes: number;
 	public badgeBackgroundColor: string;
 	public hiddenConversionSection: boolean;
+	public showOtherCurrencies: boolean;
 	public defaultTab: number;
 	public darkMode: string;
 
@@ -34,6 +36,7 @@ export class Config {
 		this.valueConversor = opts.valueConversor ?? DEFAULTS.valueConversor;
 		this.badgeBackgroundColor = opts.badgeBackgroundColor ?? DEFAULTS.badgeBackgroundColor;
 		this.hiddenConversionSection = opts.hiddenConversionSection ?? DEFAULTS.hiddenConversionSection;
+		this.showOtherCurrencies = opts.showOtherCurrencies ?? DEFAULTS.showOtherCurrencies;
 		this.darkMode = opts.darkMode ?? DEFAULTS.darkMode;
 		this.defaultTab = opts.defaultTab ?? DEFAULTS.defaultTab;
 	}

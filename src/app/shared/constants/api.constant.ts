@@ -1,5 +1,8 @@
 export const ENDPOINT: string = 'https://dolarapi.com/v1/dolares';
 
+/** Euro, real, peso chileno y peso uruguayo, en un solo pedido. */
+export const ENDPOINT_OTHER_CURRENCIES: string = 'https://dolarapi.com/v1/cotizaciones';
+
 /**
  * Cierres diarios históricos. Es otro servicio del mismo grupo que dolarapi:
  * dolarapi da el precio de ahora y este la serie, que es lo que permite

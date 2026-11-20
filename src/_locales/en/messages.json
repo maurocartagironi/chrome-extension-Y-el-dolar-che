@@ -198,5 +198,14 @@
 	},
 	"table_variation_title": {
 		"message": "Change since yesterday's close"
+	},
+	"label_group_currencies": {
+		"message": "Currencies"
+	},
+	"label_other_currencies_opt": {
+		"message": "Show other currencies"
+	},
+	"label_other_currencies_desc": {
+		"message": "Adds the euro, the Brazilian real, the Chilean peso and the Uruguayan peso to the table, so you can check and convert them just like the dollar."
 	}
 }

@@ -34,7 +34,7 @@ export class BackgroundHelper {
 	/** Desde la alarma o el arranque del browser: siempre pide datos nuevos. */
 	public async refreshData(): Promise<void> {
 		await this.loadConfig();
-		this.exchangeRateList = await this.dolarApiService.getAll(true);
+		this.exchangeRateList = await this.dolarApiService.getAll(true, this.config.showOtherCurrencies);
 		await this.setBadgeAndTooltip();
 	}
 

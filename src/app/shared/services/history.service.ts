@@ -1,4 +1,5 @@
 import { ENDPOINT_HISTORY } from '@shared/constants/api.constant';
+import { OTHER_CURRENCIES } from '@shared/constants/currencies.constant';
 import { LOCALSTORAGE_HISTORY } from '@shared/constants/storage.constant';
 import { DailyClose, RateHistory } from '@shared/models/DailyClose';
 import { getLastUpdated, getLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
@@ -8,12 +9,6 @@ const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 8 * 1000;
 /** Lo que se guarda por casa. Alcanza para el sparkline y la variación. */
 const MAX_POINTS = 30;
-
-/**
- * Las monedas que no son dólar cuelgan directo de /cotizaciones; los dólares,
- * de /cotizaciones/dolares.
- */
-const OTHER_CURRENCIES = ['eur', 'brl', 'clp', 'uyu'];
 
 /**
  * Serie histórica de cierres diarios.
@@ -68,6 +63,7 @@ export class HistoryService {
 		}
 	}
 
+	/** Las que no son dólar cuelgan directo de /cotizaciones. */
 	private urlFor(casa: string): string {
 		return OTHER_CURRENCIES.includes(casa) ? `${ENDPOINT_HISTORY}/${casa}` : `${ENDPOINT_HISTORY}/dolares/${casa}`;
 	}

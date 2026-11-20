@@ -16,6 +16,8 @@ export const DEFAULTS = {
 	alarmPeriodInMinutes: 10,
 	badgeBackgroundColor: '#4A4A4A',
 	hiddenConversionSection: false,
+	/** Suma euro, real, peso chileno y peso uruguayo a la tabla. */
+	showOtherCurrencies: false,
 	/** "auto" | "dark" | "light" */
 	darkMode: 'auto',
 	defaultTab: 0,
