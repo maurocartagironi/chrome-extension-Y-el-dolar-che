@@ -83,6 +83,8 @@ describe('SettingComponent', () => {
 		await setLocalStorage(LOCALSTORAGE_CONFIG, new Config({ showOtherCurrencies: true }));
 
 		await component.ngOnInit();
+		// initialize() no se espera desde ngOnInit: hay que dejar correr las promesas.
+		await fixture.whenStable();
 
 		expect(component.otherCurrenciesAreShown).toBeTrue();
 	});

@@ -80,6 +80,22 @@ describe('PopupComponent', () => {
 		expect(component.errorMessage).toContain('No se pudo obtener la cotización');
 	});
 
+	// Antes el error era un callejón sin salida: había que cerrar y volver a
+	// abrir el popup para que reintentara.
+	it('reintenta desde el botón del error', async () => {
+		(window.fetch as jasmine.Spy).and.rejectWith(new Error('sin red'));
+		// El primer detectChanges dispara ngOnInit, que vuelve a poner loading
+		// en true: el error se pinta recién en el segundo.
+		fixture.detectChanges();
+		await component.getData(true);
+		fixture.detectChanges();
+
+		const getData = spyOn(component, 'getData');
+		fixture.nativeElement.querySelector('.retry-btn').click();
+
+		expect(getData).toHaveBeenCalledWith(true);
+	});
+
 	it('ignora un pedido abortado en lugar de mostrarlo como error', async () => {
 		const aborted = new DOMException('Aborted', 'AbortError');
 		(window.fetch as jasmine.Spy).and.rejectWith(aborted);

@@ -149,7 +149,44 @@
 	margin-top: 1px;
 }
 
+.error-body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+}
+
 .error-card .error-text {
 	white-space: pre-line;
 	line-height: 1.5;
+}
+
+/* Antes el error era un callejón sin salida: había que cerrar y volver a
+   abrir el popup para que reintentara. */
+.retry-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border: 1px solid currentColor;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: inherit;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition:
+		background-color var(--transition),
+		color var(--transition);
+}
+
+.retry-btn:hover {
+	background: var(--up);
+	color: var(--accent-contrast);
+}
+
+.retry-btn i {
+	font-size: 12px;
+	margin-top: 0;
 }

@@ -296,5 +296,14 @@
 				"content": "$1"
 			}
 		}
+	},
+	"error_retry": {
+		"message": "Try again"
+	},
+	"error_fetch_failed": {
+		"message": "Could not fetch the exchange rate."
+	},
+	"error_bad_payload": {
+		"message": "The service's response was not in the expected format."
 	}
 }

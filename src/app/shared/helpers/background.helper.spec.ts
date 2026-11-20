@@ -56,7 +56,7 @@ describe('BackgroundHelper', () => {
 	it('guarda una config por defecto si no había ninguna', async () => {
 		await helper.setBadgeAndTooltip(RATES);
 
-		expect(mock.storage.local['config']).toBeDefined();
+		expect(mock.storage.sync['config']).toBeDefined();
 	});
 
 	it('refreshData fuerza el fetch en lugar de confiar en el caché', async () => {
@@ -75,7 +75,7 @@ describe('BackgroundHelper', () => {
 
 		expect(mock.badge.text).toBe('!');
 		expect(mock.badge.title).toBe('se cayó la API');
-		expect(mock.storage.local['config']).toBeDefined();
+		expect(mock.storage.sync['config']).toBeDefined();
 	});
 
 	describe('aviso por valor', () => {

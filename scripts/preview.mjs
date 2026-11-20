@@ -9,6 +9,7 @@
  *   node scripts/preview.mjs --shot        # además guarda preview.png
  *   node scripts/preview.mjs --shot --dark # la captura en modo oscuro
  *   node scripts/preview.mjs --shot --monedas # con las otras monedas activadas
+ *   node scripts/preview.mjs --shot --error   # la tarjeta de error
  */
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -38,6 +39,8 @@ const dark = process.argv.includes('--dark');
 const hidden = process.argv.includes('--hidden');
 /** Simula la configuración con las otras monedas activadas. */
 const monedas = process.argv.includes('--monedas');
+/** Simula la API caída y sin nada cacheado, para ver la tarjeta de error. */
+const error = process.argv.includes('--error');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
 /** Selector a enfocar antes de la captura, para ver tooltips y foco. */
 const focus = (process.argv.find((a) => a.startsWith('--focus=')) ?? '--focus=').split('=').slice(1).join('=');
@@ -115,6 +118,7 @@ const TREND = ['arrow-trend-up', 'arrow-trend-down', '', 'arrow-trend-up', '', '
 const hace3horas = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
 
 const stub = `
+const SIN_RED = ${JSON.stringify(error)};
 window.chrome = {
 	runtime: { lastError: undefined, onInstalled: { addListener() {} }, onStartup: { addListener() {} } },
 	storage: { local: (() => {
@@ -127,15 +131,15 @@ window.chrome = {
 				valueConversor: 1000,
 				currencyConversor: 'blue-ars',
 			})},
-			exchangerates: ${JSON.stringify(
+			...(${JSON.stringify(error)} ? {} : { exchangerates: ${JSON.stringify(
 				RATES.map((r, i) => ({
 					...r,
 					fechaActualizacion: hace3horas,
 					updatedCompra: TREND[i],
 					updatedVenta: TREND[(i + 1) % TREND.length],
 				})),
-			)},
-			'exchangerates:lastUpdated': Date.now(),
+			)} }),
+			...(${JSON.stringify(error)} ? {} : { 'exchangerates:lastUpdated': Date.now() }),
 		}));
 		return {
 			get: (key, cb) => cb(store.has(key) ? { [key]: store.get(key) } : {}),
@@ -177,6 +181,7 @@ if (${JSON.stringify(Boolean(click))}) {
 const HISTORY = ${JSON.stringify(HISTORY)};
 window.fetch = async (url) => {
 	const direccion = String(url);
+	if (SIN_RED) throw new Error('Failed to fetch');
 	const cuerpo = direccion.includes('argentinadatos')
 		? HISTORY[direccion.split('/').pop()] ?? []
 		: direccion.endsWith('/v1/cotizaciones')
@@ -230,7 +235,7 @@ server.listen(PORT, async () => {
 	}
 
 	const out = resolve(
-		`preview${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
+		`preview${error ? '-error' : ''}${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
 	);
 	await rm(out, { force: true });
 	const chrome = spawn(chromeBin, [

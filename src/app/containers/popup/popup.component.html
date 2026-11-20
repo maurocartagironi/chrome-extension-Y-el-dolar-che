@@ -78,7 +78,13 @@
 	@if (!loading && hasError) {
 		<div class="error-card">
 			<i class="pi pi-exclamation-triangle"></i>
-			<div class="error-text">{{ errorMessage }}</div>
+			<div class="error-body">
+				<div class="error-text">{{ errorMessage }}</div>
+				<button class="retry-btn" (click)="refreshData(undefined, true)">
+					<i class="pi pi-refresh"></i>
+					<span>{{ getChromeMessage('error_retry') }}</span>
+				</button>
+			</div>
 		</div>
 	}
 

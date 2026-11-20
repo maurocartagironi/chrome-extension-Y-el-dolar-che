@@ -296,5 +296,14 @@
 				"content": "$1"
 			}
 		}
+	},
+	"error_retry": {
+		"message": "Reintentar"
+	},
+	"error_fetch_failed": {
+		"message": "No se pudo obtener la cotización."
+	},
+	"error_bad_payload": {
+		"message": "La respuesta del servicio no tiene el formato esperado."
 	}
 }

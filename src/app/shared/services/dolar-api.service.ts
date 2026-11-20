@@ -52,8 +52,9 @@ export class DolarAPIService {
 			}
 			const fallback = await getLocalStorage<ExchangeRate[]>(LOCALSTORAGE_EXCHANGERATES);
 			if (fallback?.length) return fallback;
-			const message = error instanceof Error ? error.message : String(error);
-			throw new Error(`No se pudo obtener la cotización.\n${message}`, { cause: error });
+			// El motivo técnico ("Failed to fetch") no le dice nada al usuario:
+			// va en `cause`, que queda para la consola.
+			throw new Error(chrome.i18n.getMessage('error_fetch_failed'), { cause: error });
 		} finally {
 			clearTimeout(timeout);
 			if (this.abortController === controller) {
@@ -98,7 +99,7 @@ export class DolarAPIService {
 	/** Descarta lo que no tenga la forma esperada: la respuesta es data de terceros. */
 	private parseRates(payload: unknown): ExchangeRate[] {
 		if (!Array.isArray(payload)) {
-			throw new Error('La respuesta de la API no tiene el formato esperado.');
+			throw new Error(chrome.i18n.getMessage('error_bad_payload'));
 		}
 
 		const rates = payload
@@ -115,7 +116,7 @@ export class DolarAPIService {
 			);
 
 		if (!rates.length) {
-			throw new Error('La respuesta de la API no trajo cotizaciones válidas.');
+			throw new Error(chrome.i18n.getMessage('error_bad_payload'));
 		}
 
 		return rates;
