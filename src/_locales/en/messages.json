@@ -195,5 +195,8 @@
 				"content": "$1"
 			}
 		}
+	},
+	"table_variation_title": {
+		"message": "Change since yesterday's close"
 	}
 }

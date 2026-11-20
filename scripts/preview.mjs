@@ -65,6 +65,35 @@ const RATES = [
 	{ casa: 'tarjeta', nombre: 'Tarjeta', compra: 1995.5, venta: 2060.5 },
 ];
 
+/**
+ * Treinta cierres diarios por casa, con una forma determinista para que la
+ * captura sea siempre igual. El último es el valor de hoy y el anteúltimo, el
+ * cierre contra el que se calcula la variación.
+ */
+const POINTS = 30;
+const fechaHace = (dias) => {
+	const fecha = new Date();
+	fecha.setDate(fecha.getDate() - dias);
+	return fecha.toLocaleDateString('en-CA');
+};
+const HISTORY = Object.fromEntries(
+	RATES.map((rate, indice) => [
+		rate.casa,
+		Array.from({ length: POINTS }, (_, i) => {
+			const dias = POINTS - 1 - i;
+			// Una onda suave más una pendiente, distinta para cada casa.
+			const factor = 1 - dias * 0.0025 + Math.sin((i + indice * 3) / 3.2) * 0.012;
+			return {
+				fecha: fechaHace(dias),
+				compra: Number((rate.compra * factor).toFixed(2)),
+				venta: Number((rate.venta * factor).toFixed(2)),
+			};
+		}).map((close, i, todos) =>
+			i === todos.length - 1 ? { ...close, compra: RATES[indice].compra, venta: RATES[indice].venta } : close,
+		),
+	]),
+);
+
 const TREND = ['arrow-trend-up', 'arrow-trend-down', '', 'arrow-trend-up', '', 'arrow-trend-down', 'arrow-trend-up'];
 const hace3horas = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
 
@@ -121,10 +150,14 @@ if (${JSON.stringify(Boolean(click))}) {
 		else console.warn('preview: no encontré', ${JSON.stringify(click)});
 	}, ${CLICK_AT_MS});
 }
-window.fetch = async () => ({
-	ok: true, status: 200, statusText: 'OK',
-	json: async () => ${JSON.stringify(RATES.map((r) => ({ ...r, fechaActualizacion: hace3horas })))},
-});
+const HISTORY = ${JSON.stringify(HISTORY)};
+window.fetch = async (url) => {
+	const direccion = String(url);
+	const cuerpo = direccion.includes('argentinadatos') ? HISTORY[direccion.split('/').pop()] ?? [] : ${JSON.stringify(
+		RATES.map((r) => ({ ...r, fechaActualizacion: hace3horas })),
+	)};
+	return { ok: true, status: 200, statusText: 'OK', json: async () => cuerpo };
+};
 `;
 
 const server = createServer(async (req, res) => {

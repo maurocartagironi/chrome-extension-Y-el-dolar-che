@@ -35,6 +35,43 @@ tbody td {
 	line-height: 1.3;
 }
 
+.rate-name .name {
+	display: block;
+}
+
+/* Variación del día: el sparkline de los últimos cierres y el porcentaje
+   contra el cierre de ayer. */
+.rate-meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	margin-top: 3px;
+	color: var(--neutral);
+	font-size: 11px;
+	font-weight: 600;
+	cursor: default;
+}
+
+.rate-meta.up {
+	color: var(--up);
+}
+
+.rate-meta.down {
+	color: var(--down);
+}
+
+.spark {
+	width: 34px;
+	height: 12px;
+	flex-shrink: 0;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0.9;
+}
+
 /* ── Chip de precio ────────────────────────────────────────── */
 /* Es un botón porque al click copia el valor, pero se ve como la etiqueta
    de siempre: sin borde, sin fondo de botón. */

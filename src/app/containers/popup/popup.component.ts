@@ -3,8 +3,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChil
 import { LOCALSTORAGE_CONFIG, LOCALSTORAGE_EXCHANGERATES } from '@shared/constants/storage.constant';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
 import { Config, ConfigOptions } from '@shared/models/Config';
+import { RateHistory } from '@shared/models/DailyClose';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
+import { HistoryService } from '@shared/services/history.service';
 import { calculateTimeDifference, evaluateDarkMode, getLocalStorage } from '@shared/utils';
 import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeService } from '@shared/utils/chrome.utils';
@@ -18,19 +20,22 @@ import { SettingComponent } from '../../components/setting/setting.component';
 @Component({
 	selector: 'app-popup',
 	templateUrl: './popup.component.html',
-	providers: [DolarAPIService],
+	providers: [DolarAPIService, HistoryService],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./popup.component.scss'],
 	imports: [HeaderComponent, TableComponent, QuickPricingComponent, SettingComponent, LegalTermsComponent],
 })
 export class PopupComponent implements OnInit {
 	dolarApiService = inject(DolarAPIService);
+	historyService = inject(HistoryService);
 	chromeService = inject(ChromeService);
 	private changeDetector = inject(ChangeDetectorRef);
 
 	@ViewChild('legalTerms') legalTerms!: LegalTermsComponent;
 
 	public exchangeRates: ExchangeRate[] = [];
+	/** Cierres diarios por casa: alimentan la variación del día y el sparkline. */
+	public history: RateHistory = {};
 	public lastUpdated: string = '';
 	public realLastUpdated: Date = new Date();
 	public config: Config = new Config();
@@ -84,6 +89,9 @@ export class PopupComponent implements OnInit {
 			this.activeIndex = this.resolveTab(this.tab ?? this.config.defaultTab);
 			// Con OnPush hay que marcar la vista: esto corre después de un await.
 			this.changeDetector.markForCheck();
+			// El histórico va aparte y sin await: son siete pedidos y la tabla no
+			// tiene por qué esperarlos para mostrar los precios de hoy.
+			void this.loadHistory();
 		} catch (error: unknown) {
 			// Un AbortError significa que ya salió un pedido más nuevo: ese actualiza la vista.
 			if (error instanceof Error && error.name === 'AbortError') return;
@@ -92,6 +100,20 @@ export class PopupComponent implements OnInit {
 			this.errorMessage = error instanceof Error ? error.message : this.chromeService.getMessage('error_general_title');
 			// Con OnPush hay que marcar la vista: esto corre después de un await.
 			this.changeDetector.markForCheck();
+		}
+	}
+
+	/**
+	 * Los cierres diarios. Es información de apoyo: si falla, la tabla sigue
+	 * mostrando los precios y los chips caen a la comparación entre sondeos.
+	 */
+	private async loadHistory(): Promise<void> {
+		if (!this.exchangeRates.length) return;
+		try {
+			this.history = await this.historyService.getAll(this.exchangeRates.map((rate) => rate.casa));
+			this.changeDetector.markForCheck();
+		} catch {
+			// sin histórico, la tabla se dibuja igual
 		}
 	}
 

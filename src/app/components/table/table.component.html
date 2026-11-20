@@ -8,24 +8,31 @@
 			</tr>
 		</thead>
 		<tbody>
-			@for (rate of exchangeRates; track rate.casa) {
+			@for (row of rows; track row.casa) {
 				<tr>
-					<td class="rate-name">{{ rate.nombre }}</td>
+					<td class="rate-name">
+						<span class="name">{{ row.nombre }}</span>
+						@if (row.variation) {
+							<span class="rate-meta" [ngClass]="row.variation.trend" [title]="getChromeMessage('table_variation_title')">
+								@if (row.spark) {
+									<svg class="spark" viewBox="0 0 56 16" preserveAspectRatio="none" aria-hidden="true">
+										<polyline [attr.points]="row.spark" vector-effect="non-scaling-stroke" />
+									</svg>
+								}
+								<span class="rate-var">{{ row.variation.text }}</span>
+							</span>
+						}
+					</td>
 					<td>
 						<button
 							class="price-chip"
-							[ngClass]="trendClass(rate.updatedCompra)"
-							(click)="copyPrice(rate.compra)"
+							[ngClass]="row.compra.trend"
+							(click)="copyPrice(row.compra.value)"
 							[title]="getChromeMessage('table_copy_buy')"
 						>
-							<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
-							@if (rate.updatedCompra) {
-								<svg
-									class="trend-icon"
-									[class.down]="rate.updatedCompra === 'arrow-trend-down'"
-									viewBox="0 0 24 14"
-									aria-hidden="true"
-								>
+							<span class="price-value">{{ row.compra.text }}</span>
+							@if (row.compra.trend !== 'neutral') {
+								<svg class="trend-icon" [class.down]="row.compra.trend === 'down'" viewBox="0 0 24 14" aria-hidden="true">
 									<path d="M1 12.5 L8 5.5 L12 9.5 L21 1.5" />
 									<path d="M15 1.5 L21.5 1.5 L21.5 8" />
 								</svg>
@@ -35,18 +42,13 @@
 					<td>
 						<button
 							class="price-chip"
-							[ngClass]="trendClass(rate.updatedVenta)"
-							(click)="copyPrice(rate.venta)"
+							[ngClass]="row.venta.trend"
+							(click)="copyPrice(row.venta.value)"
 							[title]="getChromeMessage('table_copy_sell')"
 						>
-							<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
-							@if (rate.updatedVenta) {
-								<svg
-									class="trend-icon"
-									[class.down]="rate.updatedVenta === 'arrow-trend-down'"
-									viewBox="0 0 24 14"
-									aria-hidden="true"
-								>
+							<span class="price-value">{{ row.venta.text }}</span>
+							@if (row.venta.trend !== 'neutral') {
+								<svg class="trend-icon" [class.down]="row.venta.trend === 'down'" viewBox="0 0 24 14" aria-hidden="true">
 									<path d="M1 12.5 L8 5.5 L12 9.5 L21 1.5" />
 									<path d="M15 1.5 L21.5 1.5 L21.5 8" />
 								</svg>

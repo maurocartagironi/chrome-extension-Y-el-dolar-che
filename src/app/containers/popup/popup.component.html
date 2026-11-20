@@ -42,7 +42,7 @@
 					@case (TAB_RATES) {
 						<div class="tab-panel">
 							@if (exchangeRates.length > 0) {
-								<app-table [exchangeRates]="exchangeRates"></app-table>
+								<app-table [exchangeRates]="exchangeRates" [history]="history"></app-table>
 							}
 							<div class="footer-bar">
 								<i class="pi pi-clock"></i>
