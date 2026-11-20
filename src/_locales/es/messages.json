@@ -207,5 +207,63 @@
 	},
 	"label_other_currencies_desc": {
 		"message": "Suma a la tabla el euro, el real brasileño, el peso chileno y el peso uruguayo, para poder consultarlos y convertirlos igual que el dólar."
+	},
+	"label_group_alert": {
+		"message": "Aviso"
+	},
+	"label_alert_enabled_opt": {
+		"message": "Avisarme por un valor"
+	},
+	"label_alert_enabled_desc": {
+		"message": "Muestra una notificación cuando el precio de venta del tipo de cambio elegido cruza el valor que pongas. Se revisa cada vez que la extensión actualiza los datos y avisa una sola vez por cruce."
+	},
+	"label_alert_rate_opt": {
+		"message": "Tipo de cambio"
+	},
+	"label_alert_rate_desc": {
+		"message": "El tipo de cambio que se vigila. Se compara siempre contra el precio de venta."
+	},
+	"label_alert_value_opt": {
+		"message": "Cuando"
+	},
+	"label_alert_value_desc": {
+		"message": "Elegí si querés que te avise cuando el precio supere ese valor o cuando baje de ese valor."
+	},
+	"alert_above": {
+		"message": "Supere"
+	},
+	"alert_below": {
+		"message": "Baje de"
+	},
+	"alert_title": {
+		"message": "¿Y el dólar, che?"
+	},
+	"alert_message_above": {
+		"message": "$var1$ está a $var2$ y superó los $var3$ que marcaste.",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			}
+		}
+	},
+	"alert_message_below": {
+		"message": "$var1$ está a $var2$ y bajó de los $var3$ que marcaste.",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			}
+		}
 	}
 }

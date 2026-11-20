@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
+import { LOCALSTORAGE_ALERT_FIRED, LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
-import { getLocalStorage, setLocalStorage } from '@shared/utils';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@shared/utils';
 import { ChromeService } from '@shared/utils/chrome.utils';
 import { InfoTipComponent } from '../info-tip/info-tip.component';
 import { BackgroundHelper } from '@shared/helpers/background.helper';
@@ -33,6 +33,12 @@ export class SettingComponent implements OnInit {
 	public badgeIsSell: boolean = false;
 	public quickConversionIsHidden: boolean = false;
 	public otherCurrenciesAreShown: boolean = false;
+	public alertIsEnabled: boolean = false;
+	public alertExchangeRateType: Option<string> | undefined;
+	public alertDirection: string = 'above';
+	public alertValue: number = 0;
+	/** El precio de hoy, de guía para saber qué valor poner. */
+	public alertPlaceholder: string = '';
 	public badgeBackgroundColor: string = '';
 	public defaultTab: Option<number> | undefined;
 	public tabs: Option<number>[] = [];
@@ -59,6 +65,11 @@ export class SettingComponent implements OnInit {
 		this.badgeIsSell = this.config.badgeExchangeRateAction === 'sell';
 		this.quickConversionIsHidden = this.config.hiddenConversionSection;
 		this.otherCurrenciesAreShown = this.config.showOtherCurrencies;
+		this.alertIsEnabled = this.config.alertEnabled;
+		this.alertExchangeRateType = this.picklistCurrency.find((e) => e.value === this.config.alertExchangeRateType);
+		this.alertDirection = this.config.alertDirection;
+		this.alertValue = this.config.alertValue;
+		this.updateAlertPlaceholder();
 		this.badgeBackgroundColor = this.config.badgeBackgroundColor;
 		// Con OnPush hay que marcar la vista: esto corre después de un await.
 		this.changeDetector.markForCheck();
@@ -128,6 +139,48 @@ export class SettingComponent implements OnInit {
 		await this.applyBadge();
 		this.changeDetector.markForCheck();
 		this.refreshData();
+	}
+
+	/**
+	 * Cambiar cualquier cosa del aviso borra la marca de "ya avisé": si no, con
+	 * la condición cumplida desde antes el aviso nuevo nunca se dispararía.
+	 */
+	private async saveAlert(): Promise<void> {
+		await setLocalStorage(LOCALSTORAGE_CONFIG, this.config);
+		await removeLocalStorage(LOCALSTORAGE_ALERT_FIRED);
+	}
+
+	async toggleAlert(e: Event) {
+		this.config.alertEnabled = (e.target as HTMLInputElement).checked;
+		this.alertIsEnabled = this.config.alertEnabled;
+		await this.saveAlert();
+		this.changeDetector.markForCheck();
+	}
+
+	async onSelectChangeAlert(option: Option<string> | undefined) {
+		if (!option) return;
+		this.alertExchangeRateType = option;
+		this.config.alertExchangeRateType = option.value;
+		this.updateAlertPlaceholder();
+		await this.saveAlert();
+	}
+
+	private updateAlertPlaceholder(): void {
+		const rate = this.exchangeRateList.find((e) => e.casa === this.config.alertExchangeRateType);
+		this.alertPlaceholder = rate ? String(Math.round(rate.venta)) : '';
+	}
+
+	async onSelectDirection(direction: string) {
+		this.alertDirection = direction;
+		this.config.alertDirection = direction;
+		await this.saveAlert();
+	}
+
+	async onAlertValueChange(value: number | string | null) {
+		const numero = Number(value);
+		this.alertValue = Number.isFinite(numero) && numero > 0 ? numero : 0;
+		this.config.alertValue = this.alertValue;
+		await this.saveAlert();
 	}
 
 	/**

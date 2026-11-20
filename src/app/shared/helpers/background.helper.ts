@@ -1,4 +1,4 @@
-import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
+import { LOCALSTORAGE_ALERT_FIRED, LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { DolarAPIService } from '@shared/services/dolar-api.service';
@@ -36,6 +36,7 @@ export class BackgroundHelper {
 		await this.loadConfig();
 		this.exchangeRateList = await this.dolarApiService.getAll(true, this.config.showOtherCurrencies);
 		await this.setBadgeAndTooltip();
+		await this.checkAlert();
 	}
 
 	public async setBadgeAndTooltip(exchangeRates?: ExchangeRate[]): Promise<void> {
@@ -58,6 +59,42 @@ export class BackgroundHelper {
 		await chrome.action.setBadgeText({ text: Math.round(badgeValue).toString() });
 		await chrome.action.setBadgeBackgroundColor({ color: this.config.badgeBackgroundColor });
 		await chrome.action.setTitle({ title: this.generateTooltip() });
+	}
+
+	/**
+	 * Avisa cuando el precio de venta cruza el valor que puso el usuario.
+	 *
+	 * Solo notifica en el cruce: mientras la condición se siga cumpliendo no
+	 * vuelve a avisar, porque si no mandaría una notificación cada diez minutos
+	 * hasta que el precio se diera vuelta.
+	 */
+	public async checkAlert(): Promise<void> {
+		if (!this.config.alertEnabled || this.config.alertValue <= 0) return;
+
+		const rate = this.exchangeRateList.find((value) => value.casa === this.config.alertExchangeRateType);
+		if (!rate) return;
+
+		const cumple = this.config.alertDirection === 'below' ? rate.venta <= this.config.alertValue : rate.venta >= this.config.alertValue;
+		const yaAvisado = (await getLocalStorage<boolean>(LOCALSTORAGE_ALERT_FIRED)) ?? false;
+
+		if (cumple && !yaAvisado) {
+			await this.notifyAlert(rate);
+		}
+
+		if (cumple !== yaAvisado) {
+			await setLocalStorage(LOCALSTORAGE_ALERT_FIRED, cumple);
+		}
+	}
+
+	private async notifyAlert(rate: ExchangeRate): Promise<void> {
+		const clave = this.config.alertDirection === 'below' ? 'alert_message_below' : 'alert_message_above';
+
+		await chrome.notifications.create(`${ALARM_NAME}-${Date.now()}`, {
+			type: 'basic',
+			iconUrl: 'assets/img/icon.png',
+			title: chrome.i18n.getMessage('alert_title'),
+			message: chrome.i18n.getMessage(clave, [rate.nombre, formatCurrency(rate.venta), formatCurrency(this.config.alertValue)]),
+		});
 	}
 
 	/** Muestra el error en el tooltip del icono, sin tocar la config guardada. */

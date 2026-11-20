@@ -14,7 +14,8 @@
 	],
 	"permissions": [
 		"alarms",
-		"storage"
+		"storage",
+		"notifications"
 	],
 	"action": {
 		"default_popup": "index.html",

@@ -196,3 +196,39 @@
 .bmac-img:hover {
 	transform: scale(1.03);
 }
+
+/* ── Umbral del aviso ──────────────────────────────────────────
+   La dirección y el valor van juntos en una sola fila. */
+.alert-threshold {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.select-direction {
+	height: 30px;
+	font-size: 12px;
+}
+
+.alert-value {
+	width: 86px;
+	height: 30px;
+	padding: 0 8px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	background: var(--bg-base);
+	color: var(--text-primary);
+	font-family: inherit;
+	font-size: 12px;
+	transition: border-color var(--transition);
+}
+
+.alert-value:hover {
+	border-color: var(--accent);
+}
+
+.alert-value:focus-visible {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-light);
+}

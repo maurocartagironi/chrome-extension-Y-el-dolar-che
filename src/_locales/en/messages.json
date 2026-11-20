@@ -207,5 +207,63 @@
 	},
 	"label_other_currencies_desc": {
 		"message": "Adds the euro, the Brazilian real, the Chilean peso and the Uruguayan peso to the table, so you can check and convert them just like the dollar."
+	},
+	"label_group_alert": {
+		"message": "Alert"
+	},
+	"label_alert_enabled_opt": {
+		"message": "Alert me on a value"
+	},
+	"label_alert_enabled_desc": {
+		"message": "Shows a notification when the selling price of the chosen rate crosses the value you set. It is checked every time the extension refreshes, and alerts once per crossing."
+	},
+	"label_alert_rate_opt": {
+		"message": "Exchange rate"
+	},
+	"label_alert_rate_desc": {
+		"message": "The rate being watched. It is always compared against the selling price."
+	},
+	"label_alert_value_opt": {
+		"message": "When it"
+	},
+	"label_alert_value_desc": {
+		"message": "Choose whether to be alerted when the price goes above that value or when it falls below it."
+	},
+	"alert_above": {
+		"message": "Goes above"
+	},
+	"alert_below": {
+		"message": "Falls below"
+	},
+	"alert_title": {
+		"message": "What about the dollar?"
+	},
+	"alert_message_above": {
+		"message": "$var1$ is at $var2$, above the $var3$ you set.",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			}
+		}
+	},
+	"alert_message_below": {
+		"message": "$var1$ is at $var2$, below the $var3$ you set.",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			}
+		}
 	}
 }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
+import { LOCALSTORAGE_ALERT_FIRED, LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { getLocalStorage, setLocalStorage } from '@shared/utils/storage.util';
@@ -64,7 +64,7 @@ describe('SettingComponent', () => {
 
 	it('cada opción tiene su tooltip de ayuda', () => {
 		const tips = fixture.nativeElement.querySelectorAll('.info-tip');
-		expect(tips.length).toBe(7);
+		expect(tips.length).toBe(8);
 		expect(tips[0].getAttribute('data-tip')).toBe('Elegí el tipo de cambio del indicador.');
 	});
 
@@ -163,5 +163,44 @@ describe('SettingComponent', () => {
 		await component.onSelectChange(undefined);
 
 		expect(component.badgeExchangeRateType?.value).toBe('blue');
+	});
+
+	describe('aviso por valor', () => {
+		it('esconde el tipo de cambio y el valor hasta que se prende', async () => {
+			expect(fixture.nativeElement.querySelector('#alertValue')).toBeNull();
+
+			await component.toggleAlert(checkEvent(true));
+			fixture.detectChanges();
+
+			expect(fixture.nativeElement.querySelector('#alertValue')).not.toBeNull();
+			expect(fixture.nativeElement.querySelector('#alertExchangeRateType')).not.toBeNull();
+		});
+
+		it('guarda el valor y la dirección', async () => {
+			await component.toggleAlert(checkEvent(true));
+			await component.onSelectDirection('below');
+			await component.onAlertValueChange(1700);
+
+			const guardada = (await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!;
+			expect(guardada.alertEnabled).toBeTrue();
+			expect(guardada.alertDirection).toBe('below');
+			expect(guardada.alertValue).toBe(1700);
+		});
+
+		it('ignora un valor que no sea un número positivo', async () => {
+			await component.onAlertValueChange('ochocientos');
+
+			expect((await getLocalStorage<Config>(LOCALSTORAGE_CONFIG))!.alertValue).toBe(0);
+		});
+
+		// Con la condición ya cumplida desde antes, el aviso nuevo nunca se
+		// dispararía si quedara la marca vieja.
+		it('borra la marca de "ya avisé" al cambiar algo del aviso', async () => {
+			await setLocalStorage(LOCALSTORAGE_ALERT_FIRED, true);
+
+			await component.onAlertValueChange(1700);
+
+			expect(await getLocalStorage<boolean>(LOCALSTORAGE_ALERT_FIRED)).toBeUndefined();
+		});
 	});
 });

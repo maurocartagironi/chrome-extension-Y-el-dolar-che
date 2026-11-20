@@ -12,6 +12,10 @@ export interface ConfigOptions {
 	darkMode?: string;
 	valueConversor?: number;
 	defaultTab?: number;
+	alertEnabled?: boolean;
+	alertExchangeRateType?: string;
+	alertDirection?: string;
+	alertValue?: number;
 }
 
 export class Config {
@@ -26,6 +30,10 @@ export class Config {
 	public showOtherCurrencies: boolean;
 	public defaultTab: number;
 	public darkMode: string;
+	public alertEnabled: boolean;
+	public alertExchangeRateType: string;
+	public alertDirection: string;
+	public alertValue: number;
 
 	constructor(opts: ConfigOptions = {}) {
 		this.badgeExchangeRateType = opts.badgeExchangeRateType ?? DEFAULTS.badgeExchangeRateType;
@@ -39,5 +47,9 @@ export class Config {
 		this.showOtherCurrencies = opts.showOtherCurrencies ?? DEFAULTS.showOtherCurrencies;
 		this.darkMode = opts.darkMode ?? DEFAULTS.darkMode;
 		this.defaultTab = opts.defaultTab ?? DEFAULTS.defaultTab;
+		this.alertEnabled = opts.alertEnabled ?? DEFAULTS.alertEnabled;
+		this.alertExchangeRateType = opts.alertExchangeRateType ?? DEFAULTS.alertExchangeRateType;
+		this.alertDirection = opts.alertDirection ?? DEFAULTS.alertDirection;
+		this.alertValue = opts.alertValue ?? DEFAULTS.alertValue;
 	}
 }

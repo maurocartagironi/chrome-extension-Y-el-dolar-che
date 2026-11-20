@@ -91,6 +91,83 @@
 				</div>
 			</div>
 
+			<!-- Aviso -->
+			<div class="settings-group">
+				<h3 class="group-label">
+					{{ getChromeMessage('label_group_alert') }}
+				</h3>
+
+				<div class="option-item">
+					<label for="toggleAlert">
+						{{ getChromeMessage('label_alert_enabled_opt') }}
+						<app-info-tip [text]="getChromeMessage('label_alert_enabled_desc')" />
+					</label>
+					<div class="toggle-container-hide-conversor">
+						<input
+							type="checkbox"
+							id="toggleAlert"
+							class="toggle-checkbox"
+							(change)="toggleAlert($event)"
+							[(ngModel)]="alertIsEnabled"
+						/>
+						<label for="toggleAlert" class="toggle-label"></label>
+					</div>
+				</div>
+
+				@if (alertIsEnabled) {
+					<div class="option-item">
+						<label for="alertExchangeRateType">
+							{{ getChromeMessage('label_alert_rate_opt') }}
+							<app-info-tip [text]="getChromeMessage('label_alert_rate_desc')" />
+						</label>
+						@if (picklistCurrency.length > 0) {
+							<select
+								id="alertExchangeRateType"
+								class="select-currency"
+								[ngModel]="alertExchangeRateType"
+								(ngModelChange)="onSelectChangeAlert($event)"
+							>
+								@for (option of picklistCurrency; track option.value) {
+									<option [ngValue]="option">
+										{{ option.label }}
+									</option>
+								}
+							</select>
+						}
+					</div>
+
+					<div class="option-item">
+						<label for="alertValue">
+							{{ getChromeMessage('label_alert_value_opt') }}
+							<app-info-tip [text]="getChromeMessage('label_alert_value_desc')" />
+						</label>
+						<div class="alert-threshold">
+							<select
+								id="alertDirection"
+								class="select-direction"
+								[ngModel]="alertDirection"
+								(ngModelChange)="onSelectDirection($event)"
+							>
+								<option value="above">{{ getChromeMessage('alert_above') }}</option>
+								<option value="below">{{ getChromeMessage('alert_below') }}</option>
+							</select>
+							<input
+								id="alertValue"
+								class="alert-value"
+								type="number"
+								min="0"
+								step="1"
+								inputmode="decimal"
+								autocomplete="off"
+								[placeholder]="alertPlaceholder"
+								[ngModel]="alertValue || null"
+								(ngModelChange)="onAlertValueChange($event)"
+							/>
+						</div>
+					</div>
+				}
+			</div>
+
 			<!-- Monedas -->
 			<div class="settings-group">
 				<h3 class="group-label">

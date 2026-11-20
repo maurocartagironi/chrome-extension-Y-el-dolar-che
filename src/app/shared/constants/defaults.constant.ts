@@ -21,5 +21,11 @@ export const DEFAULTS = {
 	/** "auto" | "dark" | "light" */
 	darkMode: 'auto',
 	defaultTab: 0,
+	/** Aviso por notificación cuando el precio de venta cruza un valor. */
+	alertEnabled: false,
+	alertExchangeRateType: 'blue',
+	/** "above" | "below" */
+	alertDirection: 'above',
+	alertValue: 0,
 	valueConversor: 0,
 } as const;

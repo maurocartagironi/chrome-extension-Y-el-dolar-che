@@ -1,5 +1,5 @@
 import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
-import { Config } from '@shared/models/Config';
+import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { setLocalStorage } from '@shared/utils/storage.util';
 import { ChromeMock, installChromeMock } from 'src/testing/chrome-mock';
@@ -76,5 +76,74 @@ describe('BackgroundHelper', () => {
 		expect(mock.badge.text).toBe('!');
 		expect(mock.badge.title).toBe('se cayó la API');
 		expect(mock.storage.local['config']).toBeDefined();
+	});
+
+	describe('aviso por valor', () => {
+		/** Deja el helper con la lista cargada y la config pedida. */
+		const prepare = async (opts: Partial<ConfigOptions>) => {
+			await setLocalStorage(LOCALSTORAGE_CONFIG, new Config({ alertEnabled: true, alertExchangeRateType: 'blue', ...opts }));
+			spyOn(helper.dolarApiService, 'getAll').and.resolveTo(RATES);
+			await helper.refreshData();
+		};
+
+		it('no avisa si el aviso está apagado', async () => {
+			await prepare({ alertEnabled: false, alertValue: 1 });
+
+			expect(mock.notifications.sent.length).toBe(0);
+		});
+
+		it('no avisa sin un valor cargado', async () => {
+			await prepare({ alertValue: 0 });
+
+			expect(mock.notifications.sent.length).toBe(0);
+		});
+
+		// El blue vende a 1450: supera los 1400 que se marcaron.
+		it('avisa cuando el precio de venta supera el valor', async () => {
+			await prepare({ alertDirection: 'above', alertValue: 1400 });
+
+			expect(mock.notifications.sent.length).toBe(1);
+			expect(mock.notifications.sent[0].options.message).toContain('Dólar libre');
+		});
+
+		it('no avisa si todavía no lo superó', async () => {
+			await prepare({ alertDirection: 'above', alertValue: 1500 });
+
+			expect(mock.notifications.sent.length).toBe(0);
+		});
+
+		it('avisa cuando baja del valor', async () => {
+			await prepare({ alertDirection: 'below', alertValue: 1500 });
+
+			expect(mock.notifications.sent.length).toBe(1);
+		});
+
+		// Si no, mandaría una notificación cada diez minutos hasta que el precio
+		// se diera vuelta.
+		it('avisa una sola vez mientras la condición se siga cumpliendo', async () => {
+			await prepare({ alertDirection: 'above', alertValue: 1400 });
+
+			await helper.checkAlert();
+			await helper.checkAlert();
+
+			expect(mock.notifications.sent.length).toBe(1);
+		});
+
+		it('vuelve a avisar después de que la condición deje de cumplirse', async () => {
+			await prepare({ alertDirection: 'above', alertValue: 1400 });
+
+			helper.exchangeRateList = [new ExchangeRate('blue', 'Dólar libre', 1300, 1350, '2026-11-19T12:00:00.000Z')];
+			await helper.checkAlert();
+			helper.exchangeRateList = RATES;
+			await helper.checkAlert();
+
+			expect(mock.notifications.sent.length).toBe(2);
+		});
+
+		it('no avisa si el tipo de cambio elegido no está en la lista', async () => {
+			await prepare({ alertExchangeRateType: 'inexistente', alertDirection: 'above', alertValue: 1 });
+
+			expect(mock.notifications.sent.length).toBe(0);
+		});
 	});
 });
