@@ -63,7 +63,27 @@ if (manifest.default_locale) {
 	}
 }
 
-// 5. Todos los idiomas tienen que traer las mismas claves que el idioma por
+// 5. Un icono de 128 que en realidad mide 48 lo rechaza la tienda, y el
+//    manifest no lo dice: se mira el tamaño real del PNG.
+const iconSets = [manifest.icons, manifest.action?.default_icon].filter(Boolean);
+for (const set of iconSets) {
+	for (const [size, file] of Object.entries(set)) {
+		const png = await readFile(join(DIST, file)).catch(() => null);
+		if (!png) continue; // ya lo reportó el chequeo anterior
+		const esPng = png.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+		if (!esPng) {
+			errors.push(`"${file}" no es un PNG`);
+			continue;
+		}
+		const width = png.readUInt32BE(16);
+		const height = png.readUInt32BE(20);
+		if (width !== Number(size) || height !== Number(size)) {
+			errors.push(`el icono de ${size} ("${file}") mide ${width}x${height}`);
+		}
+	}
+}
+
+// 6. Todos los idiomas tienen que traer las mismas claves que el idioma por
 //    defecto, con los mismos placeholders: una clave que falta se ve como un
 //    texto vacío en la UI y no la detecta nadie más.
 const localesDir = join(DIST, '_locales');

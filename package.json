@@ -5,6 +5,7 @@
 		"ng": "ng",
 		"start": "ng serve",
 		"build": "ng build --delete-output-path && npm run build:background && npm run postbuild && npm run check",
+		"icons": "node scripts/make-icons.mjs",
 		"postbuild": "node scripts/prune-package.mjs",
 		"check": "node scripts/check-manifest.mjs",
 		"package": "npm run build && powershell -NoProfile -Command \"Compress-Archive -Path dist/* -DestinationPath dist.zip -Force\"",

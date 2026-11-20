@@ -156,7 +156,7 @@ export class BackgroundHelper {
 	private async notify(message: string, title?: string): Promise<void> {
 		await chrome.notifications.create(`${ALARM_NAME}-${Date.now()}`, {
 			type: 'basic',
-			iconUrl: 'assets/img/icon.png',
+			iconUrl: 'assets/img/icon-128.png',
 			title: title ?? chrome.i18n.getMessage('alert_title'),
 			message,
 		});
