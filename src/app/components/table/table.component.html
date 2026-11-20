@@ -2,9 +2,9 @@
 	<table>
 		<thead>
 			<tr>
-				<th scope="col">Moneda</th>
-				<th scope="col">Compra</th>
-				<th scope="col">Venta</th>
+				<th scope="col">{{ getChromeMessage('table_currency') }}</th>
+				<th scope="col">{{ getChromeMessage('result_buy') }}</th>
+				<th scope="col">{{ getChromeMessage('result_sell') }}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,7 +16,7 @@
 							class="price-chip"
 							[ngClass]="trendClass(rate.updatedCompra)"
 							(click)="copyPrice(rate.compra)"
-							title="Copiar precio de compra"
+							[title]="getChromeMessage('table_copy_buy')"
 						>
 							<span class="price-value">{{ toCurrencyPesos(rate.compra) }}</span>
 							@if (rate.updatedCompra) {
@@ -37,7 +37,7 @@
 							class="price-chip"
 							[ngClass]="trendClass(rate.updatedVenta)"
 							(click)="copyPrice(rate.venta)"
-							title="Copiar precio de venta"
+							[title]="getChromeMessage('table_copy_sell')"
 						>
 							<span class="price-value">{{ toCurrencyPesos(rate.venta) }}</span>
 							@if (rate.updatedVenta) {

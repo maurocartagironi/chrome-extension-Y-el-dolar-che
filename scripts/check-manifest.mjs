@@ -63,6 +63,45 @@ if (manifest.default_locale) {
 	}
 }
 
+// 5. Todos los idiomas tienen que traer las mismas claves que el idioma por
+//    defecto, con los mismos placeholders: una clave que falta se ve como un
+//    texto vacío en la UI y no la detecta nadie más.
+const localesDir = join(DIST, '_locales');
+const locales = await readdir(localesDir).catch(() => []);
+const readMessages = async (locale) => JSON.parse(await readFile(join(localesDir, locale, 'messages.json'), 'utf8'));
+
+if (manifest.default_locale && locales.includes(manifest.default_locale)) {
+	const base = await readMessages(manifest.default_locale);
+	const baseKeys = Object.keys(base);
+
+	for (const locale of locales.filter((name) => name !== manifest.default_locale)) {
+		const translated = await readMessages(locale).catch(() => null);
+		if (!translated) {
+			errors.push(`_locales/${locale} no tiene un messages.json legible`);
+			continue;
+		}
+
+		for (const key of baseKeys) {
+			if (!(key in translated)) {
+				errors.push(`_locales/${locale}: falta la clave "${key}"`);
+				continue;
+			}
+			const esperados = Object.keys(base[key].placeholders ?? {});
+			for (const name of esperados) {
+				if (!translated[key].message.includes(`$${name}$`)) {
+					errors.push(`_locales/${locale}: "${key}" no usa el placeholder $${name}$`);
+				}
+			}
+		}
+
+		for (const key of Object.keys(translated)) {
+			if (!(key in base)) {
+				errors.push(`_locales/${locale}: la clave "${key}" no existe en ${manifest.default_locale}`);
+			}
+		}
+	}
+}
+
 if (errors.length) {
 	console.error('check-manifest: problemas encontrados:');
 	for (const error of errors) console.error(`  - ${error}`);

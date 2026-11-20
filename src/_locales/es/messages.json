@@ -134,5 +134,66 @@
 	},
 	"label_settings": {
 		"message": "Configuración"
+	},
+	"table_currency": {
+		"message": "Moneda"
+	},
+	"table_copy_buy": {
+		"message": "Copiar precio de compra"
+	},
+	"table_copy_sell": {
+		"message": "Copiar precio de venta"
+	},
+	"toast_copied_value": {
+		"message": "$var$ copiado",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"toast_copied": {
+		"message": "¡Copiado!"
+	},
+	"conversor_amount_placeholder": {
+		"message": "Monto a convertir"
+	},
+	"conversor_swap": {
+		"message": "Invertir moneda"
+	},
+	"conversor_select": {
+		"message": "Convertir"
+	},
+	"conversor_option_to_pesos": {
+		"message": "$var$ a pesos",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"conversor_option_from_pesos": {
+		"message": "Pesos a $var$",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"conversor_result_to_pesos": {
+		"message": "$var$ a pesos argentinos:",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"conversor_result_from_pesos": {
+		"message": "Pesos argentinos a $var$:",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
 	}
 }

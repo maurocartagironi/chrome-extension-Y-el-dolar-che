@@ -1,0 +1,199 @@
+{
+	"appName": {
+		"message": "What about the dollar? - Live US dollar exchange rates in Argentina"
+	},
+	"appDesc": {
+		"message": "Check the official, blue, MEP and CCL dollar rates in Argentina in real time with a single click, without leaving your browser."
+	},
+	"error_general_title": {
+		"message": "Something went wrong. Please try again later."
+	},
+	"error_general_description": {
+		"message": "If the problem persists, feel free to get in touch."
+	},
+	"blue": {
+		"message": "Blue dollar"
+	},
+	"result_buy": {
+		"message": "Buy"
+	},
+	"result_sell": {
+		"message": "Sell"
+	},
+	"tooltip": {
+		"message": "$var1$\rBuy: $var2$\rSell: $var3$\rUpdated $var4$ ago",
+		"placeholders": {
+			"var1": {
+				"content": "$1"
+			},
+			"var2": {
+				"content": "$2"
+			},
+			"var3": {
+				"content": "$3"
+			},
+			"var4": {
+				"content": "$4"
+			}
+		}
+	},
+	"footer": {
+		"message": "Updated $var$ ago",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"n_days": {
+		"message": " day(s)"
+	},
+	"n_hours": {
+		"message": " hour(s)"
+	},
+	"n_mins": {
+		"message": " minute(s)"
+	},
+	"n_secs": {
+		"message": " second(s)"
+	},
+	"label_badge_exchange_rate_opt": {
+		"message": "Exchange rate"
+	},
+	"label_badge_exchange_rate_desc": {
+		"message": "Shows a badge on the extension icon with the live price of the exchange rate you pick."
+	},
+	"label_badge_buy_sell_opt": {
+		"message": "Buy / Sell"
+	},
+	"label_badge_buy_sell_desc": {
+		"message": "Choose whether the badge shows the buying or the selling price."
+	},
+	"label_badge_color_opt": {
+		"message": "Badge colour"
+	},
+	"label_badge_color_desc": {
+		"message": "Lets you choose the background colour of the badge."
+	},
+	"label_badge_color_title": {
+		"message": "Pick the background colour for the badge."
+	},
+	"label_tooltip_exchange_rate_opt": {
+		"message": "Exchange rate"
+	},
+	"label_tooltip_exchange_rate_desc": {
+		"message": "Hovering the extension icon shows the buying and selling price of the rate you pick, along with when it was last updated."
+	},
+	"label_hide_conversor_opt": {
+		"message": "Hide the converter section"
+	},
+	"label_hide_conversor_desc": {
+		"message": "Toggles the visibility of the converter."
+	},
+	"label_default_tab_opt": {
+		"message": "Default tab"
+	},
+	"label_default_tab_desc": {
+		"message": "Pick the tab the extension opens on."
+	},
+	"label_group_badge": {
+		"message": "Badge"
+	},
+	"label_group_tooltip": {
+		"message": "Tooltip"
+	},
+	"label_group_conversor": {
+		"message": "Converter"
+	},
+	"label_group_tab": {
+		"message": "Tab"
+	},
+	"label_quick_pricing": {
+		"message": "Quick convert"
+	},
+	"label_quotations": {
+		"message": "Rates"
+	},
+	"label_refresh": {
+		"message": "Refresh"
+	},
+	"legal_terms_title": {
+		"message": "📋 Terms and conditions"
+	},
+	"legal_terms_text": {
+		"message": "This extension provides real-time information about the US dollar exchange rate in Argentina, for informational purposes only. The values shown come from the <b>dolarapi.com</b> service and must not be taken as financial, investment or any other kind of advice. The extension is not responsible for the accuracy or availability of the data, nor for any change to it. Use of this extension is at the user’s own risk, and the data presented is no substitute for professional advice.<br /><br />Users are responsible for verifying the accuracy of the values shown and for making decisions based on their own judgement and professional advice. We accept no liability for any damage or loss arising from the use of this extension.<br /><br />This extension respects and protects its users’ privacy. We do not collect personal information from the people who use it, and no sensitive data about how the application is used is stored. Everything this extension provides is meant solely to show real-time exchange rates obtained from <b>dolarapi.com</b>.<br /><br />Data related to the use of the extension (such as the exchange-rate history) may be stored locally in your browser through the Chrome storage API. That information is never shared with third parties nor used for anything outside the extension’s functionality.<br /><br />If at any point we decide to change our privacy policy, we will notify users through an update to the extension. By using this extension you accept the terms of this privacy policy."
+	},
+	"label_darkmode": {
+		"message": "Switch to dark mode"
+	},
+	"label_lightmode": {
+		"message": "Switch to light mode"
+	},
+	"label_automode": {
+		"message": "Follow the browser setting"
+	},
+	"label_settings": {
+		"message": "Settings"
+	},
+	"table_currency": {
+		"message": "Currency"
+	},
+	"table_copy_buy": {
+		"message": "Copy buying price"
+	},
+	"table_copy_sell": {
+		"message": "Copy selling price"
+	},
+	"toast_copied_value": {
+		"message": "$var$ copied",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"toast_copied": {
+		"message": "Copied!"
+	},
+	"conversor_amount_placeholder": {
+		"message": "Amount to convert"
+	},
+	"conversor_swap": {
+		"message": "Swap currencies"
+	},
+	"conversor_select": {
+		"message": "Convert"
+	},
+	"conversor_option_to_pesos": {
+		"message": "$var$ to pesos",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"conversor_option_from_pesos": {
+		"message": "Pesos to $var$",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"conversor_result_to_pesos": {
+		"message": "$var$ to Argentine pesos:",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	},
+	"conversor_result_from_pesos": {
+		"message": "Argentine pesos to $var$:",
+		"placeholders": {
+			"var": {
+				"content": "$1"
+			}
+		}
+	}
+}

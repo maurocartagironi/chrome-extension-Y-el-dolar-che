@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
+import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
 	selector: 'app-table',
@@ -11,6 +12,7 @@ import { ExchangeRate } from '@shared/models/ExchangeRate';
 })
 export class TableComponent {
 	private changeDetector = inject(ChangeDetectorRef);
+	private chromeService = inject(ChromeService);
 
 	@Input() exchangeRates: ExchangeRate[] = [];
 	copiedText = '';
@@ -39,8 +41,12 @@ export class TableComponent {
 		// Si el permiso de portapapeles falla no hay nada que hacer, pero la
 		// promise sin manejar sí ensucia la consola.
 		void navigator.clipboard.writeText(formatted).catch(() => undefined);
-		this.copiedText = `${this.toCurrencyPesos(value)} copiado`;
+		this.copiedText = this.chromeService.getMessage('toast_copied_value', this.toCurrencyPesos(value));
 		this.scheduleToastHide();
+	}
+
+	getChromeMessage(key: string): string {
+		return this.chromeService.getMessage(key);
 	}
 
 	private scheduleToastHide(): void {

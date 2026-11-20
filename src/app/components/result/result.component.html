@@ -1,14 +1,14 @@
 <div class="result-grid">
 	<button class="result-card" (click)="copyToClipboard('compra')">
-		<span class="result-label">Compra</span>
+		<span class="result-label">{{ getChromeMessage('result_buy') }}</span>
 		<span class="result-value">{{ compra }}</span>
 		<i class="pi pi-copy copy-icon"></i>
 	</button>
 	<button class="result-card" (click)="copyToClipboard('venta')">
-		<span class="result-label">Venta</span>
+		<span class="result-label">{{ getChromeMessage('result_sell') }}</span>
 		<span class="result-value">{{ venta }}</span>
 		<i class="pi pi-copy copy-icon"></i>
 	</button>
 </div>
 
-<div class="toast-notification" [class.show]="toastVisible">¡Copiado!</div>
+<div class="toast-notification" [class.show]="toastVisible">{{ getChromeMessage('toast_copied') }}</div>

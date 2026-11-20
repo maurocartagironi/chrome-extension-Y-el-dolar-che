@@ -6,7 +6,7 @@
 			type="text"
 			inputmode="decimal"
 			autocomplete="off"
-			placeholder="Monto en ARS"
+			[placeholder]="getChromeMessage('conversor_amount_placeholder')"
 			[value]="amountText"
 			(input)="onAmountInput($any($event.target).value)"
 		/>
@@ -15,7 +15,7 @@
 			@if (picklistCurrency.length > 0) {
 				<select
 					class="currency-select flex-1"
-					aria-label="Convertir..."
+					[attr.aria-label]="getChromeMessage('conversor_select')"
 					[ngModel]="currencyConversor"
 					(ngModelChange)="onSelectChange($event)"
 				>
@@ -26,7 +26,7 @@
 					}
 				</select>
 			}
-			<button class="icon-btn swap-btn" title="Invertir moneda" (click)="onCurrencyToggle()">
+			<button class="icon-btn swap-btn" [title]="getChromeMessage('conversor_swap')" (click)="onCurrencyToggle()">
 				<i class="pi pi-arrow-right-arrow-left"></i>
 			</button>
 		</div>

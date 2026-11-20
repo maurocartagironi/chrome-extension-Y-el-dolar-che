@@ -4,6 +4,7 @@ import { LOCALSTORAGE_CONFIG } from '@shared/constants/storage.constant';
 import { Config, ConfigOptions } from '@shared/models/Config';
 import { ExchangeRate } from '@shared/models/ExchangeRate';
 import { getLocalStorage, setLocalStorage } from '@shared/utils';
+import { ChromeService } from '@shared/utils/chrome.utils';
 
 import { ResultComponent } from '../result/result.component';
 
@@ -21,6 +22,7 @@ interface CurrencyOption {
 })
 export class QuickPricingComponent implements OnInit {
 	private changeDetector = inject(ChangeDetectorRef);
+	private chromeService = inject(ChromeService);
 
 	@Input() exchangeRateList: ExchangeRate[] = [];
 	public picklistCurrency: CurrencyOption[] = [];
@@ -45,8 +47,8 @@ export class QuickPricingComponent implements OnInit {
 		this.config = new Config((await getLocalStorage<ConfigOptions>(LOCALSTORAGE_CONFIG)) ?? {});
 		this.picklistCurrency = this.exchangeRateList
 			.flatMap((e) => [
-				{ label: e.nombre + ' a pesos', value: e.casa + '-ars' },
-				{ label: 'Pesos a ' + e.nombre, value: 'ars-' + e.casa },
+				{ label: this.chromeService.getMessage('conversor_option_to_pesos', e.nombre), value: e.casa + '-ars' },
+				{ label: this.chromeService.getMessage('conversor_option_from_pesos', e.nombre), value: 'ars-' + e.casa },
 			])
 			.sort((a, b) => a.label.localeCompare(b.label));
 		this.currencyConversor = this.picklistCurrency.find((e) => e.value === this.config.currencyConversor);
@@ -138,9 +140,14 @@ export class QuickPricingComponent implements OnInit {
 
 	showTitleResult() {
 		const currencies = this.currencyConversor?.value.split('-');
+		const nombre = (casa: string | undefined) => this.exchangeRateList.find((e) => e.casa === casa)?.nombre.toLowerCase() ?? '';
 		if (currencies?.[0] === 'ars') {
-			return 'Pesos argentinos a ' + (this.exchangeRateList.find((e) => e.casa === currencies[1])?.nombre.toLowerCase() ?? '') + ':';
+			return this.chromeService.getMessage('conversor_result_from_pesos', nombre(currencies[1]));
 		}
-		return (this.exchangeRateList.find((e) => e.casa === currencies?.[0])?.nombre.toLowerCase() ?? '') + ' a pesos argentinos:';
+		return this.chromeService.getMessage('conversor_result_to_pesos', nombre(currencies?.[0]));
+	}
+
+	getChromeMessage(key: string): string {
+		return this.chromeService.getMessage(key);
 	}
 }

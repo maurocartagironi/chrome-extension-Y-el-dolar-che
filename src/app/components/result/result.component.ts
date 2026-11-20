@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
+import { ChromeService } from '@shared/utils/chrome.utils';
 
 @Component({
 	selector: 'app-result',
@@ -9,12 +10,17 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } 
 })
 export class ResultComponent {
 	private changeDetector = inject(ChangeDetectorRef);
+	private chromeService = inject(ChromeService);
 
 	@Input() compra: string | undefined;
 	@Input() venta: string | undefined;
 
 	toastVisible = false;
 	private toastTimer: ReturnType<typeof setTimeout> | null = null;
+
+	getChromeMessage(key: string): string {
+		return this.chromeService.getMessage(key);
+	}
 
 	copyToClipboard(type: 'compra' | 'venta') {
 		const raw = type === 'compra' ? this.compra : this.venta;

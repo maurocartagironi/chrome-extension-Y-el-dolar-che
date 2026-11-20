@@ -1,6 +1,32 @@
+import esMessages from '../_locales/es/messages.json';
+
+/** Una entrada de `_locales/<idioma>/messages.json`. */
+interface LocaleEntry {
+	message: string;
+	placeholders?: Record<string, { content: string }>;
+}
+
+const LOCALE = esMessages as Record<string, LocaleEntry>;
+
+/**
+ * Resuelve los `$var$` con nombre (como lo hace chrome.i18n) y despues los
+ * `$1`, `$2`... posicionales.
+ */
+function render(entry: LocaleEntry, values: string[]): string {
+	let text = entry.message;
+	for (const [name, placeholder] of Object.entries(entry.placeholders ?? {})) {
+		const index = Number(String(placeholder.content).slice(1)) - 1;
+		text = text.split(`$${name}$`).join(values[index] ?? '');
+	}
+	return values.reduce((acc, value, index) => acc.split(`$${index + 1}`).join(value), text);
+}
+
 /**
  * Doble de las APIs de chrome.* que usa la extensión, para que los tests
  * puedan correr en un browser normal (en Karma `chrome` no existe).
+ *
+ * i18n arranca con los mensajes reales de `_locales/es`: así los tests ven los
+ * mismos textos que el usuario y una clave que falte se nota.
  */
 export interface ChromeMock {
 	storage: { local: Record<string, any> };
@@ -37,9 +63,12 @@ export function installChromeMock(): ChromeMock {
 		},
 		i18n: {
 			getMessage: (key: string, substitutions?: string | string[]) => {
-				const template = messages[key] ?? '';
 				const list = substitutions === undefined ? [] : Array.isArray(substitutions) ? substitutions : [substitutions];
-				return list.reduce<string>((text, value, index) => text.split(`$${index + 1}`).join(value), template);
+				// Lo que el test haya seteado a mano gana sobre el locale real.
+				const override = messages[key];
+				if (override !== undefined) return render({ message: override }, list);
+				const entry = LOCALE[key];
+				return entry ? render(entry, list) : '';
 			},
 		},
 		action: {

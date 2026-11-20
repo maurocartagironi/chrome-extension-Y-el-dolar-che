@@ -5,6 +5,7 @@
 		"outDir": "./dist/out-tsc",
 		"noUnusedLocals": true,
 		"esModuleInterop": true,
+		"resolveJsonModule": true,
 		"noUnusedParameters": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
