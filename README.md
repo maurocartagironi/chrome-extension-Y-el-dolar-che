@@ -1,4 +1,4 @@
-# ¿Y el dólar, che? — Extensión de Chrome
+# ¿Y el dólar, che?
 
 Muestra la cotización del dólar en Argentina (oficial, libre, MEP, CCL, mayorista, cripto y tarjeta) en el icono del navegador y en un popup, con la variación del día, un conversor rápido y avisos cuando el precio cruza un valor. Opcionalmente suma euro, real, peso chileno y peso uruguayo.
 
@@ -62,7 +62,7 @@ Puntos a tener en cuenta al tocar el código:
 
 ## Stack
 
-Angular 22 standalone, **sin router y sin zone.js**: la extensión tiene una sola pantalla, así que `main.ts` monta `PopupComponent` directo y la detección de cambios es zoneless. Todos los componentes son `OnPush` y marcan la vista a mano después de cada `await` — eso es lo que hace que zoneless funcione, así que **si agregás código asíncrono que toca el estado, acordate del `markForCheck()`**. El popup lo compila `@angular/build:application` y el service worker esbuild, por separado. Sin librerías de componentes: la única dependencia de UI es la fuente de iconos (`primeicons`).
+Angular 22 standalone, **sin router y sin zone.js**: la extensión tiene una sola pantalla, así que `main.ts` monta `PopupComponent` directo y la detección de cambios es zoneless. Todos los componentes son `OnPush` y marcan la vista a mano después de cada `await`, y eso es lo que hace que zoneless funcione, así que **si agregás código asíncrono que toca el estado, acordate del `markForCheck()`**. El popup lo compila `@angular/build:application` y el service worker esbuild, por separado. Sin librerías de componentes: la única dependencia de UI es la fuente de iconos (`primeicons`).
 
 ## Estructura
 
@@ -88,7 +88,7 @@ Bienvenidas. Antes de abrir un PR: `npm run lint`, `npm run test:ci` y `npm run 
 
 ## Licencia
 
-MIT — ver [LICENSE](LICENSE).
+MIT. Ver [LICENSE](LICENSE).
 
 ## Contacto
 

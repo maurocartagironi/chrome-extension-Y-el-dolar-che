@@ -1,4 +1,4 @@
-# Store listing — English
+# Store listing in English
 
 ## Name (75 max)
 
@@ -40,7 +40,7 @@ Type an amount and it converts pesos to dollars, or the other way round, at
 the rate you choose.
 
 ▸ CONVERT FROM ANY PAGE
-Select a number anywhere, right-click, and it tells you what it is worth —
+Select a number anywhere, right-click, and it tells you what it is worth,
 in both directions.
 
 ▸ GET A HEADS-UP

@@ -1,4 +1,4 @@
-# Privacy practices — textos para la revisión de la tienda
+# Textos de Privacy practices para la revisión de la tienda
 
 Van en inglés porque es lo que lee el revisor. Pestaña "Privacy practices"
 del panel de la Chrome Web Store.
@@ -22,7 +22,7 @@ Stores two things, both local to the browser: the user's own settings (which
 rate to show on the badge, buy or sell, badge colour, theme, alert value) and
 a cache of the last rates fetched, so the popup opens instantly and still
 shows the last known value when the network is down. No personal data is
-stored and nothing is sent to any server of ours — we have no server.
+stored and nothing is sent to any server of ours. We have no server.
 
 ## notifications
 
@@ -42,12 +42,12 @@ cannot read anything the user did not deliberately select and right-click.
 The selection is used in memory to compute the result and is never stored or
 transmitted.
 
-## Host permission — https://dolarapi.com/*
+## Host permission for https://dolarapi.com/*
 
 The source of the exchange rates. Read-only GET requests to public
 endpoints. The requests carry no information about the user.
 
-## Host permission — https://api.argentinadatos.com/*
+## Host permission for https://api.argentinadatos.com/*
 
 The source of the daily closing history, used to show how much each rate
 moved today and a 30-day sparkline. Read-only GET requests to public

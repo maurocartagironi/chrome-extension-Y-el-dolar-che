@@ -1,4 +1,4 @@
-# Ficha de la tienda — castellano
+# Ficha de la tienda en castellano
 
 ## Nombre (75 máx.)
 
