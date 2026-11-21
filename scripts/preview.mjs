@@ -11,6 +11,10 @@
  *   node scripts/preview.mjs --shot --monedas # con las otras monedas activadas
  *   node scripts/preview.mjs --shot --error   # la tarjeta de error
  *   node scripts/preview.mjs --shot --store   # 1280x800 para la ficha de la tienda
+ *   node scripts/preview.mjs --shot --tile    # 440x280, la tarjeta de los listados
+ *   node scripts/preview.mjs --shot --marquee # 1400x560, la marquesina de la portada
+ *
+ * Con --out=<ruta> se elige dónde cae la captura.
  */
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -44,6 +48,23 @@ const monedas = process.argv.includes('--monedas');
 const error = process.argv.includes('--error');
 /** Captura de 1280x800 para la ficha de la tienda, con el popup montado. */
 const store = process.argv.includes('--store');
+/** La tarjeta de 440x280 de los listados: icono y nombre, sin popup. */
+const tile = process.argv.includes('--tile');
+/** La marquesina de 1400x560 de la portada de la tienda. */
+const marquee = process.argv.includes('--marquee');
+/** Medida de la ventana, como ANCHOxALTO, para recortar el blanco sobrante. */
+const ventana = (process.argv.find((a) => a.startsWith('--ventana=')) ?? '--ventana=').split('=').slice(1).join('=');
+/** Ruta de salida de la captura; si no se pasa, se arma con los flags. */
+const outArg = (process.argv.find((a) => a.startsWith('--out=')) ?? '--out=').split('=').slice(1).join('=');
+
+/** Cada pieza de la tienda tiene su medida exacta y va a escala 1. */
+const LIENZO = tile
+	? { ancho: 440, alto: 280, escala: 1, ruta: '/tile.html' }
+	: marquee
+		? { ancho: 1400, alto: 560, escala: 1, ruta: '/marquee.html' }
+		: store
+			? { ancho: 1280, alto: 800, escala: 1, ruta: '/store.html' }
+			: { ancho: 460, alto: 760, escala: 2, ruta: '/?target=popup' };
 const titulo = (process.argv.find((a) => a.startsWith('--titulo=')) ?? '--titulo=').split('=').slice(1).join('=');
 const bajada = (process.argv.find((a) => a.startsWith('--bajada=')) ?? '--bajada=').split('=').slice(1).join('=');
 const tab = Number((process.argv.find((a) => a.startsWith('--tab=')) ?? '--tab=0').split('=')[1]);
@@ -228,6 +249,85 @@ const storeHtml = `<!doctype html>
 	<div class="marco"><iframe src="/?target=popup"></iframe></div>
 </body></html>`;
 
+/**
+ * La tarjeta de 440x280 es la que se ve en los listados y en la búsqueda de
+ * la tienda. A ese tamaño una captura del popup es ilegible, así que va el
+ * icono y el nombre sobre el verde de la marca.
+ */
+const tileHtml = `<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><style>
+	html, body { margin: 0; padding: 0; width: 440px; height: 280px; overflow: hidden; }
+	body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 14px;
+		background: linear-gradient(135deg, #3f4bbf 0%, #1c2159 100%);
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		color: #ffffff;
+		text-align: center;
+	}
+	img { width: 96px; height: 96px; filter: drop-shadow(0 6px 14px rgba(0,0,0,.28)); }
+	h1 { font-size: 30px; font-weight: 700; margin: 0; letter-spacing: -.3px; }
+	p { font-size: 15px; margin: 0; opacity: .88; }
+</style></head>
+<body>
+	<img src="/assets/img/icon-128.png" alt="" />
+	<h1>¿Y el dólar, che?</h1>
+	<p>Cotización del dólar en Argentina</p>
+</body></html>`;
+
+/**
+ * La marquesina de 1400x560 va en el carrusel de la portada. Mismo lenguaje
+ * que las capturas, pero el popup entra escalado: 640px de alto no caben.
+ */
+const marqueeHtml = `<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><style>
+	html, body { margin: 0; padding: 0; width: 1400px; height: 560px; overflow: hidden; }
+	body {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 90px;
+		background: linear-gradient(135deg, #3f4bbf 0%, #1c2159 100%);
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		color: #ffffff;
+	}
+	.texto { width: 560px; }
+	.marca { display: flex; align-items: center; gap: 16px; margin-bottom: 26px; }
+	.marca img { width: 60px; height: 60px; }
+	.marca span { font-size: 26px; font-weight: 700; }
+	h1 { font-size: 46px; line-height: 1.15; margin: 0 0 16px; font-weight: 700; }
+	p { font-size: 20px; line-height: 1.5; margin: 0; opacity: .9; }
+	/* El popup se renderiza a tamaño real y se escala, para que el texto no
+	   se reflowee y quede igual que en las otras capturas. */
+	.marco {
+		width: 328px;
+		height: 500px;
+		border-radius: 14px;
+		overflow: hidden;
+		box-shadow: 0 26px 64px rgba(0,0,0,.4);
+		background: #ffffff;
+	}
+	iframe {
+		display: block;
+		width: 420px;
+		height: 640px;
+		border: 0;
+		transform: scale(.78);
+		transform-origin: top left;
+	}
+</style></head>
+<body>
+	<div class="texto">
+		<div class="marca"><img src="/assets/img/icon-128.png" alt="" /><span>¿Y el dólar, che?</span></div>
+		<h1>El dólar, siempre a mano</h1>
+		<p>Todas las cotizaciones en el icono del navegador, con la variación del día, conversor y avisos.</p>
+	</div>
+	<div class="marco"><iframe src="/?target=popup"></iframe></div>
+</body></html>`;
+
 const server = createServer(async (req, res) => {
 	const url = new URL(req.url, `http://localhost:${PORT}`);
 	let path = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -240,9 +340,10 @@ const server = createServer(async (req, res) => {
 		return;
 	}
 
-	if (path === '/store.html') {
+	const LIENZOS = { '/store.html': storeHtml, '/tile.html': tileHtml, '/marquee.html': marqueeHtml };
+	if (LIENZOS[path]) {
 		res.writeHead(200, { 'Content-Type': TYPES['.html'] });
-		res.end(storeHtml);
+		res.end(LIENZOS[path]);
 		return;
 	}
 
@@ -264,7 +365,7 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, async () => {
-	const target = store ? `http://localhost:${PORT}/store.html` : `http://localhost:${PORT}/?target=popup`;
+	const target = `http://localhost:${PORT}${LIENZO.ruta}`;
 	console.log(`preview: ${target}`);
 
 	if (!shot) return;
@@ -278,16 +379,17 @@ server.listen(PORT, async () => {
 	}
 
 	const out = resolve(
-		`preview${store ? '-store' : ''}${error ? '-error' : ''}${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
+		outArg ||
+			`preview${store ? '-store' : ''}${tile ? '-tile' : ''}${marquee ? '-marquee' : ''}${error ? '-error' : ''}${tab ? '-tab' + tab : ''}${hidden ? '-sin-conversor' : ''}${monedas ? '-monedas' : ''}${click ? '-click' : ''}${focus ? '-focus' : ''}${dark ? '-dark' : ''}.png`,
 	);
 	await rm(out, { force: true });
 	const chrome = spawn(chromeBin, [
 		'--headless=new',
 		'--disable-gpu',
 		'--hide-scrollbars',
-		// La ficha de la tienda pide 1280x800 exactos, así que ahí no se duplica.
-		`--force-device-scale-factor=${store ? 1 : 2}`,
-		`--window-size=${store ? '1280,800' : '460,760'}`,
+		// Las piezas de la tienda piden medidas exactas, así que no se duplican.
+		`--force-device-scale-factor=${LIENZO.escala}`,
+		`--window-size=${ventana || `${LIENZO.ancho},${LIENZO.alto}`}`,
 		`--virtual-time-budget=${VIRTUAL_TIME_MS}`,
 		`--screenshot=${out}`,
 		target,

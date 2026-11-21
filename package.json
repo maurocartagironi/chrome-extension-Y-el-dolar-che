@@ -18,7 +18,7 @@
 		"build:background": "node scripts/build-background.mjs",
 		"preview": "node scripts/preview.mjs",
 		"preview:shot": "node scripts/preview.mjs --shot",
-		"shots:store": "node scripts/store-shots.mjs"
+		"assets:store": "node scripts/store-assets.mjs"
 	},
 	"private": true,
 	"dependencies": {
