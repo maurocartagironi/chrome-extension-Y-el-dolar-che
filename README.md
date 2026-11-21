@@ -1,12 +1,16 @@
 # ¿Y el dólar, che?
 
+![Las cotizaciones del día en el popup de la extensión](docs/assets/marquesina-1400x560.png)
+
 Muestra la cotización del dólar en Argentina (oficial, libre, MEP, CCL, mayorista, cripto y tarjeta) en el icono del navegador y en un popup, con la variación del día, un conversor rápido y avisos cuando el precio cruza un valor. Opcionalmente suma euro, real, peso chileno y peso uruguayo.
 
 Los datos vienen de [dolarapi.com](https://dolarapi.com) y la serie histórica de [argentinadatos.com](https://argentinadatos.com). Nada sale del navegador: la extensión no recopila ni envía información del usuario.
 
+**[Instalar](https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna)** · [Página de la extensión](https://maurocartagironi.github.io/chrome-extension-Y-el-dolar-che/) · [Política de privacidad](https://maurocartagironi.github.io/chrome-extension-Y-el-dolar-che/#privacidad) · [Novedades](CHANGELOG.md)
+
 ## Instalación
 
-Desde la Chrome Web Store: [¿Y el dólar, che?](https://chromewebstore.google.com/detail/¿y-el-dólar-che/bhekococoidbofnmckchcajcjmlekcna)
+Desde la [Chrome Web Store](https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna).
 
 Desde el código, para desarrollar:
 
@@ -29,7 +33,7 @@ Después, en `chrome://extensions/`: activar el modo de desarrollador, "Cargar d
 
 | Comando                    | Qué hace                                                                                                                                                            |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build`            | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest.                                                                 |
+| `npm run build`            | Build de producción en `dist/` (~485 kB), con prune de fuentes no usadas y validación del manifest.                                                                 |
 | `npm run watch`            | Build de desarrollo en modo watch (el popup).                                                                                                                       |
 | `npm run build:background` | Compila solo el service worker con esbuild.                                                                                                                         |
 | `npm run preview`          | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal.                                               |
