@@ -18,126 +18,248 @@
 		/>
 		<meta property="og:type" content="website" />
 		<style>
-			/* Nada se carga de afuera: ni fuentes, ni analytics, ni scripts. La
-			   página dice que la extensión no te rastrea; sería raro que la
-			   página sí lo hiciera. */
+			/* La tipografía está alojada en el repo, no en un CDN: la página
+			   afirma que la extensión no carga nada de terceros y sería raro
+			   que la página sí lo hiciera. Archivo, licencia SIL OFL 1.1. */
+			@font-face {
+				font-family: 'Archivo';
+				src: url('assets/archivo-latin.woff2') format('woff2');
+				font-weight: 400 900;
+				font-style: normal;
+				font-display: swap;
+			}
+
 			:root {
-				--fondo: #f6f7fc;
-				--fondo-alto: #ffffff;
-				--texto: #23243a;
-				--suave: #5a5c76;
-				--borde: #e2e4f0;
-				--marca: #3949ab;
-				--verde: #2f9a39;
+				--tinta: #0b1020;
+				--tinta-2: #151d36;
+				--texto: #1a2033;
+				--suave: #5a6076;
+				--fondo: #ffffff;
+				--tinte: #eef1f8;
+				--borde: #e2e6f0;
+				--verde: #15914a;
+				--verde-vivo: #2fcc6d;
+				--indigo: #3949ab;
 			}
 			@media (prefers-color-scheme: dark) {
 				:root {
-					--fondo: #15161f;
-					--fondo-alto: #1e1f2b;
-					--texto: #e6e7f2;
-					--suave: #a2a4ba;
-					--borde: #2e3042;
-					--marca: #8c97e8;
-					--verde: #4cc257;
+					--texto: #e8eaf4;
+					--suave: #a0a5bb;
+					--fondo: #0e1322;
+					--tinte: #131a2c;
+					--borde: #262e45;
+					--verde: #39c972;
+					--indigo: #8c97e8;
 				}
 			}
+
 			* {
 				box-sizing: border-box;
+			}
+			html {
+				scroll-behavior: smooth;
 			}
 			body {
 				margin: 0;
 				background: var(--fondo);
 				color: var(--texto);
 				font-family:
+					'Archivo',
 					-apple-system,
 					BlinkMacSystemFont,
-					Segoe UI,
+					'Segoe UI',
 					Roboto,
 					Helvetica,
 					Arial,
 					sans-serif;
+				font-size: 17px;
 				line-height: 1.6;
 				-webkit-font-smoothing: antialiased;
 			}
 			.ancho {
-				max-width: 980px;
+				max-width: 1140px;
 				margin: 0 auto;
-				padding: 0 20px;
-			}
-			a {
-				color: var(--marca);
+				padding: 0 28px;
 			}
 			h1,
 			h2,
 			h3 {
-				line-height: 1.2;
-				margin: 0 0 12px;
+				margin: 0;
+				letter-spacing: -0.025em;
+				line-height: 1.04;
+				font-weight: 800;
+			}
+			a {
+				color: inherit;
 			}
 
-			/* --- encabezado --- */
-			header {
-				position: relative;
-				overflow: hidden;
-				background: linear-gradient(110deg, #5a61f2 0%, #2f55bb 38%, #07796a 100%);
-				color: #ffffff;
-				padding: 84px 0 92px;
-			}
-			.hero {
-				position: relative;
-				z-index: 3;
-				max-width: 540px;
-			}
-			header svg {
-				width: 74px;
-				height: 74px;
-				filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
-			}
-			header h1 {
-				font-size: clamp(34px, 5.2vw, 52px);
-				letter-spacing: -0.8px;
-				margin: 20px 0 12px;
-			}
-			header p {
-				font-size: clamp(16px, 2.2vw, 20px);
-				margin: 0 0 30px;
-				max-width: 480px;
-				opacity: 0.9;
-			}
-
-			.boton {
-				display: inline-block;
-				background: #ffffff;
-				color: #1c2159;
+			/* --- sobretítulo: versalitas espaciadas con un guion delante --- */
+			.rotulo {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				margin: 0 0 20px;
+				font-size: 12.5px;
 				font-weight: 700;
+				letter-spacing: 0.18em;
+				text-transform: uppercase;
+				color: var(--verde);
+			}
+			.rotulo::before {
+				content: '';
+				width: 26px;
+				height: 2px;
+				background: currentColor;
+			}
+
+			/* --- botones: rectángulo apenas redondeado, con flecha --- */
+			.boton {
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				padding: 15px 26px;
+				border-radius: 6px;
+				font-size: 15px;
+				font-weight: 700;
+				letter-spacing: 0.01em;
+				text-decoration: none;
+				white-space: nowrap;
+			}
+			.boton svg {
+				width: 15px;
+				height: 15px;
+				flex: none;
+			}
+			.boton-verde {
+				background: #16a34a;
+				color: #ffffff;
+			}
+			.boton-verde:hover {
+				background: #12833c;
+			}
+			.boton-humo {
+				background: rgba(255, 255, 255, 0.12);
+				color: #ffffff;
+			}
+			.boton-humo:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+
+			/* --- barra superior fija --- */
+			.barra {
+				position: sticky;
+				top: 0;
+				z-index: 50;
+				background: var(--tinta);
+				border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+			}
+			.barra .ancho {
+				display: flex;
+				align-items: center;
+				gap: 28px;
+				height: 68px;
+			}
+			.marca {
+				display: flex;
+				align-items: center;
+				gap: 11px;
+				font-weight: 800;
 				font-size: 17px;
-				padding: 14px 30px;
-				border-radius: 999px;
+				letter-spacing: -0.02em;
+				color: #ffffff;
 				text-decoration: none;
 			}
-			.boton:hover {
-				background: #eef0ff;
+			.marca svg {
+				width: 28px;
+				height: 28px;
 			}
-			.chico {
-				display: block;
-				margin-top: 14px;
+			.enlaces {
+				display: flex;
+				gap: 26px;
+				margin-left: auto;
+			}
+			.enlaces a {
+				color: rgba(255, 255, 255, 0.72);
+				font-size: 15px;
+				font-weight: 500;
+				text-decoration: none;
+			}
+			.enlaces a:hover {
+				color: #ffffff;
+			}
+			.barra .boton {
+				padding: 10px 18px;
 				font-size: 14px;
-				opacity: 0.75;
 			}
 
-			/* Las capturas asoman por la derecha, inclinadas y superpuestas,
-			   y se recortan contra el borde del banner. Son fondo: van detrás
-			   del texto y con un velo que las funde hacia la izquierda. */
+			/* --- héroe --- */
+			.heroe {
+				position: relative;
+				overflow: hidden;
+				background: var(--tinta);
+				color: #ffffff;
+				padding: 96px 0 72px;
+			}
+			.heroe .ancho {
+				position: relative;
+				z-index: 3;
+			}
+			.heroe-texto {
+				max-width: 560px;
+			}
+			.heroe h1 {
+				/* Topado para que entre en dos líneas: con más cuerpo se parte
+				   en tres y pierde el golpe. */
+				font-size: clamp(38px, 4.6vw, 54px);
+				font-weight: 900;
+			}
+			.heroe h1 span {
+				color: var(--verde-vivo);
+			}
+			.heroe-bajada {
+				margin: 22px 0 34px;
+				font-size: clamp(16px, 1.5vw, 19px);
+				color: rgba(255, 255, 255, 0.76);
+				max-width: 460px;
+			}
+			.acciones {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 12px;
+			}
+
+			/* Fila de señales, separada por un filete como en la referencia. */
+			.señales {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 14px 40px;
+				margin-top: 56px;
+				padding-top: 26px;
+				border-top: 1px solid rgba(255, 255, 255, 0.16);
+				font-size: 14.5px;
+				color: rgba(255, 255, 255, 0.78);
+			}
+			.señales span {
+				display: flex;
+				align-items: center;
+				gap: 9px;
+			}
+			.señales b {
+				color: var(--verde-vivo);
+				font-size: 17px;
+				line-height: 1;
+			}
+
+			/* Las capturas asoman por la derecha, rotadas y superpuestas, y se
+			   funden con una máscara para que el texto quede sobre el fondo. */
 			.collage {
 				position: absolute;
-				top: -60px;
-				bottom: -60px;
-				left: 36%;
+				top: -40px;
+				bottom: -90px;
+				left: 38%;
 				right: -90px;
 				z-index: 1;
 				pointer-events: none;
-				/* La máscara funde las capturas hacia la izquierda sin pintar
-				   nada encima: así no se recorta contra el degradado del banner
-				   y el texto queda siempre sobre el índigo limpio. */
 				-webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 20%, rgba(0, 0, 0, 0.35) 32%, #000 56%);
 				mask-image: linear-gradient(100deg, transparent 0%, transparent 20%, rgba(0, 0, 0, 0.35) 32%, #000 56%);
 				-webkit-mask-repeat: no-repeat;
@@ -145,210 +267,336 @@
 			}
 			.collage img {
 				position: absolute;
-				width: 250px;
-				/* Sin esto el alto queda clavado en el atributo height del HTML
-				   y la captura sale estirada. */
+				width: 252px;
 				height: auto;
 				border-radius: 14px;
 				opacity: 0.9;
-				box-shadow: 0 34px 70px rgba(0, 0, 0, 0.45);
+				box-shadow: 0 34px 70px rgba(0, 0, 0, 0.55);
 			}
 			.collage img:nth-child(1) {
-				top: 128px;
-				left: 245px;
+				top: 120px;
+				left: 236px;
 				transform: rotate(-6deg);
 			}
 			.collage img:nth-child(2) {
-				top: 56px;
-				left: 447px;
+				top: 48px;
+				left: 440px;
 				transform: rotate(3.5deg);
 				z-index: 2;
-				/* La captura oscura va a opacidad plena: es la que ancla el
-				   collage y apagada se perdía contra el fondo. */
 				opacity: 1;
 			}
 			.collage img:nth-child(3) {
-				top: 176px;
-				left: 649px;
+				top: 168px;
+				left: 644px;
 				transform: rotate(-2deg);
 			}
-			@media (max-width: 900px) {
-				.collage {
+			@media (max-width: 920px) {
+				.collage,
+				.enlaces {
 					display: none;
 				}
-				.hero {
+				.heroe-texto {
 					max-width: none;
 				}
 			}
 
 			/* --- secciones --- */
 			section {
-				padding: 72px 0;
+				padding: 96px 0;
 			}
-			.sobretitulo {
-				font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-				font-size: 12px;
-				font-weight: 600;
-				letter-spacing: 0.16em;
-				text-transform: uppercase;
-				color: var(--marca);
-				margin: 0 0 14px;
+			.tinte {
+				background: var(--tinte);
 			}
-			section h2 {
-				font-size: 30px;
-				letter-spacing: -0.5px;
-				margin-bottom: 10px;
-			}
-			.bajada {
-				color: var(--suave);
-				margin: 0 0 8px;
+			.cabecera {
 				max-width: 620px;
+				margin-bottom: 52px;
+			}
+			.cabecera h2 {
+				font-size: clamp(30px, 3.6vw, 44px);
+			}
+			.cabecera p {
+				margin: 20px 0 0;
+				color: var(--suave);
 			}
 
-			.capturas {
+			/* --- tarjetas con la captura arriba --- */
+			.tarjetas {
 				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-				gap: 24px;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 26px;
 			}
-			.capturas figure {
-				margin: 0;
-			}
-			.capturas img {
-				width: 100%;
-				height: auto;
-				display: block;
-				background: #ffffff;
+			.tarjeta {
+				display: flex;
+				flex-direction: column;
+				background: var(--fondo);
 				border: 1px solid var(--borde);
 				border-radius: 12px;
+				overflow: hidden;
 			}
-			.capturas figcaption {
-				margin-top: 14px;
-				font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-				font-size: 12.5px;
-				letter-spacing: 0.01em;
-				color: var(--suave);
-			}
-
-			/* Las funciones van como lista editorial, no como tarjetas: filetes
-			   finos y un índice, sin cajas ni sombras. */
-			.lista {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-				column-gap: 56px;
-				margin-top: 26px;
-			}
-			.lista > div {
-				padding: 26px 0 28px;
-				border-top: 1px solid var(--borde);
-			}
-			.lista .indice {
+			.tarjeta img {
+				width: 100%;
+				height: 214px;
+				object-fit: cover;
+				object-position: top center;
 				display: block;
-				font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-				font-size: 12px;
-				font-weight: 600;
-				letter-spacing: 0.14em;
-				color: var(--verde);
-				margin-bottom: 12px;
-			}
-			.lista h3 {
-				font-size: 19px;
-				letter-spacing: -0.2px;
-				margin: 0 0 8px;
-			}
-			.lista p {
-				margin: 0;
-				color: var(--suave);
-				font-size: 15px;
-			}
-
-			#privacidad {
-				background: var(--fondo-alto);
-				border-top: 1px solid var(--borde);
 				border-bottom: 1px solid var(--borde);
 			}
-			#privacidad .ancho {
-				max-width: 760px;
+			.tarjeta-cuerpo {
+				padding: 26px 26px 0;
+				flex: 1;
 			}
-			#privacidad h2 {
-				text-align: left;
+			.tarjeta h3 {
+				font-size: 20px;
+			}
+			.tarjeta p {
+				margin: 12px 0 24px;
+				color: var(--suave);
+				font-size: 15.5px;
+			}
+			.pie-tarjeta {
+				display: flex;
+				align-items: center;
+				gap: 11px;
+				margin: 0 26px;
+				padding: 18px 0 24px;
+				border-top: 1px solid var(--borde);
+				font-size: 14px;
+				font-weight: 700;
+				color: var(--texto);
+			}
+			.pie-tarjeta::before {
+				content: '';
+				width: 20px;
+				height: 2px;
+				background: var(--verde);
+				flex: none;
+			}
+
+			/* --- lista numerada --- */
+			.lista {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				column-gap: 64px;
+			}
+			.lista > div {
+				padding: 28px 0 30px;
+				border-top: 1px solid var(--borde);
+			}
+			.indice {
+				display: block;
+				font-size: 12.5px;
+				font-weight: 700;
+				letter-spacing: 0.14em;
+				color: var(--verde);
+				margin-bottom: 14px;
+			}
+			.lista h3 {
+				font-size: 21px;
+			}
+			.lista p {
+				margin: 10px 0 0;
+				color: var(--suave);
+				font-size: 15.5px;
+			}
+
+			/* --- privacidad --- */
+			#privacidad .ancho {
+				max-width: 780px;
 			}
 			#privacidad h3 {
-				font-size: 18px;
-				margin-top: 32px;
+				font-size: 20px;
+				margin-top: 40px;
 			}
 			#privacidad p,
 			#privacidad li {
 				color: var(--suave);
 			}
 			.destacado {
+				margin: 28px 0;
+				padding: 20px 24px;
+				background: var(--tinte);
 				border-left: 3px solid var(--verde);
-				padding-left: 16px;
+				border-radius: 0 8px 8px 0;
 				color: var(--texto);
 				font-weight: 600;
 			}
 			.fecha {
+				margin-top: 44px;
 				font-size: 14px;
-				margin-top: 36px;
 			}
 
+			/* --- pie --- */
 			footer {
-				padding: 40px 0 56px;
-				text-align: center;
-				color: var(--suave);
+				background: var(--tinta);
+				color: rgba(255, 255, 255, 0.72);
+				padding: 56px 0;
 				font-size: 15px;
 			}
-			footer a {
-				margin: 0 10px;
-				white-space: nowrap;
+			.pie {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 18px 28px;
+			}
+			.pie nav {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 24px;
+				margin-left: auto;
+			}
+			.pie a {
+				color: rgba(255, 255, 255, 0.72);
+				text-decoration: none;
+			}
+			.pie a:hover {
+				color: #ffffff;
 			}
 			.aviso {
-				margin-top: 24px;
-				font-size: 13px;
-				opacity: 0.8;
+				margin: 28px 0 0;
+				padding-top: 24px;
+				border-top: 1px solid rgba(255, 255, 255, 0.12);
+				font-size: 13.5px;
+				color: rgba(255, 255, 255, 0.5);
 			}
 		</style>
 	</head>
 	<body>
-		<header>
+		<div class="barra">
+			<div class="ancho">
+				<a class="marca" href="#">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
+						<circle cx="24" cy="24" r="24" fill="#2d8938" />
+						<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M23.9 9.8 V37.4" stroke-width="5.4" />
+							<path
+								d="M30.2 17.8 C30.2 14.8 27.3 13.4 24 13.4 C20.7 13.4 17.8 14.8 17.8 17.8 C17.8 21 20.7 22.2 24 23.2 C27.6 24.3 30.4 25.8 30.4 29 C30.4 32 27.3 33.6 24 33.6 C20.7 33.6 17.6 32.1 17.6 29.2"
+								stroke-width="6.2"
+							/>
+						</g>
+					</svg>
+					¿Y el dólar, che?
+				</a>
+				<div class="enlaces">
+					<a href="#que-hace">Qué hace</a>
+					<a href="#privacidad">Privacidad</a>
+					<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che">Código</a>
+				</div>
+				<a class="boton boton-verde" href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">
+					Instalar
+					<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+						<path d="M3 13 L13 3 M6 3 h7 v7" />
+					</svg>
+				</a>
+			</div>
+		</div>
+
+		<header class="heroe">
 			<div class="collage" aria-hidden="true">
 				<img src="assets/popup-cotizaciones.png" alt="" width="920" height="1300" />
 				<img src="assets/popup-oscuro.png" alt="" width="920" height="1300" />
 				<img src="assets/popup-conversor.png" alt="" width="920" height="1300" />
 			</div>
-			<div class="ancho hero">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="¿Y el dólar, che?">
-					<defs>
-						<linearGradient id="fondoIcono" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-							<stop offset="0" stop-color="#38953e" />
-							<stop offset="1" stop-color="#2d8938" />
-						</linearGradient>
-					</defs>
-					<circle cx="24" cy="24" r="24" fill="url(#fondoIcono)" />
-					<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M23.9 9.8 V37.4" stroke-width="5.4" />
-						<path
-							d="M30.2 17.8 C30.2 14.8 27.3 13.4 24 13.4 C20.7 13.4 17.8 14.8 17.8 17.8 C17.8 21 20.7 22.2 24 23.2 C27.6 24.3 30.4 25.8 30.4 29 C30.4 32 27.3 33.6 24 33.6 C20.7 33.6 17.6 32.1 17.6 29.2"
-							stroke-width="6.2"
-						/>
-					</g>
-				</svg>
-				<h1>¿Y el dólar, che?</h1>
-				<p>
-					La cotización del dólar en Argentina, en la barra del navegador. Un número a la vista, siempre actualizado, sin abrir
-					otra pestaña.
-				</p>
-				<a class="boton" href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">Instalar en Chrome</a>
-				<span class="chico">Gratis · Sin cuenta · Código abierto</span>
+			<div class="ancho">
+				<div class="heroe-texto">
+					<p class="rotulo">Oficial · Blue · MEP · CCL · Cripto</p>
+					<h1>
+						El dólar,
+						<br />
+						<span>siempre a la vista.</span>
+					</h1>
+					<p class="heroe-bajada">
+						Todas las cotizaciones en la barra del navegador, con la variación del día, un conversor y avisos cuando el precio
+						cruza tu valor.
+					</p>
+					<div class="acciones">
+						<a class="boton boton-verde" href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">
+							Instalar en Chrome
+							<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<path d="M3 13 L13 3 M6 3 h7 v7" />
+							</svg>
+						</a>
+						<a class="boton boton-humo" href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che">
+							Ver el código
+							<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<path d="M3 13 L13 3 M6 3 h7 v7" />
+							</svg>
+						</a>
+					</div>
+					<div class="señales">
+						<span>
+							<b>·</b>
+							Gratis, sin cuenta
+						</span>
+						<span>
+							<b>·</b>
+							Sin analytics ni rastreadores
+						</span>
+						<span>
+							<b>·</b>
+							Código abierto, MIT
+						</span>
+					</div>
+				</div>
 			</div>
 		</header>
 
+		<section class="tinte" id="que-hace">
+			<div class="ancho">
+				<div class="cabecera">
+					<p class="rotulo">Qué hace</p>
+					<h2>Siete cotizaciones, en el mismo lugar de siempre</h2>
+					<p>
+						Oficial, blue, MEP, contado con liquidación, mayorista, cripto y tarjeta. Opcionalmente euro, real, peso chileno y
+						peso uruguayo.
+					</p>
+				</div>
+				<div class="tarjetas">
+					<article class="tarjeta">
+						<img
+							src="assets/popup-cotizaciones.png"
+							alt="La tabla de cotizaciones con la variación del día de cada una"
+							width="920"
+							height="1300"
+							loading="lazy"
+						/>
+						<div class="tarjeta-cuerpo">
+							<h3>Las cotizaciones</h3>
+							<p>Compra y venta de cada tipo de cambio, con la variación contra el cierre de ayer y un mini gráfico.</p>
+						</div>
+						<p class="pie-tarjeta">Un click copia el valor</p>
+					</article>
+					<article class="tarjeta">
+						<img
+							src="assets/popup-conversor.png"
+							alt="El conversor de pesos a dólares"
+							width="920"
+							height="1300"
+							loading="lazy"
+						/>
+						<div class="tarjeta-cuerpo">
+							<h3>El conversor</h3>
+							<p>De pesos a dólares y al revés, con el tipo de cambio que elijas. También desde el click derecho.</p>
+						</div>
+						<p class="pie-tarjeta">En los dos sentidos</p>
+					</article>
+					<article class="tarjeta">
+						<img src="assets/popup-oscuro.png" alt="El popup en modo oscuro" width="920" height="1300" loading="lazy" />
+						<div class="tarjeta-cuerpo">
+							<h3>Claro y oscuro</h3>
+							<p>Sigue el modo del navegador, o lo elegís vos desde el encabezado. El color del indicador también.</p>
+						</div>
+						<p class="pie-tarjeta">Se acuerda de tu elección</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
 		<section>
 			<div class="ancho">
-				<h2>Qué hace</h2>
-				<p class="bajada">
-					Oficial, blue, MEP, contado con liquidación, mayorista, cripto y tarjeta. Opcionalmente euro, real, peso chileno y peso
-					uruguayo.
-				</p>
+				<div class="cabecera">
+					<p class="rotulo">Todo lo que trae</p>
+					<h2>Seis cosas que hacen la diferencia</h2>
+				</div>
 				<div class="lista">
 					<div>
 						<span class="indice">01</span>
@@ -399,31 +647,9 @@
 			</div>
 		</section>
 
-		<section style="padding-top: 0">
-			<div class="ancho capturas">
-				<figure>
-					<img
-						src="assets/popup-cotizaciones.png"
-						alt="La tabla de cotizaciones con la variación del día de cada una"
-						width="920"
-						height="1300"
-						loading="lazy"
-					/>
-					<figcaption>Las cotizaciones, con la variación del día</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/popup-conversor.png" alt="El conversor de pesos a dólares" width="920" height="1300" loading="lazy" />
-					<figcaption>El conversor, en los dos sentidos</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/popup-oscuro.png" alt="El popup en modo oscuro" width="920" height="1300" loading="lazy" />
-					<figcaption>El mismo popup, en modo oscuro</figcaption>
-				</figure>
-			</div>
-		</section>
-
-		<section id="privacidad">
+		<section class="tinte" id="privacidad">
 			<div class="ancho">
+				<p class="rotulo">Privacidad</p>
 				<h2>Privacidad y términos</h2>
 				<p class="destacado">
 					Esta extensión no recopila datos personales, no tiene analytics ni rastreadores, y no carga nada de terceros.
@@ -497,11 +723,19 @@
 
 		<footer>
 			<div class="ancho">
-				<a href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">Chrome Web Store</a>
-				<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che">Código fuente</a>
-				<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che/issues">Reportar un problema</a>
-				<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che/blob/main/CHANGELOG.md">Novedades</a>
-				<p class="aviso">Hecho en Argentina. Los datos son de dolarapi.com y argentinadatos.com.</p>
+				<div class="pie">
+					<span>Hecho en Argentina</span>
+					<nav>
+						<a href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">Chrome Web Store</a>
+						<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che">Código fuente</a>
+						<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che/issues">Reportar un problema</a>
+						<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che/blob/main/CHANGELOG.md">Novedades</a>
+					</nav>
+				</div>
+				<p class="aviso">
+					Los datos son de dolarapi.com y argentinadatos.com. Los valores son informativos y no constituyen asesoramiento
+					financiero. Tipografía Archivo, licencia SIL OFL 1.1.
+				</p>
 			</div>
 		</footer>
 	</body>
