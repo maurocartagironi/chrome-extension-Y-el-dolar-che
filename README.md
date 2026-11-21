@@ -27,19 +27,19 @@ Después, en `chrome://extensions/`: activar el modo de desarrollador, "Cargar d
 
 ## Desarrollo
 
-| Comando                    | Qué hace                                                                                                                           |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build`            | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest.                                |
-| `npm run watch`            | Build de desarrollo en modo watch (el popup).                                                                                      |
-| `npm run build:background` | Compila solo el service worker con esbuild.                                                                                        |
-| `npm run preview`          | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal.              |
-| `npm run preview:shot`     | Lo mismo pero saca una captura. Acepta `--dark`, `--tab=N`, `--monedas`, `--error`, `--hidden`, `--click=<sel>` y `--focus=<sel>`. |
-| `npm run shots:store`      | Las cinco capturas de 1280×800 para la ficha de la tienda.                                                                         |
-| `npm run icons`            | Genera `icon-16/32/48/128.png` desde `assets/img/icon.svg`.                                                                        |
-| `npm test`                 | Tests unitarios en modo watch (Karma + Jasmine).                                                                                   |
-| `npm run test:ci`          | Los mismos tests una sola vez, en Chrome headless.                                                                                 |
-| `npm run lint`             | ESLint sobre `.ts` y templates.                                                                                                    |
-| `npm run package`          | Build + `dist.zip` listo para subir a la store (Windows).                                                                          |
+| Comando                    | Qué hace                                                                                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build`            | Build de producción en `dist/` (~530 kB), con prune de fuentes no usadas y validación del manifest.                                                                 |
+| `npm run watch`            | Build de desarrollo en modo watch (el popup).                                                                                                                       |
+| `npm run build:background` | Compila solo el service worker con esbuild.                                                                                                                         |
+| `npm run preview`          | Sirve `dist/` en http://localhost:4210 con las APIs de chrome.* stubbeadas, para abrir el popup en un browser normal.                                               |
+| `npm run preview:shot`     | Lo mismo pero saca una captura. Acepta `--dark`, `--tab=N`, `--monedas`, `--error`, `--hidden`, `--click=<sel>`, `--focus=<sel>`, `--ventana=AxA` y `--out=<ruta>`. |
+| `npm run assets:store`     | Todas las imágenes de la tienda y de la página, en `docs/assets/`: las cinco capturas de 1280×800, la ficha de 440×280, la marquesina de 1400×560 y las del popup.  |
+| `npm run icons`            | Genera `icon-16/32/48/128.png` desde `assets/img/icon.svg`.                                                                                                         |
+| `npm test`                 | Tests unitarios en modo watch (Karma + Jasmine).                                                                                                                    |
+| `npm run test:ci`          | Los mismos tests una sola vez, en Chrome headless.                                                                                                                  |
+| `npm run lint`             | ESLint sobre `.ts` y templates.                                                                                                                                     |
+| `npm run package`          | Build + `dist.zip` listo para subir a la store (Windows).                                                                                                           |
 
 Puntos a tener en cuenta al tocar el código:
 
@@ -51,6 +51,8 @@ Puntos a tener en cuenta al tocar el código:
 - **Los valores por defecto de la configuración viven en `shared/constants/defaults.constant.ts`,** no en `environments/`. Ahí quedó solo el flag `production`: cuando los defaults estaban duplicados en dos archivos de environment, uno quedó desactualizado y el build publicado salió con `production: false`.
 - **El icono es `assets/img/icon.svg`;** los PNG se generan con `npm run icons`. Es un redibujo del original de 48×48, que quedó en el repo como `icon.png`. Si aparece el arte original en vector, reemplazar el SVG y volver a generar.
 - **El histórico es información de apoyo.** Se pide aparte de las cotizaciones y sin bloquear la tabla, y si falla los chips caen a la comparación contra el sondeo anterior. Nunca tiene que romper el popup.
+- **La política de privacidad vive en dos lugares:** el texto `legal_terms_text` de `_locales` (lo que se ve dentro del popup) y la sección `#privacidad` de `docs/index.html` (la URL que pide la tienda). Hoy dicen lo mismo; si se toca una hay que tocar la otra.
+- **Las imágenes de `docs/assets/` se commitean.** Son las que se suben a la tienda y las que muestra la página; si no están en el repo, GitHub Pages queda sin imágenes. Se regeneran con `npm run assets:store`.
 - **La configuración vive en `chrome.storage.sync`** y el resto en `local`. Sync tiene cuota de 8 kB por item y límite de escrituras por minuto, así que las cotizaciones y el histórico, que son caché, no van ahí.
 - **El tema de los controles nativos sale de `color-scheme`.** `:root { color-scheme: light }` y `html.dark { color-scheme: dark }` hacen que el desplegable de los `<select>`, el input de color y las scrollbars sigan el modo oscuro sin CSS extra.
 - **Sin `baseUrl` en el tsconfig.** TypeScript 6 lo deprecó, así que los alias (`@shared/*`, `@containers/*`, `src/*`) están en `paths` con rutas relativas al tsconfig. Si agregás un alias nuevo, va ahí.

@@ -12,6 +12,7 @@
 - **La extensión habla inglés.** Quedaban doce textos escritos en castellano dentro del código; ahora todo sale de `_locales`, con el idioma inglés completo.
 - **La configuración sincroniza** entre las máquinas donde tengas la sesión de Chrome.
 - **Botón de reintento** en la tarjeta de error: antes había que cerrar y abrir el popup.
+- **Términos y privacidad al día:** el texto solo hablaba de dolarapi.com. Ahora cuenta también la segunda fuente (argentinadatos.com), que las notificaciones se resuelven dentro del navegador, que el texto que seleccionás para convertir no se guarda ni se transmite, y que la configuración sincroniza por tu propia cuenta de Chrome.
 
 ### Correcciones
 
@@ -22,7 +23,8 @@
 
 - El icono pasó a ser un SVG: los cuatro tamaños (16, 32, 48 y **128**, el que pide la tienda) se generan con `npm run icons` en vez de estirar un raster de 48.
 - `check-manifest` chequea además que los idiomas tengan las mismas claves y que cada icono mida lo que dice medir.
-- `npm run shots:store` genera las capturas de 1280×800 de la ficha de la tienda.
+- `npm run assets:store` genera todas las imágenes de la tienda y de la página: las cinco capturas de 1280×800, la ficha de 440×280, la marquesina de 1400×560 y las capturas limpias del popup.
+- **Página propia** en `docs/`, para publicar con GitHub Pages: qué hace, capturas y la política de privacidad con URL pública, que es la que pide la tienda.
 - Piso de cobertura en los tests, que hoy están en 94 % de sentencias y 96 % de líneas.
 - 155 tests.
 

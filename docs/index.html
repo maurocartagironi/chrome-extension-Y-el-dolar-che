@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>¿Y el dólar, che? — Cotización del dólar en Argentina en el navegador</title>
+		<meta
+			name="description"
+			content="Extensión de Chrome que muestra la cotización del dólar en Argentina en la barra del navegador: oficial, blue, MEP, CCL, mayorista, cripto y tarjeta, con la variación del día, conversor y avisos."
+		/>
+		<link rel="canonical" href="https://maurocartagironi.github.io/chrome-extension-Y-el-dolar-che/" />
+		<link rel="icon" href="assets/icono.svg" type="image/svg+xml" />
+		<meta property="og:title" content="¿Y el dólar, che?" />
+		<meta property="og:description" content="La cotización del dólar en Argentina, en la barra del navegador." />
+		<meta
+			property="og:image"
+			content="https://maurocartagironi.github.io/chrome-extension-Y-el-dolar-che/assets/marquesina-1400x560.png"
+		/>
+		<meta property="og:type" content="website" />
+		<style>
+			/* Nada se carga de afuera: ni fuentes, ni analytics, ni scripts. La
+			   página dice que la extensión no te rastrea; sería raro que la
+			   página sí lo hiciera. */
+			:root {
+				--fondo: #f6f7fc;
+				--fondo-alto: #ffffff;
+				--texto: #23243a;
+				--suave: #5a5c76;
+				--borde: #e2e4f0;
+				--marca: #3949ab;
+				--verde: #2f9a39;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--fondo: #15161f;
+					--fondo-alto: #1e1f2b;
+					--texto: #e6e7f2;
+					--suave: #a2a4ba;
+					--borde: #2e3042;
+					--marca: #8c97e8;
+				}
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: var(--fondo);
+				color: var(--texto);
+				font-family:
+					-apple-system,
+					BlinkMacSystemFont,
+					Segoe UI,
+					Roboto,
+					Helvetica,
+					Arial,
+					sans-serif;
+				line-height: 1.6;
+				-webkit-font-smoothing: antialiased;
+			}
+			.ancho {
+				max-width: 980px;
+				margin: 0 auto;
+				padding: 0 20px;
+			}
+			a {
+				color: var(--marca);
+			}
+			h1,
+			h2,
+			h3 {
+				line-height: 1.2;
+				margin: 0 0 12px;
+			}
+
+			/* --- encabezado --- */
+			header {
+				background: linear-gradient(135deg, #3f4bbf 0%, #1c2159 100%);
+				color: #ffffff;
+				padding: 72px 0 80px;
+				text-align: center;
+			}
+			header svg {
+				width: 88px;
+				height: 88px;
+				filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
+			}
+			header h1 {
+				font-size: clamp(32px, 6vw, 46px);
+				margin: 18px 0 10px;
+			}
+			header p {
+				font-size: clamp(16px, 2.6vw, 20px);
+				margin: 0 auto 28px;
+				max-width: 620px;
+				opacity: 0.9;
+			}
+			.boton {
+				display: inline-block;
+				background: #ffffff;
+				color: #1c2159;
+				font-weight: 700;
+				font-size: 17px;
+				padding: 14px 30px;
+				border-radius: 999px;
+				text-decoration: none;
+			}
+			.boton:hover {
+				background: #eef0ff;
+			}
+			.chico {
+				display: block;
+				margin-top: 14px;
+				font-size: 14px;
+				opacity: 0.75;
+			}
+
+			/* --- secciones --- */
+			section {
+				padding: 64px 0;
+			}
+			section h2 {
+				font-size: 28px;
+				text-align: center;
+				margin-bottom: 8px;
+			}
+			.bajada {
+				text-align: center;
+				color: var(--suave);
+				margin: 0 auto 40px;
+				max-width: 560px;
+			}
+
+			.capturas {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+				gap: 24px;
+			}
+			.capturas figure {
+				margin: 0;
+			}
+			.capturas img {
+				width: 100%;
+				height: auto;
+				display: block;
+				background: #ffffff;
+				border: 1px solid var(--borde);
+				border-radius: 12px;
+			}
+			.capturas figcaption {
+				margin-top: 12px;
+				text-align: center;
+				font-size: 14px;
+				color: var(--suave);
+			}
+
+			.grilla {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: 20px;
+			}
+			.tarjeta {
+				background: var(--fondo-alto);
+				border: 1px solid var(--borde);
+				border-radius: 12px;
+				padding: 22px 24px;
+			}
+			.tarjeta h3 {
+				font-size: 17px;
+				color: var(--marca);
+			}
+			.tarjeta p {
+				margin: 0;
+				color: var(--suave);
+				font-size: 15px;
+			}
+
+			#privacidad {
+				background: var(--fondo-alto);
+				border-top: 1px solid var(--borde);
+				border-bottom: 1px solid var(--borde);
+			}
+			#privacidad .ancho {
+				max-width: 760px;
+			}
+			#privacidad h2 {
+				text-align: left;
+			}
+			#privacidad h3 {
+				font-size: 18px;
+				margin-top: 32px;
+			}
+			#privacidad p,
+			#privacidad li {
+				color: var(--suave);
+			}
+			.destacado {
+				border-left: 3px solid var(--verde);
+				padding-left: 16px;
+				color: var(--texto);
+				font-weight: 600;
+			}
+			.fecha {
+				font-size: 14px;
+				margin-top: 36px;
+			}
+
+			footer {
+				padding: 40px 0 56px;
+				text-align: center;
+				color: var(--suave);
+				font-size: 15px;
+			}
+			footer a {
+				margin: 0 10px;
+				white-space: nowrap;
+			}
+			.aviso {
+				margin-top: 24px;
+				font-size: 13px;
+				opacity: 0.8;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="ancho">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="¿Y el dólar, che?">
+					<defs>
+						<linearGradient id="fondoIcono" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+							<stop offset="0" stop-color="#38953e" />
+							<stop offset="1" stop-color="#2d8938" />
+						</linearGradient>
+					</defs>
+					<circle cx="24" cy="24" r="24" fill="url(#fondoIcono)" />
+					<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M23.9 9.8 V37.4" stroke-width="5.4" />
+						<path
+							d="M30.2 17.8 C30.2 14.8 27.3 13.4 24 13.4 C20.7 13.4 17.8 14.8 17.8 17.8 C17.8 21 20.7 22.2 24 23.2 C27.6 24.3 30.4 25.8 30.4 29 C30.4 32 27.3 33.6 24 33.6 C20.7 33.6 17.6 32.1 17.6 29.2"
+							stroke-width="6.2"
+						/>
+					</g>
+				</svg>
+				<h1>¿Y el dólar, che?</h1>
+				<p>
+					La cotización del dólar en Argentina, en la barra del navegador. Un número a la vista, siempre actualizado, sin abrir
+					otra pestaña.
+				</p>
+				<a class="boton" href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">Instalar en Chrome</a>
+				<span class="chico">Gratis · Sin cuenta · Código abierto</span>
+			</div>
+		</header>
+
+		<section>
+			<div class="ancho">
+				<h2>Qué hace</h2>
+				<p class="bajada">
+					Oficial, blue, MEP, contado con liquidación, mayorista, cripto y tarjeta. Opcionalmente euro, real, peso chileno y peso
+					uruguayo.
+				</p>
+				<div class="grilla">
+					<div class="tarjeta">
+						<h3>El precio sin abrir nada</h3>
+						<p>
+							Elegís qué cotización te interesa y el valor queda en el icono. Pasás el cursor y ves compra, venta y la última
+							actualización.
+						</p>
+					</div>
+					<div class="tarjeta">
+						<h3>Cuánto se movió hoy</h3>
+						<p>
+							Cada cotización muestra la variación contra el cierre de ayer, con un mini gráfico de los últimos treinta
+							cierres.
+						</p>
+					</div>
+					<div class="tarjeta">
+						<h3>Conversor</h3>
+						<p>
+							De pesos a dólares y al revés, con el tipo de cambio que elijas. O seleccionás un número en cualquier página y
+							lo convertís con el click derecho.
+						</p>
+					</div>
+					<div class="tarjeta">
+						<h3>Avisos</h3>
+						<p>Configurás un valor y te llega una notificación cuando el precio de venta lo cruza. Una sola vez por cruce.</p>
+					</div>
+					<div class="tarjeta">
+						<h3>Como te guste</h3>
+						<p>
+							Modo claro y oscuro, el color del indicador, qué cotización mostrar y en qué pestaña abrir. La configuración te
+							sigue entre máquinas.
+						</p>
+					</div>
+					<div class="tarjeta">
+						<h3>Rápida</h3>
+						<p>
+							Se refresca sola cada diez minutos y guarda el último valor, así abre al instante y sigue mostrando algo aunque
+							se caiga la red.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section style="padding-top: 0">
+			<div class="ancho capturas">
+				<figure>
+					<img
+						src="assets/popup-cotizaciones.png"
+						alt="La tabla de cotizaciones con la variación del día de cada una"
+						width="920"
+						height="1300"
+						loading="lazy"
+					/>
+					<figcaption>Las cotizaciones, con la variación del día</figcaption>
+				</figure>
+				<figure>
+					<img src="assets/popup-conversor.png" alt="El conversor de pesos a dólares" width="920" height="1300" loading="lazy" />
+					<figcaption>El conversor, en los dos sentidos</figcaption>
+				</figure>
+				<figure>
+					<img src="assets/popup-oscuro.png" alt="El popup en modo oscuro" width="920" height="1300" loading="lazy" />
+					<figcaption>El mismo popup, en modo oscuro</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section id="privacidad">
+			<div class="ancho">
+				<h2>Privacidad y términos</h2>
+				<p class="destacado">
+					Esta extensión no recopila datos personales, no tiene analytics ni rastreadores, y no carga nada de terceros.
+				</p>
+
+				<h3>Qué datos se manejan</h3>
+				<p>
+					La extensión hace pedidos de lectura a dos servicios públicos:
+					<a href="https://dolarapi.com" rel="noopener">dolarapi.com</a>
+					, de donde salen las cotizaciones, y
+					<a href="https://argentinadatos.com" rel="noopener">argentinadatos.com</a>
+					, de donde sale el histórico de cierres que se usa para mostrar la variación del día. Son consultas sin parámetros: no
+					se envía ninguna información sobre vos, ni se usa ningún identificador.
+				</p>
+				<p>No hay servidor propio. No hay cuentas, ni registro, ni login.</p>
+
+				<h3>Qué se guarda en tu navegador</h3>
+				<ul>
+					<li>
+						Tu configuración: qué cotización mostrar en el icono, compra o venta, el color, el tema, la pestaña por defecto y el
+						valor del aviso.
+					</li>
+					<li>
+						Una copia de la última cotización y del histórico, para que el popup abra al instante y siga mostrando algo si se
+						cae la red.
+					</li>
+				</ul>
+				<p>
+					Todo eso vive en el almacenamiento de Chrome, en tu propia máquina. La configuración, además, se sincroniza entre los
+					navegadores donde tengas la sesión de Chrome iniciada: eso lo hace Chrome con tu cuenta de Google, y nosotros no vemos
+					ni recibimos nada de eso.
+				</p>
+
+				<h3>Las notificaciones</h3>
+				<p>
+					El aviso por valor está apagado por defecto. Si lo activás, la comparación se hace enteramente dentro de tu navegador
+					contra el valor que vos escribiste, y la notificación solo contiene el nombre de la cotización y el precio. No se envía
+					a ningún lado.
+				</p>
+
+				<h3>El conversor del click derecho</h3>
+				<p>
+					Cuando seleccionás un número y usás el menú del click derecho, ese texto llega a la extensión únicamente en ese momento
+					y solo porque vos lo pediste. Se usa para hacer la cuenta y se descarta: no se guarda ni se transmite.
+				</p>
+				<p class="destacado">
+					La extensión no puede leer el contenido de las páginas que visitás. No inyecta código en ningún sitio y no pide permisos
+					sobre las páginas: el texto seleccionado le llega por el propio evento del menú contextual, nada más.
+				</p>
+
+				<h3>Términos de uso</h3>
+				<p>
+					Los valores que muestra la extensión son informativos y provienen de servicios de terceros. No constituyen una
+					recomendación financiera, de inversión ni de ningún otro tipo, y no sustituyen el consejo profesional. No se garantiza
+					la exactitud ni la disponibilidad de los datos.
+				</p>
+				<p>
+					El uso de la extensión es por cuenta y riesgo del usuario, que es responsable de verificar los valores y de las
+					decisiones que tome. No se asume responsabilidad por daños o pérdidas derivados del uso de la extensión.
+				</p>
+
+				<h3>Cambios</h3>
+				<p>
+					Si esta política cambia, el cambio queda publicado en esta página y en el historial del repositorio, que es público. El
+					uso continuado de la extensión implica la aceptación de los términos vigentes.
+				</p>
+
+				<p class="fecha">Última actualización: 21 de noviembre de 2026.</p>
+			</div>
+		</section>
+
+		<footer>
+			<div class="ancho">
+				<a href="https://chromewebstore.google.com/detail/bhekococoidbofnmckchcajcjmlekcna">Chrome Web Store</a>
+				<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che">Código fuente</a>
+				<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che/issues">Reportar un problema</a>
+				<a href="https://github.com/maurocartagironi/chrome-extension-Y-el-dolar-che/blob/main/CHANGELOG.md">Novedades</a>
+				<p class="aviso">Hecho en Argentina. Los datos son de dolarapi.com y argentinadatos.com.</p>
+			</div>
+		</footer>
+	</body>
+</html>
